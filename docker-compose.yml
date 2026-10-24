@@ -1,0 +1,113 @@
+services:
+  web:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - USE_POSTGRES=true
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=billza_db
+      - POSTGRES_USER=billza_user
+      - POSTGRES_PASSWORD=billza_secure_password_2026
+      - DATABASE_URL=postgresql://billza_user:billza_secure_password_2026@db:5432/billza_db
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - SEED_DEMO_DATA=true
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - billza_static:/app/staticfiles
+      - billza_media:/app/media
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: billza_db
+      POSTGRES_USER: billza_user
+      POSTGRES_PASSWORD: billza_secure_password_2026
+    ports:
+      - "5432:5432"
+    volumes:
+      - billza_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U billza_user -d billza_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - billza_redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  celery_worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    command: celery -A config worker -l info
+    env_file:
+      - .env
+    environment:
+      - USE_POSTGRES=true
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=billza_db
+      - POSTGRES_USER=billza_user
+      - POSTGRES_PASSWORD=billza_secure_password_2026
+      - DATABASE_URL=postgresql://billza_user:billza_secure_password_2026@db:5432/billza_db
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  celery_beat:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    command: celery -A config beat -l info
+    env_file:
+      - .env
+    environment:
+      - USE_POSTGRES=true
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=billza_db
+      - POSTGRES_USER=billza_user
+      - POSTGRES_PASSWORD=billza_secure_password_2026
+      - DATABASE_URL=postgresql://billza_user:billza_secure_password_2026@db:5432/billza_db
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  billza_pgdata:
+  billza_redisdata:
+  billza_static:
+  billza_media:

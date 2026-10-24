@@ -1,0 +1,17 @@
+services:
+  web:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - DJANGO_DEBUG=True
+      - USE_POSTGRES=False
+      - SEED_DEMO_DATA=true
+    volumes:
+      - ./backend:/app

@@ -1,0 +1,11 @@
+{
+  "network": "testnet",
+  "contract_id": "CCOSNSVHGLYFMO72ICZY2Y7KZYQLZ77AADT4LIU6VL4XDRT2IY6IQMOG",
+  "wasm_hash": "35ae26e09ae957af88f891828b0800dc1a70bd9db908100e77719ec1ddca02bc",
+  "admin_address": "GA4KDGQIIXA7SQZB43AIK254XTSGYV3HBX4GAPKU3N2ECP76IX4U557Q",
+  "deploy_tx_hash": "1bba78de3878efd69d75f3222fdca7527ff585f8134c2b490464af154a72c71d",
+  "init_tx_hash": "fb4fa3863aa0fa26b7ccbf8020d81b6f450f2bf713378879d4eb2345569f06c2",
+  "explorer_url": "https://stellar.expert/explorer/testnet/tx/1bba78de3878efd69d75f3222fdca7527ff585f8134c2b490464af154a72c71d",
+  "stellar_lab_url": "https://lab.stellar.org/r/testnet/contract/CCOSNSVHGLYFMO72ICZY2Y7KZYQLZ77AADT4LIU6VL4XDRT2IY6IQMOG",
+  "deployed_at": "2026-10-24T12:37:38Z"
+}

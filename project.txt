@@ -1,0 +1,736 @@
+BILLZA
+MVP Project Brief for UI/UX Designers & Developers
+Project Name: Billza
+Project Type: Utility Bill Management / Recurring Payments / Financial Dashboard
+Blockchain: Stellar
+Development Stage: MVP — Sprint 1
+Platform: Mobile-Responsive Web Application
+Supported Assets: Stellar Testnet XLM and USDC
+Environment: Stellar Testnet
+
+1. Project Overview
+Billza is a Stellar-integrated bill management platform designed to help individuals, households, freelancers, and small businesses organize recurring financial obligations, receive payment reminders, and initiate supported payments from one dashboard.
+Users can create bill records for electricity, internet, rent, subscriptions, and other utilities, assign due dates and recurring schedules, and track whether bills are upcoming, overdue, or paid.
+Billza will also integrate Stellar wallet functionality, enabling users to initiate supported Testnet payments and associate confirmed blockchain transactions with their bill records.
+The platform focuses on five capabilities:
+Bill Management Dashboard: Create, edit, organize, and monitor bills.
+Automated Reminder System: Receive alerts for upcoming and overdue bills.
+Stellar Payment Flow: Initiate and verify payments using supported Stellar assets.
+Bill Search & Filtering: Quickly locate bills by category, date, and status.
+Recurring Bill Management: Automatically generate or advance bill schedules according to configured frequencies.
+The goal is to make recurring financial obligations easier to manage while demonstrating how Stellar can support everyday payment workflows.
+The first MVP will use Stellar Testnet. It will not claim to settle real utility-provider accounts without an authorized provider integration.
+2. Problem Being Solved
+Individuals and businesses frequently manage bills through fragmented systems such as banking applications, spreadsheets, messages, and handwritten reminders.
+This creates several challenges:
+Forgotten payment deadlines.
+Missed recurring subscriptions.
+Difficulty tracking monthly expenses.
+Poor visibility into paid and unpaid bills.
+Inconsistent payment records.
+Difficulty finding previous transactions.
+Limited practical payment-management tools for Stellar users.
+Billza addresses these challenges by combining recurring bill organization, reminders, and blockchain-based payment records in one application.
+3. Target Users
+Individuals and Households
+Users managing electricity, internet, subscriptions, rent, and other recurring expenses.
+Freelancers and Remote Workers
+Professionals managing personal and business subscriptions, internet expenses, and software tools.
+Small Businesses
+Business owners tracking operational bills, recurring services, and payment records.
+Stellar Wallet Users
+Users interested in practical applications for Stellar assets beyond holding or transferring tokens.
+4. Core User Journeys
+Bill Creation
+User visits Billza.
+Creates an account.
+Opens the dashboard.
+Selects Add New Bill.
+Enters bill name, category, amount, and due date.
+Selects payment frequency.
+Adds recipient payment information, if applicable.
+Saves the bill.
+Bill appears on the dashboard.
+Reminder Journey
+User creates a bill.
+Sets reminder preferences.
+Billza calculates the next due date.
+Reminder service identifies an upcoming bill.
+User receives an email or in-app notification.
+User opens the bill details.
+User initiates payment or marks the bill as manually paid.
+Stellar Payment Journey
+User opens an unpaid bill.
+Selects Pay with Stellar.
+Connects a compatible Stellar wallet.
+Reviews the payment amount, asset, and recipient.
+Signs the transaction.
+Stellar processes the payment.
+Billza verifies the transaction.
+Payment record is associated with the bill.
+Bill status updates.
+User can view the transaction on Stellar Explorer.
+Recurring Bill Journey
+User creates a recurring bill.
+Selects weekly, monthly, quarterly, or yearly frequency.
+Billza calculates the next payment date.
+The current bill occurrence is tracked.
+Once the occurrence is paid, the next occurrence is scheduled.
+The reminder service continues monitoring future due dates.
+Core Product Flow:
+Create Bill → Configure Recurrence → Schedule Reminder → Receive Alert → Initiate Stellar Payment → Verify Transaction → Update Bill Status → Track Next Due Date
+
+PART A — UI/UX DESIGN BRIEF
+5. Design Objective
+Design a clean, intuitive, mobile-responsive financial management dashboard that helps users understand their recurring expenses and upcoming payment obligations.
+The interface should make it easy to:
+Add and edit bills.
+Identify upcoming payments.
+See overdue obligations.
+Manage recurring schedules.
+Search payment records.
+Receive reminders.
+Initiate Stellar payments.
+Confirm successful transactions.
+Design Direction
+Modern fintech aesthetic.
+Clean dashboard layouts.
+Simple navigation.
+Clear financial summaries.
+Mobile-first usability.
+Accessible typography.
+Minimal blockchain terminology.
+Strong payment-status indicators.
+Suggested colors: deep navy, blue, white, green, and neutral gray.
+Use amber for upcoming deadlines and red for overdue or failed payments.
+6. Required Product Screens
+Screen 1 — Landing Page
+Purpose: Introduce Billza and its core features.
+Required sections:
+Billza logo.
+Navigation.
+Hero headline: "Stay Ahead of Every Bill."
+Supporting description.
+Get Started button.
+View Demo button.
+How Billza Works.
+Bill Management Preview.
+Automated Reminders.
+Stellar Payment Integration.
+Recurring Bill Features.
+Footer.
+Screen 2 — User Registration & Login
+Purpose: Allow users to create and access accounts.
+Required fields:
+Full name.
+Email address.
+Password.
+Create Account button.
+Login button.
+Forgot Password option.
+Support secure session management and account recovery.
+Screen 3 — Main Dashboard
+Purpose: Provide an overview of the user's bills and expenses.
+Summary Cards
+Total Bills.
+Upcoming Bills.
+Overdue Bills.
+Paid This Month.
+Total Scheduled Amount.
+Additional Sections
+Upcoming payments.
+Recent payments.
+Monthly expense overview.
+Bill categories.
+Add New Bill button.
+Connect Stellar Wallet button.
+Amounts in different currencies or assets must not be combined without an explicitly defined conversion rate.
+Screen 4 — Add New Bill
+Purpose: Allow users to create a bill record.
+Required fields:
+Bill name.
+Bill category.
+Amount.
+Currency or asset.
+Due date.
+Payment frequency.
+Description.
+Payment recipient.
+Reminder preferences.
+Save Bill button.
+Bill Categories
+Electricity.
+Internet.
+Water.
+Rent.
+Subscriptions.
+Education.
+Insurance.
+Business Utilities.
+Other.
+Screen 5 — All Bills
+Purpose: Display the user's complete bill collection.
+Required components:
+Bill list.
+Search bar.
+Category filter.
+Status filter.
+Due date filter.
+Frequency filter.
+Add Bill button.
+Each bill card should show:
+Bill name.
+Category.
+Amount.
+Next due date.
+Recurrence.
+Status.
+View Details button.
+Screen 6 — Bill Details
+Purpose: Allow users to view and manage an individual bill.
+Required components:
+Bill name.
+Category.
+Amount.
+Currency.
+Due date.
+Payment frequency.
+Payment recipient.
+Reminder settings.
+Payment history.
+Current status.
+Actions
+Edit Bill.
+Pay with Stellar.
+Mark as Paid.
+Snooze Reminder.
+Delete Bill.
+Manually marked payments must remain distinguishable from verified Stellar payments.
+Screen 7 — Edit Bill
+Purpose: Allow users to update existing bills.
+Required fields:
+Bill name.
+Category.
+Amount.
+Due date.
+Frequency.
+Description.
+Recipient information.
+Reminder settings.
+Save Changes button.
+Changes to a recurring bill should not overwrite historical payment records.
+Screen 8 — Recurring Bill Setup
+Purpose: Allow users to configure repeat schedules.
+Required components:
+Bill name.
+Start date.
+Frequency selection.
+Repeat interval.
+Optional end date.
+Next due date preview.
+Reminder settings.
+Save Schedule button.
+Supported Frequencies
+Weekly.
+Monthly.
+Quarterly.
+Yearly.
+The system must handle month-end dates, leap years, and other calendar edge cases consistently.
+Screen 9 — Reminder Center
+Purpose: Display upcoming and overdue payment alerts.
+Required components:
+Upcoming reminders.
+Overdue reminders.
+Reminder status.
+Bill name.
+Due date.
+Amount.
+View Bill button.
+Mark Reminder as Read button.
+Reminder Statuses
+Scheduled.
+Sent.
+Read.
+Failed.
+Screen 10 — Reminder Preferences
+Purpose: Allow users to customize notifications.
+Required components:
+Email reminders toggle.
+In-app reminders toggle.
+Reminder timing.
+Reminder frequency.
+Overdue reminders toggle.
+Save Preferences button.
+Suggested Reminder Options
+7 days before due date.
+3 days before due date.
+1 day before due date.
+On due date.
+After due date.
+Screen 11 — Stellar Wallet Connection
+Purpose: Allow users to connect a supported Stellar wallet.
+Required components:
+Connect Wallet button.
+Wallet selection.
+Connected wallet address.
+Stellar Testnet indicator.
+XLM balance.
+USDC balance.
+Disconnect Wallet button.
+Screen 12 — Stellar Payment Review
+Purpose: Allow users to initiate payment for a supported bill.
+Required components:
+Bill name.
+Payment amount.
+Payment asset.
+Recipient Stellar address.
+Wallet balance.
+Estimated network fee.
+Payment reference.
+Review Payment button.
+Confirm Payment button.
+The interface must clearly distinguish supported Stellar-address payments from real utility-provider settlement.
+Screen 13 — Payment Confirmation
+Purpose: Display payment progress and results.
+Required components:
+Bill name.
+Payment amount.
+Asset.
+Recipient address.
+Transaction hash.
+Payment timestamp.
+Verification status.
+View on Stellar Explorer button.
+Return to Dashboard button.
+Required Statuses
+Awaiting Wallet Signature.
+Submitted.
+Verification Pending.
+Confirmed.
+Failed.
+Cancelled.
+Screen 14 — Payment History
+Purpose: Allow users to review previous payments.
+Required information:
+Bill name.
+Payment date.
+Amount.
+Asset or currency.
+Payment method.
+Transaction reference.
+Verification status.
+Filters:
+Date.
+Category.
+Status.
+Payment method.
+Include CSV export.
+Screen 15 — Search & Filter Results
+Purpose: Allow users to quickly locate bills and transactions.
+Required components:
+Search input.
+Category filter.
+Payment status.
+Due date range.
+Recurrence filter.
+Sort options.
+Clear Filters button.
+Search results should update without requiring a full page reload.
+Screen 16 — Settings
+Purpose: Allow users to manage their account.
+Required components:
+Profile information.
+Email address.
+Connected Stellar wallet.
+Notification preferences.
+Default currency.
+Account security.
+Logout.
+7. Designer Deliverables
+The UI/UX designer must provide:
+Complete Figma designs covering all 16 screen groups.
+Desktop and mobile layouts.
+Bill creation and editing flow.
+Recurring schedule interface.
+Reminder center.
+Wallet connection interface.
+Stellar payment flow.
+Payment history.
+Search and filtering interface.
+Empty, loading, overdue, pending, successful, and failed states.
+Reusable design system.
+Developer-ready handoff.
+Design Acceptance: A first-time user should be able to create a recurring bill, configure reminders, find the bill later, and complete a supported Stellar Testnet payment without developer assistance.
+
+PART B — DEVELOPMENT BRIEF
+8. Development Objective
+Build a functional web application that supports bill management, recurring schedules, automated reminders, search and filtering, and verified Stellar Testnet payments.
+The application must maintain accurate bill records and distinguish blockchain-confirmed payments from manually recorded payments.
+9. Recommended Technology Stack
+Component
+Technology
+Frontend
+Next.js / React
+Language
+TypeScript
+Styling
+Tailwind CSS
+Backend
+Node.js / Next.js API
+Database
+PostgreSQL / Supabase
+Authentication
+Supabase Auth / Auth.js
+Blockchain
+Stellar
+Wallet Integration
+Stellar Wallets Kit
+Blockchain SDK
+Stellar SDK
+Network Data
+Stellar RPC / Horizon
+Reminder Processing
+Scheduled Background Worker
+Email Notifications
+Resend / SMTP Provider
+Charts
+Recharts
+Hosting
+Vercel + Worker Hosting
+Environment
+Stellar Testnet
+
+10. Module 1 — User Authentication
+Develop secure account management.
+Required Functionality
+Register user.
+Login.
+Logout.
+Password recovery.
+Secure session management.
+User-specific data access.
+Profile management.
+Users must only be able to access and modify their own bills and payment records.
+11. Module 2 — Bill Management Engine
+Build the backend for managing bills.
+Required Functionality
+Create bill.
+Edit bill.
+Delete or archive bill.
+Categorize bill.
+Assign amount.
+Assign currency.
+Set due date.
+Set recurrence.
+Set payment recipient.
+Track payment status.
+Retrieve bill history.
+Bill Data Structure
+Each bill should contain:
+Bill ID.
+User ID.
+Bill name.
+Category.
+Amount.
+Currency or asset.
+Due date.
+Frequency.
+Description.
+Recipient information.
+Reminder preferences.
+Status.
+Creation timestamp.
+12. Module 3 — Recurring Bill Management
+Develop the recurrence engine.
+Required Functionality
+Support weekly recurrence.
+Support monthly recurrence.
+Support quarterly recurrence.
+Support yearly recurrence.
+Calculate next due date.
+Generate recurring bill occurrences.
+Track each occurrence separately.
+Maintain historical records.
+Allow recurrence updates.
+Prevent duplicate occurrence generation.
+Important Requirement
+Each recurring bill must have a stable parent record and individual scheduled occurrences.
+For example:
+Internet Subscription
+Parent bill: Monthly Internet.
+January occurrence: Paid.
+February occurrence: Paid.
+March occurrence: Upcoming.
+Marking January as paid must not automatically mark February or March as paid.
+13. Module 4 — Automated Reminder System
+Build the notification scheduling service.
+Required Functionality
+Monitor upcoming bill due dates.
+Generate reminders.
+Send email notifications.
+Display in-app notifications.
+Support user reminder preferences.
+Send overdue alerts.
+Track notification delivery status.
+Prevent duplicate reminders.
+Handle failed delivery attempts.
+Reminder Workflow
+User creates bill.
+User selects reminder timing.
+Backend stores reminder schedule.
+Worker checks upcoming reminders.
+Notification is generated.
+Email or in-app alert is delivered.
+Reminder status is recorded.
+The reminder service should operate independently of whether the user is currently logged in.
+14. Module 5 — Stellar Wallet Integration
+Build the wallet connection system.
+Required Functionality
+Connect compatible Stellar wallet.
+Retrieve wallet address.
+Validate Stellar Testnet.
+Retrieve supported asset balances.
+Associate wallet with user session.
+Handle disconnection.
+Prepare payment authorization.
+Security Requirements
+Never collect private keys.
+Require user approval for transactions.
+Validate the network.
+Validate supported assets.
+Validate receiving addresses.
+15. Module 6 — Stellar Payment Integration
+Build the payment initiation and confirmation workflow.
+Required Functionality
+Select unpaid bill occurrence.
+Retrieve payment details.
+Validate recipient wallet.
+Select supported Stellar asset.
+Generate unique payment reference.
+Prepare Stellar payment transaction.
+Request wallet signature.
+Submit transaction.
+Monitor settlement.
+Verify payment.
+Associate transaction with bill occurrence.
+Update payment status.
+Payment Verification Checks
+Transaction exists.
+Transaction succeeded.
+Correct network.
+Correct recipient.
+Correct asset and issuer.
+Correct amount.
+Correct payment reference.
+Transaction has not already been credited.
+Important Technical Limitation
+Sending XLM or USDC to a Stellar wallet does not automatically pay an electricity company, internet provider, or other utility.
+For the MVP, Billza must support payments to explicitly configured Stellar receiving addresses, such as a designated Testnet merchant or demonstration recipient.
+Actual utility-provider bill settlement requires a supported payment or billing integration and is outside this sprint.
+16. Module 7 — Payment Records
+Develop the payment history system.
+Required Functionality
+Store payment attempts.
+Store confirmed Stellar payments.
+Store manual payment records.
+Associate payments with bill occurrences.
+Record transaction hashes.
+Track verification status.
+Retrieve payment history.
+Export records.
+Payment Record Data
+Payment ID.
+Bill ID.
+Occurrence ID.
+User ID.
+Amount.
+Asset.
+Payment method.
+Recipient.
+Transaction hash, if applicable.
+Verification status.
+Payment timestamp.
+17. Module 8 — Bill Search & Filtering
+Build search and filtering functionality.
+Required Functionality
+Search bills by name.
+Filter by category.
+Filter by status.
+Filter by due date.
+Filter by recurrence.
+Sort by due date.
+Sort by amount.
+Sort by creation date.
+Clear filters.
+Search results must be scoped to the authenticated user's data.
+18. Module 9 — Dashboard & Expense Overview
+Develop the dashboard calculations.
+Required Functionality
+Count total bills.
+Count upcoming bills.
+Count overdue bills.
+Calculate paid bills for the month.
+Calculate scheduled expenses.
+Display upcoming due dates.
+Display recent payments.
+Display expense breakdown by category.
+The dashboard must not combine amounts denominated in unrelated currencies without a documented conversion method.
+19. Module 10 — Transaction Monitoring
+Build a backend service that verifies Stellar payment activity.
+Required Functionality
+Track submitted transactions.
+Retrieve Stellar transaction results.
+Confirm payment operations.
+Verify recipient and asset.
+Verify payment reference.
+Detect duplicate transactions.
+Record failed payments.
+Update bill status.
+Reconcile database records with blockchain data.
+20. Security Requirements
+Secure user authentication.
+User-specific data access.
+Wallet authorization for payments.
+No private-key collection.
+Stellar Testnet validation.
+Supported asset validation.
+Recipient address validation.
+Duplicate payment prevention.
+Accurate recurring bill calculations.
+Idempotent reminder scheduling.
+Secure email delivery credentials.
+Input validation.
+Protected payment records.
+Proper failed-transaction handling.
+Clear separation between manual and verified payments.
+
+PART C — 30-DAY DEVELOPMENT PLAN
+22. Required Testing Scenarios
+The development team must demonstrate:
+User registers and logs in.
+User creates a bill.
+User edits a bill.
+User categorizes a bill.
+User creates a recurring bill.
+System calculates next due date.
+System generates the next bill occurrence.
+Previous payment records remain unchanged.
+User searches for a bill.
+User filters bills by category.
+User filters bills by payment status.
+User configures reminder preferences.
+Reminder service generates an upcoming alert.
+Overdue bill triggers an alert.
+Duplicate reminder delivery is prevented.
+User connects a Stellar wallet.
+User initiates a supported Testnet payment.
+Stellar transaction is confirmed.
+Bill occurrence is marked paid.
+Transaction appears in payment history.
+Failed transaction does not mark bill paid.
+Wrong recipient is rejected.
+Duplicate transaction is not credited twice.
+User can export payment history.
+Mobile-responsive dashboard works correctly.
+23. Out of Scope
+Mainnet deployment.
+Real-value utility payments.
+Direct integration with electricity companies.
+Direct integration with internet providers.
+Airtime and data vending APIs.
+Bank account integration.
+Fiat on/off-ramps.
+Automatic wallet debiting.
+Custodial wallet management.
+Multi-chain payments.
+Native mobile applications.
+Advanced accounting software.
+Tax reporting.
+Credit scoring.
+Automated currency exchange.
+Production financial compliance infrastructure.
+
+PART D — FINAL HANDOVER
+24. Deliverables by Role
+UI/UX Designer
+Complete Figma file.
+16 screen groups.
+Desktop and mobile layouts.
+Bill creation and editing.
+Recurring schedule interface.
+Reminder center.
+Wallet connection.
+Stellar payment flow.
+Payment history.
+Search and filtering.
+Interactive prototype.
+Design system.
+Stellar Developer
+Stellar wallet integration.
+Testnet payment construction.
+XLM payment support.
+USDC payment support.
+Transaction verification.
+Payment reference handling.
+Blockchain monitoring.
+Stellar integration documentation.
+Backend Developer
+Authentication APIs.
+Bill CRUD APIs.
+Recurring bill engine.
+Reminder scheduling.
+Email notifications.
+Payment records.
+Search and filtering APIs.
+Stellar verification service.
+Transaction reconciliation.
+Technical documentation.
+Frontend Developer
+Landing page.
+Registration and login.
+Dashboard.
+Bill management.
+Recurring bill configuration.
+Reminder center.
+Wallet connection.
+Payment review.
+Payment confirmation.
+Payment history.
+Search and filtering.
+Responsive layouts.
+25. Definition of Done
+Billza MVP is complete when a user can create and manage recurring bills, configure automated reminders, search and filter bills, connect a Stellar wallet, and initiate a supported Stellar Testnet payment.
+The platform must verify successful blockchain payments before updating the associated bill occurrence.
+The reminder service must operate automatically, and recurring bill schedules must continue correctly after previous occurrences are completed.
+Final Handover Requirements
+Complete Figma design.
+GitHub repository.
+Live Testnet web application.
+Functional bill dashboard.
+Recurring bill engine.
+Working reminder service.
+Stellar wallet integration.
+Testnet payment flow.
+Transaction verification service.
+Payment history.
+Search and filtering.
+Testnet transaction hashes.
+End-to-end demo video.
+Testing report.
+Technical documentation.
+26. Final Acceptance Demonstration
+Demonstration A — Bill Management
+User registers → Creates electricity bill → Sets amount and due date → Saves bill → Bill appears on dashboard.
+Demonstration B — Recurring Schedule
+User creates monthly internet bill → Configures recurrence → Completes current occurrence → System schedules next occurrence.
+Demonstration C — Automated Reminder
+User configures reminder → Background worker identifies upcoming bill → Notification is delivered → User opens bill details.
+Demonstration D — Stellar Payment
+User selects unpaid bill → Connects Stellar wallet → Reviews payment → Signs Testnet transaction → Backend verifies payment → Bill status updates.
+Demonstration E — Search & Filtering
+User searches for an existing bill → Applies category and status filters → Finds the correct bill and its payment history.
+Final Team Instruction: Billza must demonstrate a working bill management and Stellar payment application, not simply a dashboard displaying manually entered expenses.
+The priority is a reliable end-to-end workflow:
+Bill Creation → Recurring Schedule → Automated Reminder → Stellar Payment → On-Chain Verification → Payment Record → Next Due Date
+The team should prioritize accurate bill scheduling, dependable reminders, and a fully verified Stellar Testnet payment flow within the 30-day development period.
+
