@@ -167,22 +167,48 @@ Once the server is running, explore the interactive OpenAPI 3.0 documentation:
 
 ---
 
+---
+
+## 🎨 Modern Frontend & Stellar Wallets Kit Integration
+
+The Billza UI is built with **Vite 8, React 19, TypeScript, and TailwindCSS**, containerized with Docker on `node:22-alpine`:
+
+- **Official Stellar Wallets Kit Integration**: Utilizes [`@creit.tech/stellar-wallets-kit`](https://stellarwalletskit.dev/) supporting:
+  - Freighter (Browser Extension & Mobile)
+  - xBull Wallet (Extension & Web)
+  - Albedo (Web popup / non-extension fallback)
+  - Lobstr, Hana, Rabet, Klever, and hardware wallets
+- **Dedicated Authentication Pages**:
+  - **Signup Page (`/signup`)**: Dedicated full-page view matching Billza's signature navy, royal blue, and mint theme with personal & business account support, validation, and direct Stellar Wallets Kit connect.
+  - **Login Page (`/login`)**: Dedicated sign-in view with email/password authentication, demo credentials 1-click autofill, and Stellar Wallets Kit connect.
+- **Enhanced Landing Page Navigation**:
+  - Sticky glassmorphic navigation header (`backdrop-blur-xl bg-[#0B1530]/85 border-b border-white/10`) with smooth section scrolling.
+  - Responsive mobile drawer menu with touch-friendly navigation and quick login/signup actions.
+- **Full Backend API Synchronization**:
+  - Live data fetching for bill occurrences, payment records, reminders, and wallet balances with graceful fallback to initial demo state when offline.
+
+---
+
 ## 🐳 Docker Deployment
 
-### 1. Production Stack (PostgreSQL 16 + Redis 7 + Celery Worker + Celery Beat + Gunicorn)
+The complete Billza stack is fully containerized across Frontend, Backend, Database, Cache, and Workers.
+
+### 1. Production Stack (Frontend + Django Web + PostgreSQL 16 + Redis 7 + Celery Worker + Celery Beat)
 
 ```bash
-# Start the full containerized stack
+# Start all 6 containerized services
 docker-compose up --build -d
 
 # Check running services
 docker-compose ps
 
-# View application logs
-docker-compose logs -f web
+# Access services:
+# - Frontend Application: http://localhost:3000
+# - Backend API & Swagger: http://localhost:8000/api/docs/
+# - OpenAPI Schema: http://localhost:8000/api/schema/
 ```
 
-### 2. Development Stack (Fast Local SQLite)
+### 2. Development Stack (Fast Local Development)
 
 ```bash
 docker-compose -f docker-compose.dev.yml up --build

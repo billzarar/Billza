@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Onest', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #F3F5F9;
+    color: #0B1530;
+  }
+}
+
+.font-archivo {
+  font-family: 'Archivo', sans-serif;
+  font-Variation-settings: "wdth" 125;
+}
+
+.font-onest {
+  font-family: 'Onest', sans-serif;
+}
+
+.font-mono-redhat {
+  font-family: 'Red Hat Mono', monospace;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}

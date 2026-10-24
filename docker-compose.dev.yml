@@ -15,3 +15,19 @@ services:
       - SEED_DEMO_DATA=true
     volumes:
       - ./backend:/app
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000/api
+      - VITE_BACKEND_PROXY_URL=http://web:8000
+    depends_on:
+      - web
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules

@@ -1,0 +1,6319 @@
+/* Reminder settings (Screen 10) */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+
+position: relative;
+width: 1440px;
+height: 1892px;
+
+background: #F3F5F9;
+
+
+/* AppSidebar/active=reminders, wallet=connected, assets=both */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 248px;
+height: 1892px;
+
+background: #0B1530;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 248px;
+height: 1435px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px 14px 1px 26px;
+
+width: 248px;
+height: 72px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: baseline;
+padding: 0px;
+gap: 2.5px;
+
+width: 91px;
+height: 28px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* bill */
+
+width: 43px;
+height: 26px;
+
+font-family: 'Archivo';
+font-style: normal;
+font-weight: 800;
+font-size: 26px;
+line-height: 26px;
+/* identical to box height, or 100% */
+letter-spacing: -0.52px;
+
+color: #FFFFFF;
+font-stretch: 125;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0.5px 4px 1.5px 5.75px;
+isolation: isolate;
+
+width: 45.5px;
+height: 28px;
+
+border-radius: 0px 2.75px 2.75px 0px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Shape */
+
+position: absolute;
+width: 45.5px;
+height: 28px;
+left: 0px;
+top: 0px;
+
+background: #4164D9;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+z-index: 0;
+
+
+/* za */
+
+width: 37px;
+height: 26px;
+
+font-family: 'Archivo';
+font-style: normal;
+font-weight: 800;
+font-size: 26px;
+line-height: 26px;
+/* identical to box height, or 100% */
+letter-spacing: -0.52px;
+
+color: #FFFFFF;
+font-stretch: 125;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+z-index: 1;
+
+
+/* Collapse sidebar */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 36px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 18px;
+height: 18px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 37.5%;
+right: 37.5%;
+top: 25%;
+bottom: 25%;
+
+border: 1.275px solid #A9B4CC;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+align-items: flex-start;
+padding: 24px 16px 16px;
+
+width: 248px;
+height: 1363px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 1;
+
+
+/* Main */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 4px;
+
+width: 216px;
+height: 188px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* NavItem/state=default, size=fluid, icon=home */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px 13px;
+gap: 12px;
+
+width: 216px;
+height: 44px;
+
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 20px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 12.5%;
+top: 8.4%;
+bottom: 12.52%;
+
+border: 1.41667px solid #A9B4CC;
+
+
+/* Vector */
+
+position: absolute;
+left: 37.5%;
+right: 37.5%;
+top: 50%;
+bottom: 12.5%;
+
+border: 1.41667px solid #A9B4CC;
+
+
+/* Dashboard */
+
+width: 83px;
+height: 24px;
+
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #A9B4CC;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* NavItem/state=default, size=fluid, icon=receipt */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px 13px;
+gap: 12px;
+
+width: 216px;
+height: 44px;
+
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 20px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 16.67%;
+right: 16.66%;
+top: 8.32%;
+bottom: 8.35%;
+
+border: 1.41667px solid #A9B4CC;
+
+
+/* Vector */
+
+position: absolute;
+left: 33.33%;
+right: 33.34%;
+top: 33.32%;
+bottom: 33.35%;
+
+border: 1.41667px solid #A9B4CC;
+
+
+/* Vector */
+
+position: absolute;
+left: 50%;
+right: 50%;
+top: 27.07%;
+bottom: 27.1%;
+
+border: 1.41667px solid #A9B4CC;
+
+
+/* Bills */
+
+width: 30px;
+height: 24px;
+
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #A9B4CC;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* NavItem/state=active, size=fluid, icon=bell, hasBadge */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px 13px;
+
+width: 216px;
+height: 44px;
+
+background: #4164D9;
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Group */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 113px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 20px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 12.5%;
+top: 8.32%;
+bottom: 29.18%;
+
+border: 1.41667px solid #FFFFFF;
+
+
+/* Vector */
+
+position: absolute;
+left: 42.92%;
+right: 42.91%;
+top: 87.5%;
+bottom: 8.31%;
+
+border: 1.41667px solid #FFFFFF;
+
+
+/* Reminders */
+
+width: 81px;
+height: 24px;
+
+/* UI/Button
+
+Buttons and links that act.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px 7px;
+
+width: 24px;
+height: 22px;
+
+background: #FFFFFF;
+border-radius: 6px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* 3 */
+
+width: 8px;
+height: 16px;
+
+/* UI/Badge
+
+Status labels and counts.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #2F4FBF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* NavItem/state=default, size=fluid, icon=history */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px 13px;
+gap: 12px;
+
+width: 216px;
+height: 44px;
+
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 20px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 12.5%;
+top: 12.5%;
+bottom: 12.5%;
+
+border: 1.41667px solid #A9B4CC;
+
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 66.67%;
+top: 12.5%;
+bottom: 66.67%;
+
+border: 1.41667px solid #A9B4CC;
+
+
+/* Vector */
+
+position: absolute;
+left: 50%;
+right: 33.33%;
+top: 29.18%;
+bottom: 41.65%;
+
+border: 1.41667px solid #A9B4CC;
+
+
+/* Payment history */
+
+width: 125px;
+height: 24px;
+
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #A9B4CC;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 32px 0px 0px;
+gap: 16px;
+
+width: 216px;
+height: 340px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Group */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 4px;
+
+width: 216px;
+height: 92px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* NavItem/state=default, size=fluid, icon=settings */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px 13px;
+gap: 12px;
+
+width: 216px;
+height: 44px;
+
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 20px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 12.42%;
+right: 12.43%;
+top: 8.32%;
+bottom: 8.35%;
+
+border: 1.41667px solid #A9B4CC;
+
+
+/* Vector */
+
+position: absolute;
+left: 37.5%;
+right: 37.5%;
+top: 37.5%;
+bottom: 37.5%;
+
+border: 1.41667px solid #A9B4CC;
+
+
+/* Settings */
+
+width: 64px;
+height: 24px;
+
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #A9B4CC;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* NavItem/state=default, size=fluid, icon=help */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px 13px;
+gap: 12px;
+
+width: 216px;
+height: 44px;
+
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 20px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 10.42%;
+right: 10.41%;
+top: 10.43%;
+bottom: 10.4%;
+
+border: 1.41667px solid #A9B4CC;
+
+
+/* Vector */
+
+position: absolute;
+left: 37.92%;
+right: 37.91%;
+top: 29.49%;
+bottom: 45.82%;
+
+border: 1.41667px solid #A9B4CC;
+
+
+/* Vector */
+
+position: absolute;
+left: 50%;
+right: 49.96%;
+top: 70.82%;
+bottom: 29.18%;
+
+border: 1.41667px solid #A9B4CC;
+
+
+/* Help */
+
+width: 35px;
+height: 24px;
+
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #A9B4CC;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Group */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 232px;
+height: 200px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 15px 13px;
+gap: 12px;
+
+width: 232px;
+height: 144px;
+
+background: #1A2A55;
+border: 1px solid rgba(255, 255, 255, 0.06);
+border-radius: 12px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Link */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 204px;
+height: 40px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 2px;
+
+width: 40px;
+height: 40px;
+
+background: #E6ECFB;
+border: 2px solid #4164D9;
+border-radius: 20px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* AO */
+
+width: 21px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #2F4FBF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 98px;
+height: 36px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Amara Okafor */
+
+width: 93px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Personal account */
+
+width: 98px;
+height: 16px;
+
+/* Desktop/Caption
+
+Metadata, table headers, axis labels, timestamps.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #A9B4CC;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px 6px;
+gap: 7px;
+
+width: 204px;
+height: 34px;
+
+background: rgba(255, 255, 255, 0.05);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 22px;
+height: 22px;
+
+background: #4164D9;
+border-radius: 6px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 13px;
+height: 13px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 8.33%;
+top: 12.5%;
+bottom: 33.33%;
+
+border: 1.08333px solid #FFFFFF;
+
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 12.5%;
+top: 20.85%;
+bottom: 12.48%;
+
+border: 1.08333px solid #FFFFFF;
+
+
+/* GBZX…Q4PA */
+
+width: 65px;
+height: 16px;
+
+/* UI/Mono Small
+
+Addresses in compact places.
+*/
+font-family: 'Red Hat Mono';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #DDE2EC;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* StatusLabel/kind=connected, size=sm */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 1px 8px;
+gap: 5px;
+
+width: 96.5px;
+height: 24px;
+
+background: rgba(95, 211, 154, 0.12);
+border: 1px solid rgba(95, 211, 154, 0.45);
+border-radius: 6px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 12px;
+height: 12px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 20.83%;
+right: 20.83%;
+top: 31.25%;
+bottom: 29.17%;
+
+border: 1.3px solid #5FD39A;
+
+
+/* Connected */
+
+width: 64px;
+height: 16px;
+
+/* UI/Badge
+
+Status labels and counts.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #5FD39A;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-start;
+padding: 0px 4px;
+
+width: 204px;
+height: 16px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* 312.50 USDC */
+
+width: 75px;
+height: 16px;
+
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* 85.20 XLM */
+
+width: 62px;
+height: 16px;
+
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* NavItem/state=default, size=fluid, icon=logout */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px 13px;
+gap: 12px;
+
+width: 216px;
+height: 44px;
+
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 20px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 62.5%;
+top: 12.5%;
+bottom: 12.5%;
+
+border: 1.41667px solid #A9B4CC;
+
+
+/* Vector */
+
+position: absolute;
+left: 66.67%;
+right: 12.5%;
+top: 29.18%;
+bottom: 29.15%;
+
+border: 1.41667px solid #A9B4CC;
+
+
+/* Vector */
+
+position: absolute;
+left: 37.5%;
+right: 12.5%;
+top: 50%;
+bottom: 50%;
+
+border: 1.41667px solid #A9B4CC;
+
+
+/* Log out */
+
+width: 58px;
+height: 24px;
+
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #A9B4CC;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 1192px;
+height: 1892px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 1;
+
+
+/* AppHeader/wallet=connected, assets=both, hasUnread */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px 32px 1px;
+
+width: 1192px;
+height: 72px;
+
+background: #FFFFFF;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 2px;
+
+width: 151px;
+height: 38px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Good evening, Amara */
+
+width: 144px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Tuesday, 20 October 2026 */
+
+width: 151px;
+height: 16px;
+
+/* Desktop/Caption
+
+Metadata, table headers, axis labels, timestamps.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 483.75px;
+height: 44px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* StatusLabel/kind=testnet, size=md */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 1px 11px;
+
+width: 105.25px;
+height: 28px;
+
+background: #FFFFFF;
+border: 1px solid #77839F;
+border-radius: 6px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Stellar Testnet */
+
+width: 84px;
+height: 16px;
+
+/* UI/Badge
+
+Status labels and counts.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Wallet GBZX…Q4PA: 312.50 USDC and 85.20 XLM */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 1px 15px;
+gap: 10px;
+
+width: 314.5px;
+height: 44px;
+
+background: #FFFFFF;
+border: 1px solid #DDE2EC;
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 8px;
+height: 8px;
+
+background: #4164D9;
+border-radius: 2px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* GBZX…Q4PA */
+
+width: 76px;
+height: 20px;
+
+/* Desktop/Mono
+
+Addresses, hashes and other data a person might copy or compare.
+*/
+font-family: 'Red Hat Mono';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 1px;
+height: 18px;
+
+background: #DDE2EC;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* 312.50 USDC */
+
+width: 88px;
+height: 20px;
+
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* 85.20 XLM */
+
+width: 73px;
+height: 20px;
+
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* Notifications, 3 new */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 1px;
+isolation: isolate;
+
+width: 44px;
+height: 44px;
+
+background: #FFFFFF;
+border: 1px solid #DDE2EC;
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 20px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+z-index: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 12.5%;
+top: 8.34%;
+bottom: 29.16%;
+
+border: 1.41667px solid #0B1530;
+
+
+/* Vector */
+
+position: absolute;
+left: 42.92%;
+right: 42.91%;
+top: 87.5%;
+bottom: 8.31%;
+
+border: 1.41667px solid #0B1530;
+
+
+/* Frame */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 9px;
+height: 9px;
+left: 23px;
+top: 10px;
+
+background: #D2453A;
+border: 1px solid #FFFFFF;
+border-radius: 4.5px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+z-index: 1;
+
+
+/* Main */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px 32px 40px;
+gap: 28px;
+
+width: 1192px;
+height: 1820.5px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Breadcrumb */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 8px;
+
+width: 1128px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Link */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 4px;
+
+width: 93px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 18px;
+height: 18px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 37.5%;
+right: 37.5%;
+top: 25%;
+bottom: 25%;
+
+border: 1.5px solid #2F4FBF;
+
+
+/* Reminders */
+
+width: 71px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #2F4FBF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* / */
+
+width: 8px;
+height: 20px;
+
+/* Desktop/Label
+
+Form labels, legends, dates in tables.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 600;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #B7C2D9;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Reminder settings */
+
+width: 121px;
+height: 20px;
+
+/* Desktop/Label
+
+Form labels, legends, dates in tables.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 600;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Header */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 8.5px;
+
+width: 1128px;
+height: 84.5px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Reminder settings */
+
+width: 336px;
+height: 48px;
+
+/* Mobile/Amount
+
+The main amount on phones. Asset at 16. Archivo Expanded (width 125%).
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 800;
+font-size: 40px;
+line-height: 48px;
+/* identical to box height, or 120% */
+letter-spacing: -1px;
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* How reminders reach you, and the timing  */
+
+width: 721px;
+height: 28px;
+
+/* Desktop/Body L
+
+Lead text under a page title.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 28px;
+/* identical to box height, or 156% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 24px;
+
+width: 1128px;
+height: 1588px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 24px;
+
+width: 744px;
+height: 1588px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Section */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 1px;
+
+width: 744px;
+height: 308px;
+
+background: #FFFFFF;
+border: 1px solid #DDE2EC;
+border-radius: 12px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 20px 24px 0px;
+gap: 4px;
+
+width: 740px;
+height: 76px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* How reminders reach you */
+
+width: 247px;
+height: 28px;
+
+/* Desktop/Heading 3
+
+Sub-sections and modal sections.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 28px;
+/* identical to box height, or 140% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* For all your bills. Pick email, in-app o */
+
+width: 317px;
+height: 24px;
+
+/* Desktop/Body
+
+Default text and card subtitles.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 4px 24px 8px;
+
+width: 740px;
+height: 230px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 16px 0px;
+
+width: 692px;
+height: 70px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 2px;
+
+width: 143px;
+height: 38px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Email */
+
+width: 36px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* amara.okafor@gmail.com */
+
+width: 143px;
+height: 16px;
+
+/* Desktop/Caption
+
+Metadata, table headers, axis labels, timestamps.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Toggle/state=on */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: flex-end;
+align-items: flex-start;
+padding: 3px;
+
+width: 44px;
+height: 26px;
+
+background: #4164D9;
+border-radius: 13px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 20px;
+height: 20px;
+
+background: #FFFFFF;
+box-shadow: 0px 1px 3px rgba(11, 21, 48, 0.25);
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 17px 0px 16px;
+
+width: 692px;
+height: 71px;
+
+border-top: 1px solid #EEF1F6;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 2px;
+
+width: 337px;
+height: 37px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* In the app */
+
+width: 68px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Shows on the Reminders page and under th */
+
+width: 337px;
+height: 16px;
+
+/* Desktop/Caption
+
+Metadata, table headers, axis labels, timestamps.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Toggle/state=on */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: flex-end;
+align-items: flex-start;
+padding: 3px;
+
+width: 44px;
+height: 26px;
+
+background: #4164D9;
+border-radius: 13px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 20px;
+height: 20px;
+
+background: #FFFFFF;
+box-shadow: 0px 1px 3px rgba(11, 21, 48, 0.25);
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 17px 0px 16px;
+
+width: 692px;
+height: 77px;
+
+border-top: 1px solid #EEF1F6;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 2px;
+
+width: 134px;
+height: 38px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Send at */
+
+width: 52px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* West Africa Time (WAT) */
+
+width: 134px;
+height: 16px;
+
+/* Desktop/Caption
+
+Metadata, table headers, axis labels, timestamps.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Button */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 1px 13px 1px 15px;
+
+width: 150px;
+height: 43px;
+
+background: #FFFFFF;
+border: 1px solid #DDE2EC;
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* 08:00 */
+
+width: 41px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 16px;
+height: 16px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 25%;
+right: 25%;
+top: 37.5%;
+bottom: 37.5%;
+
+border: 1.13333px solid #4A5675;
+
+
+/* Section */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 1px;
+
+width: 744px;
+height: 214px;
+
+background: #FFFFFF;
+border: 1px solid #DDE2EC;
+border-radius: 12px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 20px 24px 0px;
+gap: 4px;
+
+width: 740px;
+height: 76px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Default timing for new bills */
+
+width: 258px;
+height: 28px;
+
+/* Desktop/Heading 3
+
+Sub-sections and modal sections.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 28px;
+/* identical to box height, or 140% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Filled in for you when you add a bill. C */
+
+width: 685px;
+height: 24px;
+
+/* Desktop/Body
+
+Default text and card subtitles.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 4px 24px 8px;
+
+width: 740px;
+height: 136px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 12px 0px 16px;
+gap: 10px;
+
+width: 692px;
+height: 124px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Remind me */
+
+width: 75px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 8px;
+
+width: 692px;
+height: 40px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Button */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 1px 9px;
+
+width: 167.5px;
+height: 40px;
+
+background: #FFFFFF;
+border: 1px solid #DDE2EC;
+border-radius: 20px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* 7 days before */
+
+width: 92px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Button */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 1px 9px;
+gap: 6px;
+
+width: 167.5px;
+height: 40px;
+
+background: #0B1530;
+border: 1px solid #0B1530;
+border-radius: 20px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 13px;
+height: 13px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 20.84%;
+right: 20.83%;
+top: 31.25%;
+bottom: 29.17%;
+
+border: 1.3px solid #FFFFFF;
+
+
+/* 3 days before */
+
+width: 93px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Button */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 1px 9px;
+
+width: 167.5px;
+height: 40px;
+
+background: #FFFFFF;
+border: 1px solid #DDE2EC;
+border-radius: 20px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* 1 day before */
+
+width: 83px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Button */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 1px 9px;
+gap: 6px;
+
+width: 167.5px;
+height: 40px;
+
+background: #0B1530;
+border: 1px solid #0B1530;
+border-radius: 20px;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 13px;
+height: 13px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 20.84%;
+right: 20.83%;
+top: 31.25%;
+bottom: 29.17%;
+
+border: 1.3px solid #FFFFFF;
+
+
+/* On due date */
+
+width: 83px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Pick as many as you like. */
+
+width: 140px;
+height: 16px;
+
+/* Desktop/Caption
+
+Metadata, table headers, axis labels, timestamps.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Section */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 1px;
+
+width: 744px;
+height: 460px;
+
+background: #FFFFFF;
+border: 1px solid #DDE2EC;
+border-radius: 12px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 20px 24px 0px;
+gap: 4px;
+
+width: 740px;
+height: 76px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Reminders for each bill */
+
+width: 220px;
+height: 28px;
+
+/* Desktop/Heading 3
+
+Sub-sections and modal sections.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 28px;
+/* identical to box height, or 140% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Every bill keeps its own timing. 7 use t */
+
+width: 451px;
+height: 24px;
+
+/* Desktop/Body
+
+Default text and card subtitles.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 4px 24px 8px;
+gap: 4px;
+
+width: 740px;
+height: 382px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Group */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 692px;
+height: 314px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 12px 0px;
+gap: 12px;
+
+width: 692px;
+height: 62px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 32px;
+height: 32px;
+
+background: #EEF1F6;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 15px;
+height: 15px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 12.5%;
+top: 16.67%;
+bottom: 31.25%;
+
+border: 1.0625px solid #0B1530;
+
+
+/* Vector */
+
+position: absolute;
+left: 35.42%;
+right: 35.42%;
+top: 68.75%;
+bottom: 14.58%;
+
+border: 1.0625px solid #0B1530;
+
+
+/* Vector */
+
+position: absolute;
+left: 37.5%;
+right: 37.5%;
+top: 34.58%;
+bottom: 48.75%;
+
+border: 1.0625px solid #0B1530;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 2px;
+
+width: 590px;
+height: 38px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 1;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 8px;
+
+width: 590px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Design software */
+
+width: 110px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px 7px;
+
+width: 59px;
+height: 20px;
+
+background: #E6ECFB;
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Custom */
+
+width: 45px;
+height: 16px;
+
+/* UI/Badge
+
+Status labels and counts.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #2F4FBF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* 7 days before, on due date */
+
+width: 152px;
+height: 16px;
+
+/* Desktop/Caption
+
+Metadata, table headers, axis labels, timestamps.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Edit reminders for Design software */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 6px;
+
+width: 46px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 14px;
+height: 14px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 16.67%;
+right: 20.83%;
+top: 20.81%;
+bottom: 16.69%;
+
+border: 0.991667px solid #2F4FBF;
+
+
+/* Vector */
+
+position: absolute;
+left: 56.25%;
+right: 27.08%;
+top: 27.06%;
+bottom: 56.27%;
+
+border: 0.991667px solid #2F4FBF;
+
+
+/* Edit */
+
+width: 27px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #2F4FBF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 13px 0px 12px;
+gap: 12px;
+
+width: 692px;
+height: 63px;
+
+border-top: 1px solid #EEF1F6;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 32px;
+height: 32px;
+
+background: #EEF1F6;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 15px;
+height: 15px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 10.42%;
+right: 10.42%;
+top: 22.03%;
+bottom: 62.48%;
+
+border: 1.0625px solid #0B1530;
+
+
+/* Vector */
+
+position: absolute;
+left: 22.92%;
+right: 22.92%;
+top: 41.35%;
+bottom: 47.93%;
+
+border: 1.0625px solid #0B1530;
+
+
+/* Vector */
+
+position: absolute;
+left: 36.25%;
+right: 36.25%;
+top: 61.51%;
+bottom: 33.31%;
+
+border: 1.0625px solid #0B1530;
+
+
+/* Vector */
+
+position: absolute;
+left: 50%;
+right: 50%;
+top: 81.25%;
+bottom: 18.33%;
+
+border: 1.0625px solid #0B1530;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 2px;
+
+width: 590px;
+height: 37px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 1;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+
+width: 590px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Fibre internet */
+
+width: 92px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* 3 days before, on due date */
+
+width: 153px;
+height: 16px;
+
+/* Desktop/Caption
+
+Metadata, table headers, axis labels, timestamps.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Edit reminders for Fibre internet */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 6px;
+
+width: 46px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 14px;
+height: 14px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 16.67%;
+right: 20.83%;
+top: 20.81%;
+bottom: 16.69%;
+
+border: 0.991667px solid #2F4FBF;
+
+
+/* Vector */
+
+position: absolute;
+left: 56.25%;
+right: 27.08%;
+top: 27.06%;
+bottom: 56.27%;
+
+border: 0.991667px solid #2F4FBF;
+
+
+/* Edit */
+
+width: 27px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #2F4FBF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 13px 0px 12px;
+gap: 12px;
+
+width: 692px;
+height: 63px;
+
+border-top: 1px solid #EEF1F6;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 32px;
+height: 32px;
+
+background: #EEF1F6;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 15px;
+height: 15px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 20.83%;
+right: 20.83%;
+top: 10.42%;
+bottom: 10.42%;
+
+border: 1.0625px solid #0B1530;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 2px;
+
+width: 590px;
+height: 37px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 1;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+
+width: 590px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Home electricity */
+
+width: 111px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* 3 days before, on due date */
+
+width: 153px;
+height: 16px;
+
+/* Desktop/Caption
+
+Metadata, table headers, axis labels, timestamps.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Edit reminders for Home electricity */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 6px;
+
+width: 46px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 14px;
+height: 14px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 16.67%;
+right: 20.83%;
+top: 20.81%;
+bottom: 16.69%;
+
+border: 0.991667px solid #2F4FBF;
+
+
+/* Vector */
+
+position: absolute;
+left: 56.25%;
+right: 27.08%;
+top: 27.06%;
+bottom: 56.27%;
+
+border: 0.991667px solid #2F4FBF;
+
+
+/* Edit */
+
+width: 27px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #2F4FBF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 13px 0px 12px;
+gap: 12px;
+
+width: 692px;
+height: 63px;
+
+border-top: 1px solid #EEF1F6;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 32px;
+height: 32px;
+
+background: #EEF1F6;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 15px;
+height: 15px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 18.75%;
+right: 18.75%;
+top: 12.5%;
+bottom: 12.5%;
+
+border: 1.0625px solid #0B1530;
+
+
+/* Vector */
+
+position: absolute;
+left: 37.5%;
+right: 37.5%;
+top: 37.5%;
+bottom: 37.5%;
+
+border: 1.0625px solid #0B1530;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 2px;
+
+width: 590px;
+height: 37px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 1;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+
+width: 590px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Health insurance */
+
+width: 113px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* 3 days before, on due date */
+
+width: 153px;
+height: 16px;
+
+/* Desktop/Caption
+
+Metadata, table headers, axis labels, timestamps.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Edit reminders for Health insurance */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 6px;
+
+width: 46px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 14px;
+height: 14px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 16.67%;
+right: 20.83%;
+top: 20.81%;
+bottom: 16.69%;
+
+border: 0.991667px solid #2F4FBF;
+
+
+/* Vector */
+
+position: absolute;
+left: 56.25%;
+right: 27.08%;
+top: 27.06%;
+bottom: 56.27%;
+
+border: 0.991667px solid #2F4FBF;
+
+
+/* Edit */
+
+width: 27px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #2F4FBF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 13px 0px 12px;
+gap: 12px;
+
+width: 692px;
+height: 63px;
+
+border-top: 1px solid #EEF1F6;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 32px;
+height: 32px;
+
+background: #EEF1F6;
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 15px;
+height: 15px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 12.5%;
+top: 16.67%;
+bottom: 54.17%;
+
+border: 1.0625px solid #0B1530;
+
+
+/* Vector */
+
+position: absolute;
+left: 22.92%;
+right: 22.92%;
+top: 39.58%;
+bottom: 16.67%;
+
+border: 1.0625px solid #0B1530;
+
+
+/* Vector */
+
+position: absolute;
+left: 41.67%;
+right: 41.67%;
+top: 62.5%;
+bottom: 16.67%;
+
+border: 1.0625px solid #0B1530;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 2px;
+
+width: 590px;
+height: 37px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 1;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+
+width: 590px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Flat rent */
+
+width: 57px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* 3 days before, on due date */
+
+width: 153px;
+height: 16px;
+
+/* Desktop/Caption
+
+Metadata, table headers, axis labels, timestamps.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Edit reminders for Flat rent */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 6px;
+
+width: 46px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 14px;
+height: 14px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 16.67%;
+right: 20.83%;
+top: 20.81%;
+bottom: 16.69%;
+
+border: 0.991667px solid #2F4FBF;
+
+
+/* Vector */
+
+position: absolute;
+left: 56.25%;
+right: 27.08%;
+top: 27.06%;
+bottom: 56.27%;
+
+border: 0.991667px solid #2F4FBF;
+
+
+/* Edit */
+
+width: 27px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #2F4FBF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Button */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 2px 7px;
+gap: 8px;
+
+width: 692px;
+height: 44px;
+
+background: #FFFFFF;
+border: 1px solid #DDE2EC;
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* View all 8 bills */
+
+width: 96px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 16px;
+height: 16px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 25%;
+right: 25%;
+top: 37.5%;
+bottom: 37.5%;
+
+border: 1.33333px solid #0B1530;
+
+
+/* Section */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 1px;
+
+width: 744px;
+height: 248px;
+
+background: #FFFFFF;
+border: 1px solid #DDE2EC;
+border-radius: 12px;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 20px 24px 0px;
+gap: 4px;
+
+width: 740px;
+height: 76px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* If a bill is late */
+
+width: 127px;
+height: 28px;
+
+/* Desktop/Heading 3
+
+Sub-sections and modal sections.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 28px;
+/* identical to box height, or 140% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* After the due date passes. */
+
+width: 199px;
+height: 24px;
+
+/* Desktop/Body
+
+Default text and card subtitles.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 4px 24px 8px;
+
+width: 740px;
+height: 170px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 16px 0px;
+
+width: 692px;
+height: 70px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 2px;
+
+width: 304px;
+height: 38px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Overdue reminders */
+
+width: 128px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Keep reminding me until the bill is paid */
+
+width: 304px;
+height: 16px;
+
+/* Desktop/Caption
+
+Metadata, table headers, axis labels, timestamps.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Toggle/state=on */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: flex-end;
+align-items: flex-start;
+padding: 3px;
+
+width: 44px;
+height: 26px;
+
+background: #4164D9;
+border-radius: 13px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 20px;
+height: 20px;
+
+background: #FFFFFF;
+box-shadow: 0px 1px 3px rgba(11, 21, 48, 0.25);
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px 0px 16px;
+gap: 10px;
+
+width: 692px;
+height: 88px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* How often */
+
+width: 71px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 3px;
+gap: 2px;
+
+width: 692px;
+height: 42px;
+
+background: #EEF1F6;
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Button */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+padding: 1px 6px;
+
+width: 228px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Every day */
+
+width: 216px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+text-align: center;
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Button */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+padding: 1px 6px;
+
+width: 228px;
+height: 36px;
+
+background: #FFFFFF;
+box-shadow: 0px 1px 2px rgba(11, 21, 48, 0.12);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Every 2 days */
+
+width: 216px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+text-align: center;
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Button */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+padding: 1px 6px;
+
+width: 228px;
+height: 36px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Every week */
+
+width: 216px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+text-align: center;
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Section */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 1px;
+
+width: 744px;
+height: 160px;
+
+background: #FFFFFF;
+border: 1px solid #DDE2EC;
+border-radius: 12px;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 20px 24px 0px;
+gap: 4px;
+
+width: 740px;
+height: 76px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Wallet alerts */
+
+width: 121px;
+height: 28px;
+
+/* Desktop/Heading 3
+
+Sub-sections and modal sections.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 28px;
+/* identical to box height, or 140% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* For bills you pay from your Stellar wall */
+
+width: 305px;
+height: 24px;
+
+/* Desktop/Body
+
+Default text and card subtitles.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 4px 24px 8px;
+
+width: 740px;
+height: 82px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 16px 0px;
+
+width: 692px;
+height: 70px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 2px;
+
+width: 521px;
+height: 38px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Warn me if my wallet is short */
+
+width: 196px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Checked each morning from 14 days before */
+
+width: 521px;
+height: 16px;
+
+/* Desktop/Caption
+
+Metadata, table headers, axis labels, timestamps.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Toggle/state=on */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: flex-end;
+align-items: flex-start;
+padding: 3px;
+
+width: 44px;
+height: 26px;
+
+background: #4164D9;
+border-radius: 13px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 20px;
+height: 20px;
+
+background: #FFFFFF;
+box-shadow: 0px 1px 3px rgba(11, 21, 48, 0.25);
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 17px 21px 17px 25px;
+
+width: 744px;
+height: 78px;
+
+background: #FFFFFF;
+border: 1px solid #DDE2EC;
+border-radius: 12px;
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 8px;
+
+width: 201px;
+height: 20px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 8px;
+height: 8px;
+
+background: #E59A1A;
+border-radius: 4px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* You have unsaved changes. */
+
+width: 185px;
+height: 20px;
+
+/* Desktop/Label
+
+Form labels, legends, dates in tables.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 600;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 10px;
+
+width: 270.5px;
+height: 42px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Button/kind=secondary, size=md, width=auto */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 1px 19px;
+
+width: 90.5px;
+height: 42px;
+
+background: #FFFFFF;
+border: 1px solid #0B1530;
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Choose another */
+
+width: 53px;
+height: 24px;
+
+/* UI/Button
+
+Buttons and links that act.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Button/kind=primary, size=md, width=auto */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px 18px;
+
+width: 170px;
+height: 42px;
+
+background: #0B1530;
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Check again */
+
+width: 135px;
+height: 24px;
+
+/* UI/Button
+
+Buttons and links that act.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Section */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 1px;
+gap: 2px;
+
+width: 360px;
+height: 334px;
+
+background: #FFFFFF;
+border: 1px solid #DDE2EC;
+border-radius: 12px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 20px 24px 4px;
+
+width: 356px;
+height: 52px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* How this looks */
+
+width: 141px;
+height: 28px;
+
+/* Desktop/Heading 3
+
+Sub-sections and modal sections.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 28px;
+/* identical to box height, or 140% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Group */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 356px;
+height: 278px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px 24px;
+
+width: 356px;
+height: 16px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* With these settings, for your next bill. */
+
+width: 212px;
+height: 16px;
+
+/* Desktop/Caption
+
+Metadata, table headers, axis labels, timestamps.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 16px 24px 8px;
+gap: 18px;
+
+width: 356px;
+height: 262px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 308px;
+height: 40px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 40px;
+height: 40px;
+
+background: #EEF1F6;
+border-radius: 20px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Icon */
+
+width: 18px;
+height: 18px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 20.83%;
+right: 20.83%;
+top: 10.42%;
+bottom: 10.42%;
+
+border: 1.275px solid #0B1530;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 160px;
+height: 36px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Home electricity */
+
+width: 111px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* 38.50 USDC · due Fri 23 Oct */
+
+width: 161px;
+height: 16px;
+
+/* Desktop/Caption
+
+Metadata, table headers, axis labels, timestamps.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* List */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 308px;
+height: 180px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Item */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px 0px 18px;
+gap: 14px;
+isolation: isolate;
+
+width: 308px;
+height: 60px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Inset */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 4px 0px 0px;
+
+width: 12px;
+height: 42px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+z-index: 0;
+
+
+/* Frame */
+
+width: 12px;
+height: 12px;
+
+background: #1B7A4B;
+box-shadow: 0px 0px 0px 3px #FFFFFF;
+border-radius: 6px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 2px;
+
+width: 282px;
+height: 42px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 1;
+z-index: 1;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-start;
+padding: 0px;
+
+width: 282px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* 3 days before */
+
+width: 93px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* StatusLabel/kind=pending, size=sm */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 1px 8px;
+
+width: 42.5px;
+height: 24px;
+
+background: #E6ECFB;
+border: 1px solid #E6ECFB;
+border-radius: 6px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Verifying */
+
+width: 27px;
+height: 16px;
+
+/* UI/Badge
+
+Status labels and counts.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #2F4FBF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Tue 20 Oct, 08:00 · Email and in-app */
+
+width: 207px;
+height: 16px;
+
+/* Desktop/Caption
+
+Metadata, table headers, axis labels, timestamps.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+position: absolute;
+width: 2px;
+height: 48px;
+left: 5px;
+top: 18px;
+
+background: #EEF1F6;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+z-index: 2;
+
+
+/* Item */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px 0px 18px;
+gap: 14px;
+isolation: isolate;
+
+width: 308px;
+height: 60px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Inset */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 4px 0px 0px;
+
+width: 12px;
+height: 42px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+z-index: 0;
+
+
+/* Frame */
+
+width: 12px;
+height: 12px;
+
+background: #4164D9;
+box-shadow: 0px 0px 0px 3px #FFFFFF;
+border-radius: 6px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 2px;
+
+width: 282px;
+height: 42px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 1;
+z-index: 1;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-start;
+padding: 0px;
+
+width: 282px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* On the due date */
+
+width: 109px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* StatusLabel/kind=upcoming, size=sm */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 1px 8px;
+
+width: 43px;
+height: 24px;
+
+background: #EEF1F6;
+border: 1px solid #EEF1F6;
+border-radius: 6px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Due in 10 days */
+
+width: 28px;
+height: 16px;
+
+/* UI/Badge
+
+Status labels and counts.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Fri 23 Oct, 08:00 · Email and in-app */
+
+width: 200px;
+height: 16px;
+
+/* Desktop/Caption
+
+Metadata, table headers, axis labels, timestamps.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+position: absolute;
+width: 2px;
+height: 48px;
+left: 5px;
+top: 18px;
+
+background: #EEF1F6;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+z-index: 2;
+
+
+/* Item */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px 0px 18px;
+gap: 14px;
+
+width: 308px;
+height: 60px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Inset */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 4px 0px 0px;
+
+width: 12px;
+height: 42px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 12px;
+height: 12px;
+
+background: #B7C2D9;
+box-shadow: 0px 0px 0px 3px #FFFFFF;
+border-radius: 6px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 2px;
+
+width: 282px;
+height: 42px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 1;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: flex-start;
+padding: 0px;
+
+width: 282px;
+height: 24px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* If still unpaid */
+
+width: 86px;
+height: 20px;
+
+/* UI/Label Strong
+
+Names in lists and table values.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+color: #0B1530;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* StatusLabel/kind=testnet, size=sm */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 1px 8px;
+
+width: 79.25px;
+height: 24px;
+
+background: #FFFFFF;
+border: 1px solid #77839F;
+border-radius: 6px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Stellar Testnet */
+
+width: 64px;
+height: 16px;
+
+/* UI/Badge
+
+Status labels and counts.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 700;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Sun 25 Oct, 08:00 · Then every 2 days */
+
+width: 218px;
+height: 16px;
+
+/* Desktop/Caption
+
+Metadata, table headers, axis labels, timestamps.
+*/
+font-family: 'Onest';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+line-height: 16px;
+/* identical to box height, or 133% */
+
+color: #4A5675;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;

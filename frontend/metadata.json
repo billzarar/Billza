@@ -1,0 +1,6 @@
+{
+  "name": "Billza — Stellar Bill Payments Dashboard",
+  "description": "Multi-currency recurring bill management and Stellar blockchain payment dashboard with USDC, XLM, and EUR tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
