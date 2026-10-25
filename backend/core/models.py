@@ -7,6 +7,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     wallet_address = models.CharField(max_length=56, blank=True, null=True, db_index=True)
     preferred_currency = models.CharField(max_length=10, default='USDC')
+    avatar = models.TextField(blank=True, default='')
     email_notifications = models.BooleanField(default=True)
     in_app_notifications = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)

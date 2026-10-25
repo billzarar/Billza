@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Plus,
   ChevronLeft,
@@ -64,6 +64,13 @@ export const BillsScreen: React.FC<BillsScreenProps> = ({
 
   const [openMenuBillId, setOpenMenuBillId] = useState<string | null>(null);
   const [expandedDetailBillId, setExpandedDetailBillId] = useState<string | null>(null);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const BILLS_PER_PAGE = 5;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, statusTab, period, selectedMonthIdx, currencyFilter, cycleFilter, sortBy]);
 
   const totalBillsCount = bills.length;
   const monthlyBills = bills.filter((b) => b.frequency === 'monthly');
@@ -155,6 +162,12 @@ export const BillsScreen: React.FC<BillsScreenProps> = ({
       // Default order: Overdue first, then by due date (original array order)
       return 0;
     });
+
+  const totalPages = Math.max(1, Math.ceil(filteredBills.length / BILLS_PER_PAGE));
+  const safePage = Math.min(currentPage, totalPages);
+  const startIndex = (safePage - 1) * BILLS_PER_PAGE;
+  const endIndex = Math.min(startIndex + BILLS_PER_PAGE, filteredBills.length);
+  const paginatedBills = filteredBills.slice(startIndex, endIndex);
 
   const renderStatusPill = (bill: BillItem) => {
     if (bill.status === 'overdue') {
@@ -386,26 +399,26 @@ export const BillsScreen: React.FC<BillsScreenProps> = ({
         </div>
       </div>
 
-      {/* 3. Bill Totals Row (4 TotalCards) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-[16px] w-full">
+      {/* 3. Bill Totals Row (4 TotalCards: 2x2 on mobile, 4 on desktop) */}
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-2.5 sm:gap-[16px] w-full">
         {/* TotalCard 1: Each month (Navy) */}
-        <div className="w-full h-[136px] bg-white border border-[#DDE2EC] rounded-[12px] p-[1px] flex flex-col overflow-hidden">
-          <div className="w-full h-[42px] bg-[#0B1530] rounded-t-[10px] px-[20px] py-[11px] flex items-center gap-[8px] shrink-0">
-            <span className="w-[6px] h-[6px] rounded-[3px] bg-[#7F9BF0] shrink-0" />
-            <span className="font-semibold text-[14px] leading-[20px] text-white">
+        <div className="w-full min-h-[118px] sm:min-h-[136px] bg-white border border-[#DDE2EC] rounded-[12px] p-[1px] flex flex-col justify-between overflow-hidden shadow-2xs">
+          <div className="w-full h-[34px] sm:h-[42px] bg-[#0B1530] rounded-t-[10px] px-3 sm:px-[20px] py-2 sm:py-[11px] flex items-center gap-1.5 sm:gap-[8px] shrink-0">
+            <span className="w-[5px] h-[5px] sm:w-[6px] sm:h-[6px] rounded-[3px] bg-[#7F9BF0] shrink-0" />
+            <span className="font-semibold text-[12px] sm:text-[14px] leading-[18px] sm:leading-[20px] text-white truncate">
               Each month
             </span>
           </div>
-          <div className="flex-1 px-[20px] pt-[16px] pb-[20px] flex flex-col gap-[4px] justify-between">
-            <div className="flex items-start gap-[5px] tabular-nums">
-              <span className="font-extrabold text-[28px] leading-[36px] tracking-[-0.5px] text-[#0B1530]">
+          <div className="flex-1 px-3 sm:px-[20px] py-2.5 sm:pt-[16px] sm:pb-[20px] flex flex-col gap-1 sm:gap-[4px] justify-between">
+            <div className="flex items-baseline gap-1 sm:gap-[5px] tabular-nums">
+              <span className="font-extrabold text-[19px] xs:text-[22px] sm:text-[28px] leading-[26px] sm:leading-[36px] tracking-[-0.5px] text-[#0B1530]">
                 {monthlyUsdc.toFixed(2)}
               </span>
-              <span className="pt-[15px] font-bold text-[12px] leading-[16px] text-[#0B1530]">
+              <span className="font-bold text-[11px] sm:text-[12px] leading-[16px] text-[#0B1530]">
                 USDC
               </span>
             </div>
-            <span className="font-medium text-[12px] leading-[16px] text-[#4A5675] truncate">
+            <span className="font-medium text-[11px] sm:text-[12px] leading-[15px] sm:leading-[16px] text-[#4A5675] truncate">
               {(() => {
                 const parts = [];
                 if (monthlyXlm > 0) parts.push(`${monthlyXlm.toFixed(2)} XLM`);
@@ -417,23 +430,23 @@ export const BillsScreen: React.FC<BillsScreenProps> = ({
         </div>
 
         {/* TotalCard 2: Each quarter (Grey) */}
-        <div className="w-full h-[136px] bg-white border border-[#DDE2EC] rounded-[12px] p-[1px] flex flex-col overflow-hidden">
-          <div className="w-full h-[42px] bg-[#EEF1F6] rounded-t-[10px] px-[20px] py-[11px] flex items-center gap-[8px] shrink-0">
-            <span className="w-[6px] h-[6px] rounded-[3px] bg-[#8A94AD] shrink-0" />
-            <span className="font-semibold text-[14px] leading-[20px] text-[#3B4664]">
+        <div className="w-full min-h-[118px] sm:min-h-[136px] bg-white border border-[#DDE2EC] rounded-[12px] p-[1px] flex flex-col justify-between overflow-hidden shadow-2xs">
+          <div className="w-full h-[34px] sm:h-[42px] bg-[#EEF1F6] rounded-t-[10px] px-3 sm:px-[20px] py-2 sm:py-[11px] flex items-center gap-1.5 sm:gap-[8px] shrink-0">
+            <span className="w-[5px] h-[5px] sm:w-[6px] sm:h-[6px] rounded-[3px] bg-[#8A94AD] shrink-0" />
+            <span className="font-semibold text-[12px] sm:text-[14px] leading-[18px] sm:leading-[20px] text-[#3B4664] truncate">
               Each quarter
             </span>
           </div>
-          <div className="flex-1 px-[20px] pt-[16px] pb-[20px] flex flex-col gap-[4px] justify-between">
-            <div className="flex items-start gap-[5px] tabular-nums">
-              <span className="font-extrabold text-[28px] leading-[36px] tracking-[-0.5px] text-[#0B1530]">
+          <div className="flex-1 px-3 sm:px-[20px] py-2.5 sm:pt-[16px] sm:pb-[20px] flex flex-col gap-1 sm:gap-[4px] justify-between">
+            <div className="flex items-baseline gap-1 sm:gap-[5px] tabular-nums">
+              <span className="font-extrabold text-[19px] xs:text-[22px] sm:text-[28px] leading-[26px] sm:leading-[36px] tracking-[-0.5px] text-[#0B1530]">
                 {quarterlyUsdc.toFixed(2)}
               </span>
-              <span className="pt-[15px] font-bold text-[12px] leading-[16px] text-[#0B1530]">
+              <span className="font-bold text-[11px] sm:text-[12px] leading-[16px] text-[#0B1530]">
                 USDC
               </span>
             </div>
-            <span className="font-medium text-[12px] leading-[16px] text-[#4A5675] truncate">
+            <span className="font-medium text-[11px] sm:text-[12px] leading-[15px] sm:leading-[16px] text-[#4A5675] truncate">
               {quarterlyBills.length > 0 ? quarterlyBills.map((b) => b.name).join(' and ') : 'No quarterly bills'}
             </span>
           </div>
@@ -443,19 +456,19 @@ export const BillsScreen: React.FC<BillsScreenProps> = ({
         <button
           type="button"
           onClick={() => setStatusTab((prev) => (prev === 'soon' ? 'all' : 'soon'))}
-          className="w-full h-[136px] bg-white border border-[#DDE2EC] hover:border-[#E59A1A] rounded-[12px] p-[1px] flex flex-col overflow-hidden text-left transition-colors"
+          className="w-full min-h-[118px] sm:min-h-[136px] bg-white border border-[#DDE2EC] hover:border-[#E59A1A] rounded-[12px] p-[1px] flex flex-col justify-between overflow-hidden text-left transition-colors shadow-2xs"
         >
-          <div className="w-full h-[42px] bg-[#FFF1D6] rounded-t-[10px] px-[20px] py-[11px] flex items-center gap-[8px] shrink-0">
-            <span className="w-[6px] h-[6px] rounded-[3px] bg-[#E59A1A] shrink-0" />
-            <span className="font-semibold text-[14px] leading-[20px] text-[#8A5300]">
+          <div className="w-full h-[34px] sm:h-[42px] bg-[#FFF1D6] rounded-t-[10px] px-3 sm:px-[20px] py-2 sm:py-[11px] flex items-center gap-1.5 sm:gap-[8px] shrink-0">
+            <span className="w-[5px] h-[5px] sm:w-[6px] sm:h-[6px] rounded-[3px] bg-[#E59A1A] shrink-0" />
+            <span className="font-semibold text-[12px] sm:text-[14px] leading-[18px] sm:leading-[20px] text-[#8A5300] truncate">
               Next due
             </span>
           </div>
-          <div className="flex-1 px-[20px] pt-[16px] pb-[20px] flex flex-col gap-[4px] justify-between">
-            <span className="font-extrabold text-[28px] leading-[36px] tracking-[-0.5px] text-[#0B1530]">
+          <div className="flex-1 px-3 sm:px-[20px] py-2.5 sm:pt-[16px] sm:pb-[20px] flex flex-col gap-1 sm:gap-[4px] justify-between">
+            <span className="font-extrabold text-[18px] xs:text-[20px] sm:text-[28px] leading-[26px] sm:leading-[36px] tracking-[-0.5px] text-[#0B1530] truncate">
               {nextDueBill ? nextDueBill.dueDateLabel : 'None'}
             </span>
-            <span className="font-medium text-[12px] leading-[16px] text-[#4A5675] truncate">
+            <span className="font-medium text-[11px] sm:text-[12px] leading-[15px] sm:leading-[16px] text-[#4A5675] truncate">
               {nextDueBill ? `${nextDueBill.name}, ${nextDueBill.amount.toFixed(2)} ${nextDueBill.currency}` : 'All caught up'}
             </span>
           </div>
@@ -465,24 +478,24 @@ export const BillsScreen: React.FC<BillsScreenProps> = ({
         <button
           type="button"
           onClick={() => setStatusTab((prev) => (prev === 'overdue' ? 'all' : 'overdue'))}
-          className="w-full h-[136px] bg-white border border-[#DDE2EC] hover:border-[#D2453A] rounded-[12px] p-[1px] flex flex-col overflow-hidden text-left transition-colors"
+          className="w-full min-h-[118px] sm:min-h-[136px] bg-white border border-[#DDE2EC] hover:border-[#D2453A] rounded-[12px] p-[1px] flex flex-col justify-between overflow-hidden text-left transition-colors shadow-2xs"
         >
-          <div className="w-full h-[42px] bg-[#FDE8E6] rounded-t-[10px] px-[20px] py-[11px] flex items-center gap-[8px] shrink-0">
-            <span className="w-[6px] h-[6px] rounded-[3px] bg-[#B42318] shrink-0" />
-            <span className="font-semibold text-[14px] leading-[20px] text-[#B42318]">
+          <div className="w-full h-[34px] sm:h-[42px] bg-[#FDE8E6] rounded-t-[10px] px-3 sm:px-[20px] py-2 sm:py-[11px] flex items-center gap-1.5 sm:gap-[8px] shrink-0">
+            <span className="w-[5px] h-[5px] sm:w-[6px] sm:h-[6px] rounded-[3px] bg-[#B42318] shrink-0" />
+            <span className="font-semibold text-[12px] sm:text-[14px] leading-[18px] sm:leading-[20px] text-[#B42318] truncate">
               Overdue
             </span>
           </div>
-          <div className="flex-1 px-[20px] pt-[16px] pb-[20px] flex flex-col gap-[4px] justify-between">
-            <div className="flex items-start gap-[5px] tabular-nums">
-              <span className="font-extrabold text-[28px] leading-[36px] tracking-[-0.5px] text-[#B42318]">
+          <div className="flex-1 px-3 sm:px-[20px] py-2.5 sm:pt-[16px] sm:pb-[20px] flex flex-col gap-1 sm:gap-[4px] justify-between">
+            <div className="flex items-baseline gap-1 sm:gap-[5px] tabular-nums">
+              <span className="font-extrabold text-[19px] xs:text-[22px] sm:text-[28px] leading-[26px] sm:leading-[36px] tracking-[-0.5px] text-[#B42318]">
                 {overdueCount}
               </span>
-              <span className="pt-[15px] font-bold text-[12px] leading-[16px] text-[#B42318]">
+              <span className="font-bold text-[11px] sm:text-[12px] leading-[16px] text-[#B42318]">
                 {overdueCount === 1 ? 'bill' : 'bills'}
               </span>
             </div>
-            <span className="font-medium text-[12px] leading-[16px] text-[#4A5675] truncate">
+            <span className="font-medium text-[11px] sm:text-[12px] leading-[15px] sm:leading-[16px] text-[#4A5675] truncate">
               {overdueBills.length > 0 ? `${overdueBills[0].name}, ${overdueBills[0].dueInLabel}` : 'No overdue bills'}
             </span>
           </div>
@@ -492,7 +505,7 @@ export const BillsScreen: React.FC<BillsScreenProps> = ({
       {/* 4. Main Bills Table Card */}
       <section className="w-full bg-white border border-[#DDE2EC] rounded-[12px] p-[1px] flex flex-col overflow-hidden">
         {/* Top Toolbar: Status Tabs + Search + Filters + Sort */}
-        <div className="w-full px-4 sm:px-[24px] py-[20px] flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+        <div className="w-full px-3.5 sm:px-[24px] py-3.5 sm:py-[20px] flex flex-col xl:flex-row xl:items-center justify-between gap-4">
           {/* Status Segmented Tabs */}
           <div
             className="inline-flex items-center p-[3px] gap-[2px] bg-[#EEF1F6] rounded-[10px] min-h-[39px] overflow-x-auto max-w-full"
@@ -729,7 +742,7 @@ export const BillsScreen: React.FC<BillsScreenProps> = ({
               </button>
             </div>
           ) : (
-            filteredBills.map((bill) => {
+            paginatedBills.map((bill) => {
               const isOverdue = bill.status === 'overdue';
               const displayAmount = bill.billsAmount ?? bill.amount;
               const displayCurrency = bill.billsCurrency ?? bill.currency;
@@ -907,12 +920,12 @@ export const BillsScreen: React.FC<BillsScreenProps> = ({
                   </div>
 
                   {/* Mobile / Tablet Responsive Row (< lg) */}
-                  <div className="flex lg:hidden flex-col gap-3 p-4 sm:px-6">
-                    <div className="flex items-start justify-between gap-3">
+                  <div className="flex lg:hidden flex-col gap-2.5 sm:gap-3 p-3.5 sm:p-4 sm:px-6">
+                    <div className="flex items-center justify-between gap-3 min-w-0">
                       <button
                         type="button"
                         onClick={() => onSelectBill(bill)}
-                        className="flex items-start gap-3 min-w-0 text-left group"
+                        className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1 text-left group"
                       >
                         <div
                           className={`w-[40px] h-[40px] rounded-[20px] flex items-center justify-center shrink-0 ${
@@ -924,11 +937,11 @@ export const BillsScreen: React.FC<BillsScreenProps> = ({
                           <BillIcon type={bill.icon} size={19} />
                         </div>
 
-                        <div className="flex flex-col gap-0.5 min-w-0">
-                          <span className="font-bold text-[14px] leading-[20px] text-[#0B1530] group-hover:text-[#2F4FBF] truncate">
+                        <div className="flex flex-col gap-0.5 min-w-0 flex-1">
+                          <span className="font-bold text-[14px] leading-[18px] text-[#0B1530] group-hover:text-[#2F4FBF] truncate block">
                             {bill.name}
                           </span>
-                          <span className="font-medium text-[12px] leading-[16px] text-[#4A5675]">
+                          <span className="font-medium text-[11px] sm:text-[12px] leading-[16px] text-[#4A5675] truncate block">
                             {bill.billsSubtitle || bill.subtitle} ·{' '}
                             <span className="font-mono-redhat text-[11px]">
                               {bill.recipientShort}
@@ -937,38 +950,38 @@ export const BillsScreen: React.FC<BillsScreenProps> = ({
                         </div>
                       </button>
 
-                      <div className="flex items-baseline gap-[4px] shrink-0 tabular-nums">
-                        <span className="font-bold text-[15px] leading-[20px] text-[#0B1530]">
+                      <div className="flex items-baseline gap-[4px] shrink-0 tabular-nums pl-1 text-right">
+                        <span className="font-bold text-[15px] sm:text-[16px] leading-[20px] text-[#0B1530]">
                           {displayAmount.toFixed(2)}
                         </span>
-                        <span className="font-bold text-[12px] leading-[16px] text-[#4A5675]">
+                        <span className="font-bold text-[11px] sm:text-[12px] leading-[16px] text-[#4A5675]">
                           {displayCurrency}
                         </span>
                       </div>
                     </div>
 
                     {bill.failureReason && (
-                      <div className="flex items-center gap-[4px] text-[#B42318] pl-[52px]">
+                      <div className="flex items-center gap-1.5 text-[#B42318] bg-[#FDE8E6]/70 px-2.5 py-1 rounded-[6px]">
                         <X size={12} strokeWidth={2.5} className="shrink-0" />
-                        <span className="font-bold text-[12px] leading-[16px]">
+                        <span className="font-bold text-[11px] sm:text-[12px] leading-[16px] truncate">
                           {bill.failureReason}
                         </span>
                       </div>
                     )}
 
                     {bill.warningReason && (
-                      <div className="flex items-center gap-[4px] text-[#8A5300] pl-[52px]">
+                      <div className="flex items-center gap-1.5 text-[#8A5300] bg-[#FFF1D6]/70 px-2.5 py-1 rounded-[6px]">
                         <AlertTriangle size={12} strokeWidth={2.2} className="shrink-0" />
-                        <span className="font-bold text-[12px] leading-[16px]">
+                        <span className="font-bold text-[11px] sm:text-[12px] leading-[16px] truncate">
                           {bill.warningReason}
                         </span>
                       </div>
                     )}
 
-                    <div className="flex flex-wrap items-center justify-between gap-2 pl-[52px] pt-1">
-                      <div className="flex items-center gap-2">
+                    <div className="flex items-center justify-between gap-2 pt-2 border-t border-[#EEF1F6]/70 min-w-0">
+                      <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 flex-wrap">
                         <span
-                          className={`font-semibold text-[13px] ${
+                          className={`font-semibold text-[12px] sm:text-[13px] shrink-0 ${
                             isOverdue ? 'text-[#B42318]' : 'text-[#0B1530]'
                           }`}
                         >
@@ -977,12 +990,12 @@ export const BillsScreen: React.FC<BillsScreenProps> = ({
                         {renderStatusPill(bill)}
                       </div>
 
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 ml-auto">
                         {renderPrimaryRowAction(bill)}
                         <button
                           type="button"
                           onClick={() => onSelectBill(bill)}
-                          className="w-[34px] h-[34px] bg-white border border-[#DDE2EC] rounded-[8px] flex items-center justify-center text-[#0B1530]"
+                          className="w-[34px] h-[34px] bg-white border border-[#DDE2EC] rounded-[8px] flex items-center justify-center text-[#0B1530] hover:bg-[#F3F5F9] transition-colors"
                           aria-label={`View details for ${bill.name}`}
                         >
                           <ChevronRight size={16} />
@@ -1030,17 +1043,76 @@ export const BillsScreen: React.FC<BillsScreenProps> = ({
           )}
         </div>
 
-        {/* Table Footer Bar */}
-        <div className="border-t border-[#EEF1F6] px-4 sm:px-[24px] py-[16.5px] min-h-[49px] flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-white">
+        {/* Pagination & Footer Bar */}
+        <div className="border-t border-[#EEF1F6] px-4 sm:px-[24px] py-3.5 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white">
           <span className="font-medium text-[12px] leading-[16px] text-[#4A5675]">
-            Showing {filteredBills.length === totalBillsCount ? `all ${totalBillsCount}` : filteredBills.length}{' '}
-            bills. Overdue first, then by due date.
+            Showing {filteredBills.length > 0 ? `${startIndex + 1}–${endIndex}` : '0'} of {filteredBills.length} bills
           </span>
 
-          <div className="flex items-center gap-[6px] text-[#4A5675]">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <button
+              type="button"
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              disabled={safePage <= 1}
+              className="h-[34px] px-3 rounded-[8px] border border-[#DDE2EC] bg-white text-[13px] font-bold text-[#0B1530] hover:bg-[#F3F5F9] disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 transition-colors cursor-pointer select-none"
+              aria-label="Previous page"
+            >
+              <ChevronLeft size={16} strokeWidth={2} />
+              <span>Prev</span>
+            </button>
+
+            <div className="flex items-center gap-1">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                if (
+                  totalPages > 5 &&
+                  page !== 1 &&
+                  page !== totalPages &&
+                  Math.abs(page - safePage) > 1
+                ) {
+                  if (page === 2 || page === totalPages - 1) {
+                    return (
+                      <span key={page} className="px-1 text-[12px] text-[#77839F]">
+                        ...
+                      </span>
+                    );
+                  }
+                  return null;
+                }
+
+                const isActive = page === safePage;
+                return (
+                  <button
+                    key={page}
+                    type="button"
+                    onClick={() => setCurrentPage(page)}
+                    className={`w-[34px] h-[34px] rounded-[8px] text-[13px] font-bold flex items-center justify-center transition-colors cursor-pointer ${
+                      isActive
+                        ? 'bg-[#0B1530] text-white shadow-xs'
+                        : 'bg-white border border-[#DDE2EC] text-[#0B1530] hover:bg-[#F3F5F9]'
+                    }`}
+                  >
+                    {page}
+                  </button>
+                );
+              })}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              disabled={safePage >= totalPages}
+              className="h-[34px] px-3 rounded-[8px] border border-[#DDE2EC] bg-white text-[13px] font-bold text-[#0B1530] hover:bg-[#F3F5F9] disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 transition-colors cursor-pointer select-none"
+              aria-label="Next page"
+            >
+              <span>Next</span>
+              <ChevronRight size={16} strokeWidth={2} />
+            </button>
+          </div>
+
+          <div className="hidden md:flex items-center gap-[6px] text-[#4A5675]">
             <Shield size={14} strokeWidth={1.8} className="shrink-0" />
             <span className="font-medium text-[12px] leading-[16px]">
-              Stellar payments go from your wallet straight to each bill&apos;s address.
+              Direct to bill recipient
             </span>
           </div>
         </div>

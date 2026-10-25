@@ -36,6 +36,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'full_name',
             'wallet_address',
             'preferred_currency',
+            'avatar',
             'email_notifications',
             'in_app_notifications',
             'date_joined',

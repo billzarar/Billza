@@ -1,9 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Download,
   Calendar,
   ChevronDown,
   ChevronRight,
+  ChevronLeft,
   Search,
   SlidersHorizontal,
   ExternalLink,
@@ -58,7 +59,6 @@ export const PaymentHistoryScreen: React.FC<PaymentHistoryScreenProps> = ({
   const [period, setPeriod] = useState<PeriodFilter>('last-3-months');
   const [statusTab, setStatusTab] = useState<'all' | PaymentVerificationStatus>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [isAugustExpanded, setIsAugustExpanded] = useState(false);
 
   // Filter Popover state
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -68,6 +68,14 @@ export const PaymentHistoryScreen: React.FC<PaymentHistoryScreenProps> = ({
   // Custom Dates Popover
   const [isCustomDatesOpen, setIsCustomDatesOpen] = useState(false);
   const [customRangeText, setCustomRangeText] = useState('Thu 23 Jul – Tue 20 Oct 2026');
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const PAYMENTS_PER_PAGE = 5;
+
+  // Reset page when any filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, statusTab, period, selectedCurrencyFilter, selectedMethodFilter, customRangeText]);
 
   // Inspected payment detail modal/drawer
   const [selectedPayment, setSelectedPayment] = useState<DetailedPaymentRecord | null>(null);
@@ -198,23 +206,12 @@ export const PaymentHistoryScreen: React.FC<PaymentHistoryScreenProps> = ({
     });
   }, [payments, period, statusTab, selectedCurrencyFilter, selectedMethodFilter, searchQuery]);
 
-  // Group by month
-  const octPayments = useMemo(
-    () => filteredPayments.filter((p) => p.monthYear === 'October 2026'),
-    [filteredPayments]
-  );
-  const sepPayments = useMemo(
-    () => filteredPayments.filter((p) => p.monthYear === 'September 2026'),
-    [filteredPayments]
-  );
-  const augPayments = useMemo(
-    () => filteredPayments.filter((p) => p.monthYear === 'August 2026'),
-    [filteredPayments]
-  );
-
-  // Visible payments calculation (if August is not expanded and we are on Last 3 Months without search/status tab active, August is hidden unless expanded)
-  const shouldShowAugust = isAugustExpanded || statusTab !== 'all' || searchQuery.trim().length > 0;
-  const displayedCount = octPayments.length + sepPayments.length + (shouldShowAugust ? augPayments.length : 0);
+  // Pagination calculations
+  const totalPages = Math.max(1, Math.ceil(filteredPayments.length / PAYMENTS_PER_PAGE));
+  const safePage = Math.min(currentPage, totalPages);
+  const startIndex = (safePage - 1) * PAYMENTS_PER_PAGE;
+  const endIndex = Math.min(startIndex + PAYMENTS_PER_PAGE, filteredPayments.length);
+  const paginatedPayments = filteredPayments.slice(startIndex, endIndex);
 
   // Copy helper
   const handleCopy = (text: string, label: string) => {
@@ -443,95 +440,95 @@ export const PaymentHistoryScreen: React.FC<PaymentHistoryScreenProps> = ({
         </div>
       </div>
 
-      {/* 3. Payment Totals Cards: 4 columns on desktop, 2x2 on mobile */}
-      <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[16px]">
+      {/* 3. Payment Totals Cards: 2x2 on mobile, 4 columns on desktop */}
+      <div className="w-full grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-[16px]">
         {/* TotalCard 1: Each month */}
-        <div className="bg-white border border-[#DDE2EC] rounded-[12px] overflow-hidden flex flex-col">
-          <div className="flex items-center px-[20px] py-[11px] gap-[8px] h-[42px] bg-[#0B1530]">
-            <span className="w-[6px] h-[6px] bg-[#7F9BF0] rounded-full shrink-0" />
-            <span className="font-onest font-semibold text-[14px] leading-[20px] text-white">
+        <div className="bg-white border border-[#DDE2EC] rounded-[12px] overflow-hidden flex flex-col justify-between shadow-2xs">
+          <div className="flex items-center px-3 sm:px-[20px] py-2 sm:py-[11px] gap-1.5 sm:gap-[8px] h-[34px] sm:h-[42px] bg-[#0B1530]">
+            <span className="w-[5px] h-[5px] sm:w-[6px] sm:h-[6px] bg-[#7F9BF0] rounded-full shrink-0" />
+            <span className="font-onest font-semibold text-[12px] sm:text-[14px] leading-[18px] sm:leading-[20px] text-white truncate">
               Each month
             </span>
           </div>
-          <div className="p-[20px] pt-[16px] flex flex-col gap-[4px]">
-            <div className="flex items-baseline gap-[5px]">
-              <span className="font-onest font-extrabold text-[28px] leading-[36px] tracking-[-0.5px] text-[#0B1530]">
+          <div className="p-3 sm:p-[20px] pt-2.5 sm:pt-[16px] flex flex-col gap-1 sm:gap-[4px] justify-between flex-1">
+            <div className="flex items-baseline gap-1 sm:gap-[5px]">
+              <span className="font-onest font-extrabold text-[19px] xs:text-[22px] sm:text-[28px] leading-[26px] sm:leading-[36px] tracking-[-0.5px] text-[#0B1530]">
                 {totals.monthlyUSDC.toFixed(2)}
               </span>
-              <span className="font-onest font-bold text-[12px] leading-[16px] text-[#0B1530]">
+              <span className="font-onest font-bold text-[11px] sm:text-[12px] leading-[16px] text-[#0B1530]">
                 USDC
               </span>
             </div>
-            <p className="font-onest font-medium text-[12px] leading-[16px] text-[#4A5675]">
+            <p className="font-onest font-medium text-[11px] sm:text-[12px] leading-[15px] sm:leading-[16px] text-[#4A5675] truncate">
               {totals.monthlySubtext}
             </p>
           </div>
         </div>
 
         {/* TotalCard 2: Each quarter */}
-        <div className="bg-white border border-[#DDE2EC] rounded-[12px] overflow-hidden flex flex-col">
-          <div className="flex items-center px-[20px] py-[11px] gap-[8px] h-[42px] bg-[#EEF1F6]">
-            <span className="w-[6px] h-[6px] bg-[#8A94AD] rounded-full shrink-0" />
-            <span className="font-onest font-semibold text-[14px] leading-[20px] text-[#3B4664]">
+        <div className="bg-white border border-[#DDE2EC] rounded-[12px] overflow-hidden flex flex-col justify-between shadow-2xs">
+          <div className="flex items-center px-3 sm:px-[20px] py-2 sm:py-[11px] gap-1.5 sm:gap-[8px] h-[34px] sm:h-[42px] bg-[#EEF1F6]">
+            <span className="w-[5px] h-[5px] sm:w-[6px] sm:h-[6px] bg-[#8A94AD] rounded-full shrink-0" />
+            <span className="font-onest font-semibold text-[12px] sm:text-[14px] leading-[18px] sm:leading-[20px] text-[#3B4664] truncate">
               Each quarter
             </span>
           </div>
-          <div className="p-[20px] pt-[16px] flex flex-col gap-[4px]">
-            <div className="flex items-baseline gap-[5px]">
-              <span className="font-onest font-extrabold text-[28px] leading-[36px] tracking-[-0.5px] text-[#0B1530]">
+          <div className="p-3 sm:p-[20px] pt-2.5 sm:pt-[16px] flex flex-col gap-1 sm:gap-[4px] justify-between flex-1">
+            <div className="flex items-baseline gap-1 sm:gap-[5px]">
+              <span className="font-onest font-extrabold text-[19px] xs:text-[22px] sm:text-[28px] leading-[26px] sm:leading-[36px] tracking-[-0.5px] text-[#0B1530]">
                 {totals.quarterlyUSDC.toFixed(2)}
               </span>
-              <span className="font-onest font-bold text-[12px] leading-[16px] text-[#0B1530]">
+              <span className="font-onest font-bold text-[11px] sm:text-[12px] leading-[16px] text-[#0B1530]">
                 USDC
               </span>
             </div>
-            <p className="font-onest font-medium text-[12px] leading-[16px] text-[#4A5675]">
+            <p className="font-onest font-medium text-[11px] sm:text-[12px] leading-[15px] sm:leading-[16px] text-[#4A5675] truncate">
               {totals.quarterlySubtext}
             </p>
           </div>
         </div>
 
         {/* TotalCard 3: 3-month total / Average */}
-        <div className="bg-white border border-[#DDE2EC] rounded-[12px] overflow-hidden flex flex-col">
-          <div className="flex items-center px-[20px] py-[11px] gap-[8px] h-[42px] bg-[#EEF1F6]">
-            <span className="w-[6px] h-[6px] bg-[#8A94AD] rounded-full shrink-0" />
-            <span className="font-onest font-semibold text-[14px] leading-[20px] text-[#3B4664]">
+        <div className="bg-white border border-[#DDE2EC] rounded-[12px] overflow-hidden flex flex-col justify-between shadow-2xs">
+          <div className="flex items-center px-3 sm:px-[20px] py-2 sm:py-[11px] gap-1.5 sm:gap-[8px] h-[34px] sm:h-[42px] bg-[#EEF1F6]">
+            <span className="w-[5px] h-[5px] sm:w-[6px] sm:h-[6px] bg-[#8A94AD] rounded-full shrink-0" />
+            <span className="font-onest font-semibold text-[12px] sm:text-[14px] leading-[18px] sm:leading-[20px] text-[#3B4664] truncate">
               Past 3 months
             </span>
           </div>
-          <div className="p-[20px] pt-[16px] flex flex-col gap-[4px]">
-            <div className="flex items-baseline gap-[5px]">
-              <span className="font-onest font-extrabold text-[28px] leading-[36px] tracking-[-0.5px] text-[#0B1530]">
+          <div className="p-3 sm:p-[20px] pt-2.5 sm:pt-[16px] flex flex-col gap-1 sm:gap-[4px] justify-between flex-1">
+            <div className="flex items-baseline gap-1 sm:gap-[5px]">
+              <span className="font-onest font-extrabold text-[19px] xs:text-[22px] sm:text-[28px] leading-[26px] sm:leading-[36px] tracking-[-0.5px] text-[#0B1530]">
                 {totals.past3mUSDC.toFixed(2)}
               </span>
-              <span className="font-onest font-bold text-[12px] leading-[16px] text-[#0B1530]">
+              <span className="font-onest font-bold text-[11px] sm:text-[12px] leading-[16px] text-[#0B1530]">
                 USDC
               </span>
             </div>
-            <p className="font-onest font-medium text-[12px] leading-[16px] text-[#4A5675]">
+            <p className="font-onest font-medium text-[11px] sm:text-[12px] leading-[15px] sm:leading-[16px] text-[#4A5675] truncate">
               {totals.past3mSubtext}
             </p>
           </div>
         </div>
 
         {/* TotalCard 4: Overdue (Urgent Red) */}
-        <div className="bg-white border border-[#DDE2EC] rounded-[12px] overflow-hidden flex flex-col">
-          <div className="flex items-center px-[20px] py-[11px] gap-[8px] h-[42px] bg-[#FDE8E6]">
-            <span className="w-[6px] h-[6px] bg-[#B42318] rounded-full shrink-0" />
-            <span className="font-onest font-semibold text-[14px] leading-[20px] text-[#B42318]">
+        <div className="bg-white border border-[#DDE2EC] rounded-[12px] overflow-hidden flex flex-col justify-between shadow-2xs">
+          <div className="flex items-center px-3 sm:px-[20px] py-2 sm:py-[11px] gap-1.5 sm:gap-[8px] h-[34px] sm:h-[42px] bg-[#FDE8E6]">
+            <span className="w-[5px] h-[5px] sm:w-[6px] sm:h-[6px] bg-[#B42318] rounded-full shrink-0" />
+            <span className="font-onest font-semibold text-[12px] sm:text-[14px] leading-[18px] sm:leading-[20px] text-[#B42318] truncate">
               Overdue
             </span>
           </div>
-          <div className="p-[20px] pt-[16px] flex flex-col gap-[4px]">
-            <div className="flex items-baseline gap-[5px]">
-              <span className="font-onest font-extrabold text-[28px] leading-[36px] tracking-[-0.5px] text-[#B42318]">
+          <div className="p-3 sm:p-[20px] pt-2.5 sm:pt-[16px] flex flex-col gap-1 sm:gap-[4px] justify-between flex-1">
+            <div className="flex items-baseline gap-1 sm:gap-[5px]">
+              <span className="font-onest font-extrabold text-[19px] xs:text-[22px] sm:text-[28px] leading-[26px] sm:leading-[36px] tracking-[-0.5px] text-[#B42318]">
                 {totals.overdueCount}
               </span>
-              <span className="font-onest font-bold text-[12px] leading-[16px] text-[#B42318]">
+              <span className="font-onest font-bold text-[11px] sm:text-[12px] leading-[16px] text-[#B42318]">
                 {totals.overdueCount === 1 ? 'bill' : 'bills'}
               </span>
             </div>
-            <p className="font-onest font-medium text-[12px] leading-[16px] text-[#4A5675]">
+            <p className="font-onest font-medium text-[11px] sm:text-[12px] leading-[15px] sm:leading-[16px] text-[#4A5675] truncate">
               {totals.overdueSubtext}
             </p>
           </div>
@@ -541,9 +538,9 @@ export const PaymentHistoryScreen: React.FC<PaymentHistoryScreenProps> = ({
       {/* 4. Payments Main Table Container */}
       <div className="w-full bg-white border border-[#DDE2EC] rounded-[12px] overflow-hidden flex flex-col shadow-xs">
         {/* Table Top Toolbar: Verification Status Tabs & Search/Filter */}
-        <div className="w-full flex flex-col lg:flex-row justify-between items-start lg:items-center px-[24px] py-[20px] gap-4">
+        <div className="w-full flex flex-col lg:flex-row justify-between items-start lg:items-center px-3.5 sm:px-[24px] py-3.5 sm:py-[20px] gap-4">
           {/* Verification Status Tabs */}
-          <div className="inline-flex items-center p-[3px] gap-[2px] bg-[#EEF1F6] rounded-[10px] max-w-full overflow-x-auto">
+          <div className="inline-flex items-center p-[3px] gap-[2px] bg-[#EEF1F6] rounded-[10px] max-w-full overflow-x-auto no-scrollbar">
             <button
               type="button"
               onClick={() => setStatusTab('all')}
@@ -809,97 +806,97 @@ export const PaymentHistoryScreen: React.FC<PaymentHistoryScreenProps> = ({
               </button>
             </div>
           ) : (
-            <>
-              {/* OCTOBER 2026 SECTION */}
-              {octPayments.length > 0 && (
-                <div className="w-full flex flex-col">
-                  {/* Month Divider */}
-                  <div className="w-full px-[24px] py-[9px] bg-[#F8F9FC] border-t border-[#EEF1F6] flex items-center">
-                    <span className="font-onest font-medium text-[12px] leading-[16px] text-[#4A5675]">
-                      October 2026 · 480.00 USDC and 45.00 EUR
-                    </span>
-                  </div>
+            <div className="w-full flex flex-col">
+              {paginatedPayments.map((record, index) => {
+                const prevRecord = index > 0 ? paginatedPayments[index - 1] : null;
+                const showMonthDivider = !prevRecord || prevRecord.monthYear !== record.monthYear;
 
-                  {/* October Rows */}
-                  {octPayments.map((record) => (
+                return (
+                  <React.Fragment key={record.id}>
+                    {showMonthDivider && (
+                      <div className="w-full px-[24px] py-[9px] bg-[#F8F9FC] border-t border-[#EEF1F6] flex items-center">
+                        <span className="font-onest font-medium text-[12px] leading-[16px] text-[#4A5675]">
+                          {record.monthYear}
+                        </span>
+                      </div>
+                    )}
                     <PaymentRowItem
-                      key={record.id}
                       record={record}
                       onOpenDetails={() => setSelectedPayment(record)}
                       onCopyHash={(hash) => handleCopy(hash, 'transaction hash')}
                     />
-                  ))}
-                </div>
-              )}
-
-              {/* SEPTEMBER 2026 SECTION */}
-              {sepPayments.length > 0 && (
-                <div className="w-full flex flex-col">
-                  {/* Month Divider */}
-                  <div className="w-full px-[24px] py-[9px] bg-[#F8F9FC] border-t border-[#EEF1F6] flex items-center">
-                    <span className="font-onest font-medium text-[12px] leading-[16px] text-[#4A5675]">
-                      September 2026 · 531.50 USDC, 140.00 XLM
-                    </span>
-                  </div>
-
-                  {/* September Rows */}
-                  {sepPayments.map((record) => (
-                    <PaymentRowItem
-                      key={record.id}
-                      record={record}
-                      onOpenDetails={() => setSelectedPayment(record)}
-                      onCopyHash={(hash) => handleCopy(hash, 'transaction hash')}
-                    />
-                  ))}
-                </div>
-              )}
-
-              {/* AUGUST 2026 SECTION (Shown if expanded or searched/filtered) */}
-              {shouldShowAugust && augPayments.length > 0 && (
-                <div className="w-full flex flex-col">
-                  {/* Month Divider */}
-                  <div className="w-full px-[24px] py-[9px] bg-[#F8F9FC] border-t border-[#EEF1F6] flex items-center">
-                    <span className="font-onest font-medium text-[12px] leading-[16px] text-[#4A5675]">
-                      August 2026 · 505.00 USDC, 140.00 XLM, 43.50 EUR
-                    </span>
-                  </div>
-
-                  {/* August Rows */}
-                  {augPayments.map((record) => (
-                    <PaymentRowItem
-                      key={record.id}
-                      record={record}
-                      onOpenDetails={() => setSelectedPayment(record)}
-                      onCopyHash={(hash) => handleCopy(hash, 'transaction hash')}
-                    />
-                  ))}
-                </div>
-              )}
-
-              {/* Expand August Button (if not already expanded and August has payments) */}
-              {!shouldShowAugust && augPayments.length > 0 && (
-                <div className="w-full flex justify-center items-center py-[15px] border-t border-[#EEF1F6] bg-white">
-                  <button
-                    type="button"
-                    onClick={() => setIsAugustExpanded(true)}
-                    className="inline-flex items-center justify-center px-[17px] py-[1px] gap-[8px] h-[39px] bg-white border border-[#DDE2EC] rounded-[10px] hover:border-[#77839F] hover:bg-[#F8F9FC] transition-colors cursor-pointer select-none"
-                  >
-                    <span className="font-onest font-bold text-[14px] leading-[20px] text-[#0B1530]">
-                      Show August 2026 (7 payments)
-                    </span>
-                    <ChevronDown size={16} strokeWidth={2} className="text-[#0B1530]" />
-                  </button>
-                </div>
-              )}
-            </>
+                  </React.Fragment>
+                );
+              })}
+            </div>
           )}
         </div>
 
-        {/* Footer Summary Bar */}
-        <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center px-[24px] py-[16px] border-t border-[#EEF1F6] bg-white gap-2">
+        {/* Pagination & Footer Summary Bar */}
+        <div className="w-full border-t border-[#EEF1F6] px-4 sm:px-[24px] py-3.5 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white">
           <span className="font-onest font-medium text-[12px] leading-[16px] text-[#4A5675]">
-            Showing {displayedCount} of {counts.all} payments, newest first.
+            Showing {filteredPayments.length > 0 ? `${startIndex + 1}–${endIndex}` : '0'} of {filteredPayments.length} payments
           </span>
+
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <button
+              type="button"
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              disabled={safePage <= 1}
+              className="h-[34px] px-3 rounded-[8px] border border-[#DDE2EC] bg-white text-[13px] font-bold text-[#0B1530] hover:bg-[#F3F5F9] disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 transition-colors cursor-pointer select-none"
+              aria-label="Previous page"
+            >
+              <ChevronLeft size={16} strokeWidth={2} />
+              <span>Prev</span>
+            </button>
+
+            <div className="flex items-center gap-1">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                if (
+                  totalPages > 5 &&
+                  page !== 1 &&
+                  page !== totalPages &&
+                  Math.abs(page - safePage) > 1
+                ) {
+                  if (page === 2 || page === totalPages - 1) {
+                    return (
+                      <span key={page} className="px-1 text-[12px] text-[#77839F]">
+                        ...
+                      </span>
+                    );
+                  }
+                  return null;
+                }
+
+                const isActive = page === safePage;
+                return (
+                  <button
+                    key={page}
+                    type="button"
+                    onClick={() => setCurrentPage(page)}
+                    className={`w-[34px] h-[34px] rounded-[8px] text-[13px] font-bold flex items-center justify-center transition-colors cursor-pointer ${
+                      isActive
+                        ? 'bg-[#0B1530] text-white shadow-xs'
+                        : 'bg-white border border-[#DDE2EC] text-[#0B1530] hover:bg-[#F3F5F9]'
+                    }`}
+                  >
+                    {page}
+                  </button>
+                );
+              })}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              disabled={safePage >= totalPages}
+              className="h-[34px] px-3 rounded-[8px] border border-[#DDE2EC] bg-white text-[13px] font-bold text-[#0B1530] hover:bg-[#F3F5F9] disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 transition-colors cursor-pointer select-none"
+              aria-label="Next page"
+            >
+              <span>Next</span>
+              <ChevronRight size={16} strokeWidth={2} />
+            </button>
+          </div>
 
           <div className="inline-flex items-center gap-[6px]">
             <Wallet size={14} strokeWidth={1.8} className="text-[#0B1530]" />
@@ -1053,9 +1050,10 @@ const PaymentRowItem: React.FC<PaymentRowItemProps> = ({ record, onOpenDetails, 
       </div>
 
       {/* Mobile / Tablet Stacked Card Layout */}
-      <div className="flex lg:hidden flex-col p-4 gap-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+      <div className="flex lg:hidden flex-col p-3.5 sm:p-4 gap-2.5 sm:gap-3">
+        {/* Top: Icon + Bill name & cycle (left, flexible) | Amount & time (right, shrink-0) */}
+        <div className="flex items-center justify-between gap-3 min-w-0">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
             <div
               className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${
                 record.status === 'failed' ? 'bg-[#FDE8E6]' : 'bg-[#EEF1F6]'
@@ -1067,38 +1065,39 @@ const PaymentRowItem: React.FC<PaymentRowItemProps> = ({ record, onOpenDetails, 
                 className={record.status === 'failed' ? 'text-[#B42318]' : 'text-[#0B1530]'}
               />
             </div>
-            <div>
-              <span className="font-onest font-bold text-[14px] text-[#0B1530] block">
+            <div className="min-w-0 flex-1">
+              <span className="font-onest font-bold text-[14px] leading-[18px] text-[#0B1530] truncate block">
                 {record.billName}
               </span>
-              <span className="text-[12px] text-[#4A5675]">
+              <span className="text-[11px] sm:text-[12px] leading-[16px] text-[#4A5675] truncate block">
                 {record.billCycleLabel} · {record.paidDateLabel}
               </span>
             </div>
           </div>
 
-          <div className="flex flex-col items-end">
+          <div className="flex flex-col items-end shrink-0 pl-1">
             <div className="flex items-baseline gap-1">
-              <span className="font-onest font-bold text-[15px] text-[#0B1530]">
+              <span className="font-onest font-bold text-[15px] sm:text-[16px] text-[#0B1530]">
                 {record.amount.toFixed(2)}
               </span>
               <span className="text-[11px] font-bold text-[#4A5675]">{record.currency}</span>
             </div>
-            <span className="text-[11px] text-[#77839F]">{record.paidTimeLabel}</span>
+            <span className="text-[10px] sm:text-[11px] text-[#77839F]">{record.paidTimeLabel}</span>
           </div>
         </div>
 
-        <div className="flex items-center justify-between pt-2 border-t border-[#EEF1F6]/60">
-          <div className="flex items-center gap-2">
+        {/* Bottom: Status badge + Method (left) | Tx note / link (right) */}
+        <div className="flex flex-wrap items-center justify-between gap-y-1.5 gap-x-2 pt-2 border-t border-[#EEF1F6]/70 min-w-0">
+          <div className="flex items-center gap-2 min-w-0 flex-wrap">
             <StatusBadge kind={record.statusBadgeKind} text={record.statusBadgeText} />
-            <span className="text-[12px] text-[#4A5675]">
+            <span className="text-[11px] sm:text-[12px] text-[#4A5675] truncate max-w-[130px] xs:max-w-[160px] sm:max-w-none">
               {record.paymentMethodLabel}
             </span>
           </div>
 
-          <div className="flex items-center gap-1 text-[#2F4FBF] text-[12px] font-mono">
+          <div className="flex items-center gap-1 text-[#2F4FBF] text-[11px] sm:text-[12px] font-mono shrink-0 ml-auto">
             {record.isNote ? (
-              <span className={record.status === 'failed' ? 'text-[#B42318] font-sans font-bold' : 'text-[#4A5675] font-sans'}>
+              <span className={record.status === 'failed' ? 'text-[#B42318] font-sans font-bold text-[11px] sm:text-[12px]' : 'text-[#4A5675] font-sans text-[11px] sm:text-[12px]'}>
                 {record.txHashOrNote}
               </span>
             ) : (

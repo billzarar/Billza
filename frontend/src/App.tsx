@@ -814,6 +814,7 @@ export default function App() {
         mobileOpen={mobileMenuOpen}
         onCloseMobile={() => setMobileMenuOpen(false)}
         remindersCount={unreadRemindersCount}
+        user={currentUser}
         wallet={wallet}
         onOpenWalletModal={() => setIsWalletModalOpen(true)}
         onOpenLanding={() => {
@@ -899,14 +900,14 @@ export default function App() {
 
         {/* Toast Notification */}
         {toastMessage && (
-          <div className="fixed bottom-20 lg:bottom-6 right-4 sm:right-8 z-50 bg-[#0B1530] text-white px-4 py-3 rounded-[10px] shadow-lg border border-white/10 flex items-center gap-2.5 text-[14px] font-bold">
+          <div className="fixed bottom-6 right-4 sm:right-8 z-50 bg-[#0B1530] text-white px-4 py-3 rounded-[10px] shadow-lg border border-white/10 flex items-center gap-2.5 text-[14px] font-bold">
             <Check size={16} className="text-[#5FD39A] shrink-0" />
             <span>{toastMessage}</span>
           </div>
         )}
 
         {/* Main Content Viewport */}
-        <main className="w-full max-w-[1192px] mx-auto px-4 sm:px-6 lg:px-[32px] pt-6 sm:pt-[32px] pb-24 lg:pb-[40px] flex flex-col gap-[24px] sm:gap-[28px]">
+        <main className="w-full max-w-[1192px] mx-auto px-4 sm:px-6 lg:px-[32px] pt-6 sm:pt-[32px] pb-8 sm:pb-[32px] lg:pb-[40px] flex flex-col gap-[24px] sm:gap-[28px]">
           {selectedBillId === 'new' ? (
             <AddBillScreen
               onCancel={() => {
@@ -1173,8 +1174,8 @@ export default function App() {
                 </div>
               </section>
 
-              {/* Section 2: 4 Summary Stat Cards with Hover & Click StatDetail Popups */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-[16px] sm:gap-[24px] w-full">
+              {/* Section 2: 4 Summary Stat Cards with Hover & Click StatDetail Popups (2x2 on mobile, 4 on desktop) */}
+              <div className="grid grid-cols-2 xl:grid-cols-4 gap-2.5 sm:gap-[24px] w-full">
                 {/* StatCard 1: Total bills (Navy with rotated 'za' badge) */}
                 <div
                   onMouseEnter={() => handleStatMouseEnter('total')}
@@ -1184,40 +1185,40 @@ export default function App() {
                   <button
                     type="button"
                     onClick={() => handleStatToggleClick('total')}
-                    className="relative h-[168px] w-full bg-[#0B1530] border border-[#0B1530] rounded-[12px] p-[24px] flex flex-col justify-between text-left overflow-hidden group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4164D9]"
+                    className="relative min-h-[140px] sm:h-[168px] w-full bg-[#0B1530] border border-[#0B1530] rounded-[12px] p-3 sm:p-[24px] flex flex-col justify-between text-left overflow-hidden group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4164D9]"
                   >
-                    <div className="flex items-center justify-between w-full z-10">
-                      <span className="font-semibold text-[14px] leading-[20px] text-white">
+                    <div className="flex items-center justify-between w-full z-10 gap-1">
+                      <span className="font-semibold text-[12px] sm:text-[14px] leading-[18px] sm:leading-[20px] text-white truncate">
                         Total bills
                       </span>
                       <span
-                        className={`w-[34px] h-[34px] rounded-full flex items-center justify-center transition-colors ${
+                        className={`w-[26px] h-[26px] sm:w-[34px] sm:h-[34px] rounded-full flex items-center justify-center transition-colors shrink-0 ${
                           openStatPopup === 'total'
                             ? 'bg-[#4164D9] text-white'
                             : 'bg-white text-[#0B1530] group-hover:bg-[#4164D9] group-hover:text-white'
                         }`}
                       >
-                        <ArrowUpRight size={16} strokeWidth={2.2} />
+                        <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" strokeWidth={2.2} />
                       </span>
                     </div>
 
-                    <div className="flex items-baseline gap-[6px] z-10 tabular-nums">
-                      <span className="font-extrabold text-[48px] leading-[52px] tracking-[-1.5px] text-white">
+                    <div className="flex items-baseline gap-1 sm:gap-[6px] z-10 tabular-nums">
+                      <span className="font-extrabold text-[26px] xs:text-[32px] sm:text-[48px] leading-[30px] sm:leading-[52px] tracking-[-1px] text-white">
                         {totalBillsCount}
                       </span>
-                      <span className="font-extrabold text-[20px] leading-[25px] text-white">
+                      <span className="font-bold sm:font-extrabold text-[12px] sm:text-[20px] leading-[16px] sm:leading-[25px] text-white">
                         bills
                       </span>
                     </div>
 
-                    <span className="font-medium text-[12px] leading-[16px] text-[#A9B4CC] z-10 tabular-nums">
+                    <span className="font-medium text-[11px] sm:text-[12px] leading-[14px] sm:leading-[16px] text-[#A9B4CC] z-10 tabular-nums truncate w-full">
                       {monthlyBillsCount} monthly · {quarterlyBillsCount} quarterly
                     </span>
 
-                    {/* Decorative Rotated #4164D9 'za' Block */}
+                    {/* Decorative Rotated #4164D9 'za' Block (hidden on mobile to prevent overlap) */}
                     <div
                       aria-hidden="true"
-                      className="absolute left-[151px] top-[71px] w-[150px] h-[110px] bg-[#4164D9] -rotate-10 rounded-tl-[4px] flex items-start justify-start pl-[46px] pt-[18px] pointer-events-none select-none"
+                      className="hidden sm:flex absolute left-[151px] top-[71px] w-[150px] h-[110px] bg-[#4164D9] -rotate-10 rounded-tl-[4px] items-start justify-start pl-[46px] pt-[18px] pointer-events-none select-none"
                     >
                       <span className="font-archivo font-extrabold text-[44px] leading-[44px] tracking-[-0.88px] text-white">
                         za
@@ -1252,37 +1253,37 @@ export default function App() {
                   <button
                     type="button"
                     onClick={() => handleStatToggleClick('next14')}
-                    className={`relative h-[168px] w-full bg-white border rounded-[12px] p-[24px] flex flex-col justify-between text-left transition-colors group ${
+                    className={`relative min-h-[140px] sm:h-[168px] w-full bg-white border rounded-[12px] p-3 sm:p-[24px] flex flex-col justify-between text-left transition-colors group ${
                       openStatPopup === 'next14' || statusFilter === 'next14'
                         ? 'border-[#4164D9] ring-2 ring-[#4164D9]/20'
                         : 'border-[#DDE2EC] hover:border-[#4164D9]'
                     }`}
                   >
-                    <div className="flex items-center justify-between w-full">
-                      <span className="font-semibold text-[14px] leading-[20px] text-[#0B1530]">
+                    <div className="flex items-center justify-between w-full gap-1">
+                      <span className="font-semibold text-[12px] sm:text-[14px] leading-[18px] sm:leading-[20px] text-[#0B1530] truncate">
                         Next 14 days
                       </span>
                       <span
-                        className={`w-[34px] h-[34px] rounded-full border flex items-center justify-center transition-colors ${
+                        className={`w-[26px] h-[26px] sm:w-[34px] sm:h-[34px] rounded-full border flex items-center justify-center transition-colors shrink-0 ${
                           openStatPopup === 'next14'
                             ? 'bg-[#4164D9] border-[#4164D9] text-white'
                             : 'bg-white border-[#77839F] text-[#0B1530] group-hover:bg-[#4164D9] group-hover:border-[#4164D9] group-hover:text-white'
                         }`}
                       >
-                        <ArrowUpRight size={16} strokeWidth={2.2} />
+                        <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" strokeWidth={2.2} />
                       </span>
                     </div>
 
-                    <div className="flex items-baseline gap-[6px] tabular-nums">
-                      <span className="font-extrabold text-[48px] leading-[52px] tracking-[-1.5px] text-[#0B1530]">
+                    <div className="flex items-baseline gap-1 sm:gap-[6px] tabular-nums">
+                      <span className="font-extrabold text-[26px] xs:text-[32px] sm:text-[48px] leading-[30px] sm:leading-[52px] tracking-[-1px] text-[#0B1530]">
                         {next14DaysCount}
                       </span>
-                      <span className="font-extrabold text-[20px] leading-[25px] text-[#4A5675]">
+                      <span className="font-bold sm:font-extrabold text-[12px] sm:text-[20px] leading-[16px] sm:leading-[25px] text-[#4A5675]">
                         bills
                       </span>
                     </div>
 
-                    <span className="font-medium text-[12px] leading-[16px] text-[#4A5675] truncate w-full">
+                    <span className="font-medium text-[11px] sm:text-[12px] leading-[14px] sm:leading-[16px] text-[#4A5675] truncate w-full">
                       {bills.find((b) => b.inNext14Days && b.status !== 'paid')
                         ? `${bills.find((b) => b.inNext14Days && b.status !== 'paid')?.name} first · ${bills.find((b) => b.inNext14Days && b.status !== 'paid')?.dueInLabel}`
                         : 'No bills in next 14 days'}
@@ -1292,6 +1293,7 @@ export default function App() {
                   {openStatPopup === 'next14' && (
                     <StatCardPopup
                       kind="next14"
+                      alignRight
                       bills={bills}
                       payments={payments}
                       onClose={(e) => {
@@ -1316,40 +1318,40 @@ export default function App() {
                   <button
                     type="button"
                     onClick={() => handleStatToggleClick('overdue')}
-                    className={`relative h-[168px] w-full bg-white border rounded-[12px] p-[24px] flex flex-col justify-between text-left transition-colors group ${
+                    className={`relative min-h-[140px] sm:h-[168px] w-full bg-white border rounded-[12px] p-3 sm:p-[24px] flex flex-col justify-between text-left transition-colors group ${
                       openStatPopup === 'overdue' || statusFilter === 'overdue'
                         ? 'border-[#D2453A] ring-2 ring-[#D2453A]/20'
                         : 'border-[#DDE2EC] hover:border-[#D2453A]'
                     }`}
                   >
-                    <div className="flex items-center justify-between w-full">
-                      <div className="flex items-center gap-[7px]">
-                        <span className="w-[8px] h-[8px] rounded-[2px] bg-[#D2453A] shrink-0" />
-                        <span className="font-semibold text-[14px] leading-[20px] text-[#B42318]">
+                    <div className="flex items-center justify-between w-full gap-1">
+                      <div className="flex items-center gap-[6px] min-w-0">
+                        <span className="w-[6px] h-[6px] sm:w-[8px] sm:h-[8px] rounded-[2px] bg-[#D2453A] shrink-0" />
+                        <span className="font-semibold text-[12px] sm:text-[14px] leading-[18px] sm:leading-[20px] text-[#B42318] truncate">
                           Overdue
                         </span>
                       </div>
                       <span
-                        className={`w-[34px] h-[34px] rounded-full border flex items-center justify-center transition-colors ${
+                        className={`w-[26px] h-[26px] sm:w-[34px] sm:h-[34px] rounded-full border flex items-center justify-center transition-colors shrink-0 ${
                           openStatPopup === 'overdue'
                             ? 'bg-[#B42318] border-[#B42318] text-white'
                             : 'bg-white border-[#77839F] text-[#0B1530] group-hover:bg-[#B42318] group-hover:border-[#B42318] group-hover:text-white'
                         }`}
                       >
-                        <ArrowUpRight size={16} strokeWidth={2.2} />
+                        <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" strokeWidth={2.2} />
                       </span>
                     </div>
 
-                    <div className="flex items-baseline gap-[6px] tabular-nums">
-                      <span className="font-extrabold text-[48px] leading-[52px] tracking-[-1.5px] text-[#B42318]">
+                    <div className="flex items-baseline gap-1 sm:gap-[6px] tabular-nums">
+                      <span className="font-extrabold text-[26px] xs:text-[32px] sm:text-[48px] leading-[30px] sm:leading-[52px] tracking-[-1px] text-[#B42318]">
                         {overdueBills.length}
                       </span>
-                      <span className="font-extrabold text-[20px] leading-[25px] text-[#B42318]">
+                      <span className="font-bold sm:font-extrabold text-[12px] sm:text-[20px] leading-[16px] sm:leading-[25px] text-[#B42318]">
                         {overdueBills.length === 1 ? 'bill' : 'bills'}
                       </span>
                     </div>
 
-                    <span className="font-medium text-[12px] leading-[16px] text-[#4A5675] truncate w-full">
+                    <span className="font-medium text-[11px] sm:text-[12px] leading-[14px] sm:leading-[16px] text-[#4A5675] truncate w-full">
                       {overdueBills.length > 0
                         ? `${overdueBills[0].name} · ${overdueBills[0].dueInLabel}`
                         : 'No overdue bills remaining'}
@@ -1383,37 +1385,37 @@ export default function App() {
                   <button
                     type="button"
                     onClick={() => handleStatToggleClick('paid')}
-                    className={`relative h-[168px] w-full bg-white border rounded-[12px] p-[24px] flex flex-col justify-between text-left transition-colors group ${
+                    className={`relative min-h-[140px] sm:h-[168px] w-full bg-white border rounded-[12px] p-3 sm:p-[24px] flex flex-col justify-between text-left transition-colors group ${
                       openStatPopup === 'paid' || statusFilter === 'paid'
                         ? 'border-[#4164D9] ring-2 ring-[#4164D9]/20'
                         : 'border-[#DDE2EC] hover:border-[#4164D9]'
                     }`}
                   >
-                    <div className="flex items-center justify-between w-full">
-                      <span className="font-semibold text-[14px] leading-[20px] text-[#0B1530]">
+                    <div className="flex items-center justify-between w-full gap-1">
+                      <span className="font-semibold text-[12px] sm:text-[14px] leading-[18px] sm:leading-[20px] text-[#0B1530] truncate">
                         Paid in October
                       </span>
                       <span
-                        className={`w-[34px] h-[34px] rounded-full border flex items-center justify-center transition-colors ${
+                        className={`w-[26px] h-[26px] sm:w-[34px] sm:h-[34px] rounded-full border flex items-center justify-center transition-colors shrink-0 ${
                           openStatPopup === 'paid'
                             ? 'bg-[#4164D9] border-[#4164D9] text-white'
                             : 'bg-white border-[#77839F] text-[#0B1530] group-hover:bg-[#4164D9] group-hover:border-[#4164D9] group-hover:text-white'
                         }`}
                       >
-                        <ArrowUpRight size={16} strokeWidth={2.2} />
+                        <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" strokeWidth={2.2} />
                       </span>
                     </div>
 
-                    <div className="flex items-baseline gap-[6px] tabular-nums">
-                      <span className="font-extrabold text-[48px] leading-[52px] tracking-[-1.5px] text-[#0B1530]">
+                    <div className="flex items-baseline gap-1 sm:gap-[6px] tabular-nums">
+                      <span className="font-extrabold text-[26px] xs:text-[32px] sm:text-[48px] leading-[30px] sm:leading-[52px] tracking-[-1px] text-[#0B1530]">
                         {paidInOctCount}
                       </span>
-                      <span className="font-extrabold text-[20px] leading-[25px] text-[#4A5675]">
+                      <span className="font-bold sm:font-extrabold text-[12px] sm:text-[20px] leading-[16px] sm:leading-[25px] text-[#4A5675]">
                         paid
                       </span>
                     </div>
 
-                    <span className="font-medium text-[12px] leading-[16px] text-[#4A5675] truncate w-full tabular-nums">
+                    <span className="font-medium text-[11px] sm:text-[12px] leading-[14px] sm:leading-[16px] text-[#4A5675] truncate w-full tabular-nums">
                       {paidOnStellarCount} on Stellar · {markedPaidCount} marked paid
                     </span>
                   </button>
@@ -1487,74 +1489,6 @@ export default function App() {
           )}
         </main>
       </div>
-
-      {/* Mobile Bottom Navigation Bar (< lg) */}
-      <nav
-        aria-label="Mobile Quick Navigation"
-        className="lg:hidden fixed bottom-0 inset-x-0 z-30 h-[60px] bg-[#0B1530] border-t border-white/10 px-2 flex items-center justify-around text-white"
-      >
-        <button
-          type="button"
-          onClick={() => {
-            navigateTo('app', 'dashboard');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          className={`flex flex-col items-center justify-center gap-0.5 py-1 px-3 rounded-[8px] ${
-            activeTab === 'dashboard' && !selectedBillId ? 'text-white font-bold' : 'text-[#A9B4CC] font-medium'
-          }`}
-        >
-          <Home size={18} />
-          <span className="text-[11px] leading-[14px]">Dashboard</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => {
-            navigateTo('app', 'bills');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          className={`flex flex-col items-center justify-center gap-0.5 py-1 px-3 rounded-[8px] ${
-            activeTab === 'bills' ? 'text-white font-bold' : 'text-[#A9B4CC] font-medium'
-          }`}
-        >
-          <Receipt size={18} />
-          <span className="text-[11px] leading-[14px]">Bills</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => {
-            setIsReminderSettingsOpen(false);
-            navigateTo('app', 'reminders');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          className={`relative flex flex-col items-center justify-center gap-0.5 py-1 px-3 rounded-[8px] ${
-            activeTab === 'reminders' && !selectedBillId ? 'text-white font-bold' : 'text-[#A9B4CC] font-medium'
-          }`}
-        >
-          <Bell size={18} />
-          <span className="text-[11px] leading-[14px]">Reminders</span>
-          {unreadRemindersCount > 0 && (
-            <span className="absolute top-0.5 right-2.5 w-4 h-4 rounded-full bg-[#4164D9] text-white text-[10px] font-bold flex items-center justify-center">
-              {unreadRemindersCount}
-            </span>
-          )}
-        </button>
-
-        <button
-          type="button"
-          onClick={() => {
-            setIsReminderSettingsOpen(false);
-            navigateTo('app', 'history');
-          }}
-          className={`flex flex-col items-center justify-center gap-0.5 py-1 px-3 rounded-[8px] ${
-            activeTab === 'history' ? 'text-white font-bold' : 'text-[#A9B4CC] font-medium'
-          }`}
-        >
-          <History size={18} />
-          <span className="text-[11px] leading-[14px]">History</span>
-        </button>
-      </nav>
 
       {/* Modals */}
       <PayBillModal

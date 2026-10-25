@@ -123,7 +123,7 @@ export const Header: React.FC<HeaderProps> = ({
           <BillzaLogo collapsed />
         </div>
 
-        <div className="flex flex-col gap-[2px] min-w-0">
+        <div className="hidden sm:flex flex-col gap-[2px] min-w-0">
           <span className="font-bold text-[14px] leading-[20px] text-[#0B1530] truncate">
             Good day, {displayName}
           </span>
@@ -168,9 +168,17 @@ export const Header: React.FC<HeaderProps> = ({
             title="Open account profile & wallet balances"
           >
             {/* User Avatar Circle */}
-            <div className="w-[26px] h-[26px] sm:w-[28px] sm:h-[28px] rounded-full bg-gradient-to-tr from-[#0B1530] via-[#1A2A55] to-[#4164D9] text-white flex items-center justify-center text-[11px] font-bold shrink-0 tracking-wider">
-              {getInitials()}
-            </div>
+            {user?.avatar ? (
+              <img
+                src={user.avatar}
+                alt={displayName}
+                className="w-[26px] h-[26px] sm:w-[28px] sm:h-[28px] rounded-full object-cover border border-[#4164D9] shrink-0"
+              />
+            ) : (
+              <div className="w-[26px] h-[26px] sm:w-[28px] sm:h-[28px] rounded-full bg-gradient-to-tr from-[#0B1530] via-[#1A2A55] to-[#4164D9] text-white flex items-center justify-center text-[11px] font-bold shrink-0 tracking-wider">
+                {getInitials()}
+              </div>
+            )}
 
             {/* Only USDC balance along with profile icon */}
             <span className="font-bold text-[13px] text-[#0B1530] tabular-nums">
@@ -194,9 +202,17 @@ export const Header: React.FC<HeaderProps> = ({
             >
               {/* Header: User Info Banner */}
               <div className="bg-[#F8F9FC] border-b border-[#EEF1F6] p-4 flex items-center gap-3">
-                <div className="w-[46px] h-[46px] rounded-full bg-gradient-to-tr from-[#0B1530] via-[#1A2A55] to-[#4164D9] text-white flex items-center justify-center text-[15px] font-extrabold shadow-sm shrink-0">
-                  {getInitials()}
-                </div>
+                {user?.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt={displayName}
+                    className="w-[46px] h-[46px] rounded-full object-cover border-2 border-[#4164D9] shadow-sm shrink-0"
+                  />
+                ) : (
+                  <div className="w-[46px] h-[46px] rounded-full bg-gradient-to-tr from-[#0B1530] via-[#1A2A55] to-[#4164D9] text-white flex items-center justify-center text-[15px] font-extrabold shadow-sm shrink-0">
+                    {getInitials()}
+                  </div>
+                )}
                 <div className="flex flex-col min-w-0 flex-1">
                   <div className="flex items-center gap-1.5">
                     <span className="font-bold text-[15px] leading-[20px] text-[#0B1530] truncate">

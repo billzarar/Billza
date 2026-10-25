@@ -386,90 +386,90 @@ export const RemindersScreen: React.FC<RemindersScreenProps> = ({
         </div>
       </div>
 
-      {/* 2. Summary Row (4 TotalCards identical to Bills screen) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-[16px] w-full">
+      {/* 2. Summary Row (4 TotalCards: 2x2 on mobile, 4 on desktop) */}
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-2.5 sm:gap-[16px] w-full">
         {/* TotalCard 1: Each month */}
-        <div className="w-full h-[136px] bg-white border border-[#DDE2EC] rounded-[12px] p-[1px] flex flex-col overflow-hidden">
-          <div className="w-full h-[42px] bg-[#0B1530] rounded-t-[10px] px-[20px] py-[11px] flex items-center gap-[8px] shrink-0">
-            <span className="w-[6px] h-[6px] rounded-[3px] bg-[#7F9BF0] shrink-0" />
-            <span className="font-['Onest'] font-semibold text-[14px] leading-[20px] text-white">
+        <div className="w-full min-h-[118px] sm:min-h-[136px] bg-white border border-[#DDE2EC] rounded-[12px] p-[1px] flex flex-col justify-between overflow-hidden shadow-2xs">
+          <div className="w-full h-[34px] sm:h-[42px] bg-[#0B1530] rounded-t-[10px] px-3 sm:px-[20px] py-2 sm:py-[11px] flex items-center gap-1.5 sm:gap-[8px] shrink-0">
+            <span className="w-[5px] h-[5px] sm:w-[6px] sm:h-[6px] rounded-[3px] bg-[#7F9BF0] shrink-0" />
+            <span className="font-['Onest'] font-semibold text-[12px] sm:text-[14px] leading-[18px] sm:leading-[20px] text-white truncate">
               Each month
             </span>
           </div>
-          <div className="flex-1 px-[20px] pt-[16px] pb-[20px] flex flex-col gap-[4px] justify-between">
-            <div className="flex items-start gap-[5px] tabular-nums">
-              <span className="font-['Onest'] font-extrabold text-[28px] leading-[36px] tracking-[-0.5px] text-[#0B1530]">
+          <div className="flex-1 px-3 sm:px-[20px] py-2.5 sm:pt-[16px] sm:pb-[20px] flex flex-col gap-1 sm:gap-[4px] justify-between">
+            <div className="flex items-baseline gap-1 sm:gap-[5px] tabular-nums">
+              <span className="font-['Onest'] font-extrabold text-[19px] xs:text-[22px] sm:text-[28px] leading-[26px] sm:leading-[36px] tracking-[-0.5px] text-[#0B1530]">
                 531.50
               </span>
-              <span className="pt-[15px] font-['Onest'] font-bold text-[12px] leading-[16px] text-[#0B1530]">
+              <span className="font-['Onest'] font-bold text-[11px] sm:text-[12px] leading-[16px] text-[#0B1530]">
                 USDC
               </span>
             </div>
-            <span className="font-['Onest'] font-medium text-[12px] leading-[16px] text-[#4A5675] truncate">
+            <span className="font-['Onest'] font-medium text-[11px] sm:text-[12px] leading-[15px] sm:leading-[16px] text-[#4A5675] truncate">
               Plus 140.00 XLM and 45.00 EUR
             </span>
           </div>
         </div>
 
         {/* TotalCard 2: Each quarter */}
-        <div className="w-full h-[136px] bg-white border border-[#DDE2EC] rounded-[12px] p-[1px] flex flex-col overflow-hidden">
-          <div className="w-full h-[42px] bg-[#EEF1F6] rounded-t-[10px] px-[20px] py-[11px] flex items-center gap-[8px] shrink-0">
-            <span className="w-[6px] h-[6px] rounded-[3px] bg-[#8A94AD] shrink-0" />
-            <span className="font-['Onest'] font-semibold text-[14px] leading-[20px] text-[#3B4664]">
+        <div className="w-full min-h-[118px] sm:min-h-[136px] bg-white border border-[#DDE2EC] rounded-[12px] p-[1px] flex flex-col justify-between overflow-hidden shadow-2xs">
+          <div className="w-full h-[34px] sm:h-[42px] bg-[#EEF1F6] rounded-t-[10px] px-3 sm:px-[20px] py-2 sm:py-[11px] flex items-center gap-1.5 sm:gap-[8px] shrink-0">
+            <span className="w-[5px] h-[5px] sm:w-[6px] sm:h-[6px] rounded-[3px] bg-[#8A94AD] shrink-0" />
+            <span className="font-['Onest'] font-semibold text-[12px] sm:text-[14px] leading-[18px] sm:leading-[20px] text-[#3B4664] truncate">
               Each quarter
             </span>
           </div>
-          <div className="flex-1 px-[20px] pt-[16px] pb-[20px] flex flex-col gap-[4px] justify-between">
-            <div className="flex items-start gap-[5px] tabular-nums">
-              <span className="font-['Onest'] font-extrabold text-[28px] leading-[36px] tracking-[-0.5px] text-[#0B1530]">
+          <div className="flex-1 px-3 sm:px-[20px] py-2.5 sm:pt-[16px] sm:pb-[20px] flex flex-col gap-1 sm:gap-[4px] justify-between">
+            <div className="flex items-baseline gap-1 sm:gap-[5px] tabular-nums">
+              <span className="font-['Onest'] font-extrabold text-[19px] xs:text-[22px] sm:text-[28px] leading-[26px] sm:leading-[36px] tracking-[-0.5px] text-[#0B1530]">
                 330.00
               </span>
-              <span className="pt-[15px] font-['Onest'] font-bold text-[12px] leading-[16px] text-[#0B1530]">
+              <span className="font-['Onest'] font-bold text-[11px] sm:text-[12px] leading-[16px] text-[#0B1530]">
                 USDC
               </span>
             </div>
-            <span className="font-['Onest'] font-medium text-[12px] leading-[16px] text-[#4A5675] truncate">
+            <span className="font-['Onest'] font-medium text-[11px] sm:text-[12px] leading-[15px] sm:leading-[16px] text-[#4A5675] truncate">
               School fees and office internet
             </span>
           </div>
         </div>
 
         {/* TotalCard 3: Next due */}
-        <div className="w-full h-[136px] bg-white border border-[#DDE2EC] rounded-[12px] p-[1px] flex flex-col overflow-hidden">
-          <div className="w-full h-[42px] bg-[#FFF1D6] rounded-t-[10px] px-[20px] py-[11px] flex items-center gap-[8px] shrink-0">
-            <span className="w-[6px] h-[6px] rounded-[3px] bg-[#E59A1A] shrink-0" />
-            <span className="font-['Onest'] font-semibold text-[14px] leading-[20px] text-[#8A5300]">
+        <div className="w-full min-h-[118px] sm:min-h-[136px] bg-white border border-[#DDE2EC] rounded-[12px] p-[1px] flex flex-col justify-between overflow-hidden shadow-2xs">
+          <div className="w-full h-[34px] sm:h-[42px] bg-[#FFF1D6] rounded-t-[10px] px-3 sm:px-[20px] py-2 sm:py-[11px] flex items-center gap-1.5 sm:gap-[8px] shrink-0">
+            <span className="w-[5px] h-[5px] sm:w-[6px] sm:h-[6px] rounded-[3px] bg-[#E59A1A] shrink-0" />
+            <span className="font-['Onest'] font-semibold text-[12px] sm:text-[14px] leading-[18px] sm:leading-[20px] text-[#8A5300] truncate">
               Next due
             </span>
           </div>
-          <div className="flex-1 px-[20px] pt-[16px] pb-[20px] flex flex-col gap-[4px] justify-between">
-            <span className="font-['Onest'] font-extrabold text-[28px] leading-[36px] tracking-[-0.5px] text-[#0B1530]">
+          <div className="flex-1 px-3 sm:px-[20px] py-2.5 sm:pt-[16px] sm:pb-[20px] flex flex-col gap-1 sm:gap-[4px] justify-between">
+            <span className="font-['Onest'] font-extrabold text-[18px] xs:text-[20px] sm:text-[28px] leading-[26px] sm:leading-[36px] tracking-[-0.5px] text-[#0B1530] truncate">
               Fri 23 Oct
             </span>
-            <span className="font-['Onest'] font-medium text-[12px] leading-[16px] text-[#4A5675] truncate">
+            <span className="font-['Onest'] font-medium text-[11px] sm:text-[12px] leading-[15px] sm:leading-[16px] text-[#4A5675] truncate">
               Home electricity, 38.50 USDC
             </span>
           </div>
         </div>
 
         {/* TotalCard 4: Overdue */}
-        <div className="w-full h-[136px] bg-white border border-[#DDE2EC] rounded-[12px] p-[1px] flex flex-col overflow-hidden">
-          <div className="w-full h-[42px] bg-[#FDE8E6] rounded-t-[10px] px-[20px] py-[11px] flex items-center gap-[8px] shrink-0">
-            <span className="w-[6px] h-[6px] rounded-[3px] bg-[#B42318] shrink-0" />
-            <span className="font-['Onest'] font-semibold text-[14px] leading-[20px] text-[#B42318]">
+        <div className="w-full min-h-[118px] sm:min-h-[136px] bg-white border border-[#DDE2EC] rounded-[12px] p-[1px] flex flex-col justify-between overflow-hidden shadow-2xs">
+          <div className="w-full h-[34px] sm:h-[42px] bg-[#FDE8E6] rounded-t-[10px] px-3 sm:px-[20px] py-2 sm:py-[11px] flex items-center gap-1.5 sm:gap-[8px] shrink-0">
+            <span className="w-[5px] h-[5px] sm:w-[6px] sm:h-[6px] rounded-[3px] bg-[#B42318] shrink-0" />
+            <span className="font-['Onest'] font-semibold text-[12px] sm:text-[14px] leading-[18px] sm:leading-[20px] text-[#B42318] truncate">
               Overdue
             </span>
           </div>
-          <div className="flex-1 px-[20px] pt-[16px] pb-[20px] flex flex-col gap-[4px] justify-between">
-            <div className="flex items-start gap-[5px] tabular-nums">
-              <span className="font-['Onest'] font-extrabold text-[28px] leading-[36px] tracking-[-0.5px] text-[#B42318]">
+          <div className="flex-1 px-3 sm:px-[20px] py-2.5 sm:pt-[16px] sm:pb-[20px] flex flex-col gap-1 sm:gap-[4px] justify-between">
+            <div className="flex items-baseline gap-1 sm:gap-[5px] tabular-nums">
+              <span className="font-['Onest'] font-extrabold text-[19px] xs:text-[22px] sm:text-[28px] leading-[26px] sm:leading-[36px] tracking-[-0.5px] text-[#B42318]">
                 1
               </span>
-              <span className="pt-[15px] font-['Onest'] font-bold text-[12px] leading-[16px] text-[#B42318]">
+              <span className="font-['Onest'] font-bold text-[11px] sm:text-[12px] leading-[16px] text-[#B42318]">
                 bill
               </span>
             </div>
-            <span className="font-['Onest'] font-medium text-[12px] leading-[16px] text-[#4A5675] truncate">
+            <span className="font-['Onest'] font-medium text-[11px] sm:text-[12px] leading-[15px] sm:leading-[16px] text-[#4A5675] truncate">
               Fibre internet, 2 days late
             </span>
           </div>

@@ -97,6 +97,10 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
     if (monthlyXlm > 0) secondaryParts.push(`${monthlyXlm.toFixed(2)} XLM`);
     if (monthlyEur > 0) secondaryParts.push(`${monthlyEur.toFixed(2)} EUR`);
 
+    // Limit preview items to 5 items
+    const previewBills = bills.slice(0, 5);
+    const moreBillsCount = Math.max(0, bills.length - 5);
+
     return (
       <div
         onClick={(e) => e.stopPropagation()}
@@ -133,59 +137,39 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
           </div>
 
           <p className="font-medium text-[12px] leading-[16px] text-white/[0.74] w-full">
-            Every bill Billza is tracking for you, grouped by billing cycle.
+            Every bill Billza is tracking for you ({monthlyBills.length} monthly, {quarterlyBills.length} quarterly).
           </p>
         </div>
 
-        {/* Lists Container */}
-        <div className="flex flex-col items-start gap-[14px] w-full">
-          {/* Monthly */}
-          <div className="flex flex-col items-start gap-[2px] w-full">
+        {/* Lists Container (limited to 5 items) */}
+        <div className="flex flex-col items-start gap-[6px] w-full">
+          <div className="flex items-center justify-between w-full">
             <span className="font-semibold text-[12px] leading-[16px] tracking-[0.6px] text-white/[0.74]">
-              Monthly · {monthlyBills.length}
+              Preview ({previewBills.length} of {bills.length})
             </span>
-            <div className="flex flex-col w-full">
-              {monthlyBills.length === 0 ? (
-                <span className="text-[12px] text-white/60 py-2">No monthly bills</span>
-              ) : (
-                monthlyBills.map((item, idx) =>
-                  renderRowItem(
-                    item.id,
-                    item.name,
-                    `${item.category} · ${item.dueDateLabel}`,
-                    item.amount,
-                    item.currency,
-                    idx === 0,
-                    onSelectBill ? () => onSelectBill(item) : undefined
-                  )
-                )
-              )}
-            </div>
           </div>
-
-          {/* Quarterly */}
-          <div className="flex flex-col items-start gap-[2px] w-full">
-            <span className="font-semibold text-[12px] leading-[16px] tracking-[0.6px] text-white/[0.74]">
-              Quarterly · {quarterlyBills.length}
+          <div className="flex flex-col w-full">
+            {previewBills.length === 0 ? (
+              <span className="text-[12px] text-white/60 py-2">No bills tracked</span>
+            ) : (
+              previewBills.map((item, idx) =>
+                renderRowItem(
+                  item.id,
+                  item.name,
+                  `${item.category} · ${item.frequency} · ${item.dueDateLabel}`,
+                  item.amount,
+                  item.currency,
+                  idx === 0,
+                  onSelectBill ? () => onSelectBill(item) : undefined
+                )
+              )
+            )}
+          </div>
+          {moreBillsCount > 0 && (
+            <span className="text-[11px] font-medium text-white/70 pt-1">
+              + {moreBillsCount} more {moreBillsCount === 1 ? 'bill' : 'bills'} in your account
             </span>
-            <div className="flex flex-col w-full">
-              {quarterlyBills.length === 0 ? (
-                <span className="text-[12px] text-white/60 py-2">No quarterly bills</span>
-              ) : (
-                quarterlyBills.map((item, idx) =>
-                  renderRowItem(
-                    item.id,
-                    item.name,
-                    `${item.category} · ${item.dueDateLabel}`,
-                    item.amount,
-                    item.currency,
-                    idx === 0,
-                    onSelectBill ? () => onSelectBill(item) : undefined
-                  )
-                )
-              )}
-            </div>
-          </div>
+          )}
         </div>
 
         {/* Bottom Footer */}
@@ -224,8 +208,8 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
 
   if (kind === 'next14') {
     const next14Bills = bills.filter((b) => b.inNext14Days && b.status !== 'paid');
-    const thisWeekBills = next14Bills.filter((b) => b.inNext7Days);
-    const nextWeekBills = next14Bills.filter((b) => !b.inNext7Days);
+    const previewNext14 = next14Bills.slice(0, 5);
+    const moreNext14Count = Math.max(0, next14Bills.length - 5);
     const next14Usdc = next14Bills
       .filter((b) => b.currency === 'USDC')
       .reduce((s, b) => s + b.amount, 0);
@@ -279,53 +263,33 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
           </p>
         </div>
 
-        {/* Lists Container */}
-        <div className="flex flex-col items-start gap-[14px] w-full">
-          <div className="flex flex-col items-start gap-[2px] w-full">
-            <span className="font-semibold text-[12px] leading-[16px] tracking-[0.6px] text-white/[0.74]">
-              Due this week · {thisWeekBills.length}
-            </span>
-            <div className="flex flex-col w-full">
-              {thisWeekBills.length === 0 ? (
-                <span className="text-[12px] text-white/60 py-2">No bills due this week</span>
-              ) : (
-                thisWeekBills.map((item, idx) =>
-                  renderRowItem(
-                    item.id,
-                    item.name,
-                    `${item.category} · ${item.dueDateLabel}`,
-                    item.amount,
-                    item.currency,
-                    idx === 0,
-                    onSelectBill ? () => onSelectBill(item) : undefined
-                  )
+        {/* Lists Container (limited to 5 items) */}
+        <div className="flex flex-col items-start gap-[6px] w-full">
+          <span className="font-semibold text-[12px] leading-[16px] tracking-[0.6px] text-white/[0.74]">
+            Upcoming ({previewNext14.length} of {next14Bills.length})
+          </span>
+          <div className="flex flex-col w-full">
+            {previewNext14.length === 0 ? (
+              <span className="text-[12px] text-white/60 py-2">No bills due in the next 14 days</span>
+            ) : (
+              previewNext14.map((item, idx) =>
+                renderRowItem(
+                  item.id,
+                  item.name,
+                  `${item.category} · ${item.dueDateLabel} (${item.dueInLabel})`,
+                  item.amount,
+                  item.currency,
+                  idx === 0,
+                  onSelectBill ? () => onSelectBill(item) : undefined
                 )
-              )}
-            </div>
+              )
+            )}
           </div>
-
-          <div className="flex flex-col items-start gap-[2px] w-full">
-            <span className="font-semibold text-[12px] leading-[16px] tracking-[0.6px] text-white/[0.74]">
-              Due next week · {nextWeekBills.length}
+          {moreNext14Count > 0 && (
+            <span className="text-[11px] font-medium text-white/70 pt-1">
+              + {moreNext14Count} more upcoming {moreNext14Count === 1 ? 'bill' : 'bills'}
             </span>
-            <div className="flex flex-col w-full">
-              {nextWeekBills.length === 0 ? (
-                <span className="text-[12px] text-white/60 py-2">No bills due next week</span>
-              ) : (
-                nextWeekBills.map((item, idx) =>
-                  renderRowItem(
-                    item.id,
-                    item.name,
-                    `${item.category} · ${item.dueDateLabel}`,
-                    item.amount,
-                    item.currency,
-                    idx === 0,
-                    onSelectBill ? () => onSelectBill(item) : undefined
-                  )
-                )
-              )}
-            </div>
-          </div>
+          )}
         </div>
 
         {/* Bottom Footer */}
@@ -364,6 +328,8 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
 
   if (kind === 'overdue') {
     const overdueList = bills.filter((b) => b.status === 'overdue');
+    const previewOverdue = overdueList.slice(0, 5);
+    const moreOverdueCount = Math.max(0, overdueList.length - 5);
     const overdueTotalUsdc = overdueList.reduce((acc, b) => acc + b.amount, 0);
 
     return (
@@ -406,15 +372,15 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
           </p>
         </div>
 
-        {/* Overdue Items */}
-        <div className="flex flex-col items-start gap-[14px] w-full">
+        {/* Overdue Items (limited to 5 items) */}
+        <div className="flex flex-col items-start gap-[10px] w-full">
           <div className="flex flex-col items-start gap-[2px] w-full">
             <span className="font-semibold text-[12px] leading-[16px] tracking-[0.6px] text-white/[0.78]">
-              Past due · {overdueList.length}
+              Past due ({previewOverdue.length} of {overdueList.length})
             </span>
             <div className="flex flex-col w-full">
-              {overdueList.length > 0 ? (
-                overdueList.map((bill, idx) =>
+              {previewOverdue.length > 0 ? (
+                previewOverdue.map((bill, idx) =>
                   renderRowItem(
                     bill.id,
                     bill.name,
@@ -431,14 +397,19 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
                 </div>
               )}
             </div>
+            {moreOverdueCount > 0 && (
+              <span className="text-[11px] font-medium text-white/80 pt-1">
+                + {moreOverdueCount} more overdue {moreOverdueCount === 1 ? 'bill' : 'bills'}
+              </span>
+            )}
           </div>
 
           {overdueList.length > 0 && (
-            <div className="w-full rounded-[8px] bg-white/[0.14] border border-white/[0.22] px-3 py-2.5 flex flex-col gap-1">
+            <div className="w-full rounded-[8px] bg-white/[0.14] border border-white/[0.22] px-3 py-2 flex flex-col gap-0.5">
               <span className="font-bold text-[12px] leading-[16px] text-white">
                 Payment Status
               </span>
-              <span className="font-medium text-[12px] leading-[16px] text-white/[0.86]">
+              <span className="font-medium text-[11px] leading-[15px] text-white/[0.86]">
                 {overdueList[0].name} was due on {overdueList[0].dueDateLabel}. Action required to settle payment.
               </span>
             </div>
@@ -480,7 +451,10 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
   // kind === 'paid'
   const stellarPaid = payments.filter((p) => p.status === 'paid');
   const manualPaid = payments.filter((p) => p.status === 'manual');
-  const totalPaidCount = stellarPaid.length + manualPaid.length;
+  const allPaid = payments.filter((p) => p.status === 'paid' || p.status === 'manual');
+  const previewPaid = allPaid.slice(0, 5);
+  const morePaidCount = Math.max(0, allPaid.length - 5);
+
   const paidUsdc = payments
     .filter((p) => p.currency === 'USDC' && (p.status === 'paid' || p.status === 'manual'))
     .reduce((s, p) => s + p.amount, 0);
@@ -515,7 +489,7 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
             </div>
             <div className="flex items-start gap-[8px] h-[44px] tabular-nums">
               <span className="font-extrabold text-[40px] leading-[44px] tracking-[-1px] text-white">
-                {totalPaidCount}
+                {allPaid.length}
               </span>
               <span className="pt-[18px] font-extrabold text-[18px] leading-[22px] text-white">
                 paid
@@ -534,55 +508,36 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
         </div>
 
         <p className="font-medium text-[12px] leading-[16px] text-white/[0.74] w-full">
-          Bills settled in October via Stellar Testnet or marked paid directly.
+          Bills settled in October via Stellar Testnet ({stellarPaid.length}) or marked paid directly ({manualPaid.length}).
         </p>
       </div>
 
-      {/* Lists Container */}
-      <div className="flex flex-col items-start gap-[14px] w-full">
-        <div className="flex flex-col items-start gap-[2px] w-full">
-          <span className="font-semibold text-[12px] leading-[16px] tracking-[0.6px] text-white/[0.74]">
-            Verified on Stellar · {stellarPaid.length}
-          </span>
-          <div className="flex flex-col w-full">
-            {stellarPaid.length === 0 ? (
-              <span className="text-[12px] text-white/60 py-2">No Stellar payments yet</span>
-            ) : (
-              stellarPaid.map((p, idx) =>
-                renderRowItem(
-                  p.id,
-                  p.name,
-                  `Paid on Stellar · ${p.dateLabel}`,
-                  p.amount,
-                  p.currency,
-                  idx === 0
-                )
+      {/* Lists Container (limited to 5 items) */}
+      <div className="flex flex-col items-start gap-[6px] w-full">
+        <span className="font-semibold text-[12px] leading-[16px] tracking-[0.6px] text-white/[0.74]">
+          Recent payments ({previewPaid.length} of {allPaid.length})
+        </span>
+        <div className="flex flex-col w-full">
+          {previewPaid.length === 0 ? (
+            <span className="text-[12px] text-white/60 py-2">No payments settled in October</span>
+          ) : (
+            previewPaid.map((p, idx) =>
+              renderRowItem(
+                p.id,
+                p.name,
+                `${p.status === 'paid' ? 'Paid on Stellar' : 'Direct payment'} · ${p.dateLabel}`,
+                p.amount,
+                p.currency,
+                idx === 0
               )
-            )}
-          </div>
+            )
+          )}
         </div>
-
-        <div className="flex flex-col items-start gap-[2px] w-full">
-          <span className="font-semibold text-[12px] leading-[16px] tracking-[0.6px] text-white/[0.74]">
-            Marked paid by you · {manualPaid.length}
+        {morePaidCount > 0 && (
+          <span className="text-[11px] font-medium text-white/70 pt-1">
+            + {morePaidCount} more {morePaidCount === 1 ? 'payment' : 'payments'} settled in October
           </span>
-          <div className="flex flex-col w-full">
-            {manualPaid.length === 0 ? (
-              <span className="text-[12px] text-white/60 py-2">No direct payments marked</span>
-            ) : (
-              manualPaid.map((p, idx) =>
-                renderRowItem(
-                  p.id,
-                  p.name,
-                  `Direct payment · ${p.dateLabel}`,
-                  p.amount,
-                  p.currency,
-                  idx === 0
-                )
-              )
-            )}
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Bottom Footer */}

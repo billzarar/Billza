@@ -14,6 +14,7 @@ import {
   X,
 } from 'lucide-react';
 import { BillzaLogo } from './BillIcons';
+import { AuthUser } from '../services/api';
 
 export type NavTab = 'dashboard' | 'bills' | 'reminders' | 'history' | 'settings' | 'help';
 
@@ -25,6 +26,7 @@ interface SidebarProps {
   mobileOpen: boolean;
   onCloseMobile: () => void;
   remindersCount: number;
+  user?: AuthUser | null;
   wallet: {
     addressShort: string;
     connected: boolean;
@@ -46,6 +48,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   mobileOpen,
   onCloseMobile,
   remindersCount,
+  user,
   wallet,
   onOpenWalletModal,
   onOpenLanding,
@@ -71,6 +74,35 @@ export const Sidebar: React.FC<SidebarProps> = ({
     onSelectTab(tab);
     onCloseMobile();
   };
+
+  const getInitials = () => {
+    if (user?.first_name && user?.last_name) {
+      return `${user.first_name[0]}${user.last_name[0]}`.toUpperCase();
+    }
+    if (user?.full_name) {
+      const parts = user.full_name.trim().split(/\s+/);
+      if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+      return parts[0].slice(0, 2).toUpperCase();
+    }
+    if (user?.username) {
+      return user.username.slice(0, 2).toUpperCase();
+    }
+    if (wallet?.addressShort) {
+      return wallet.addressShort.slice(0, 2).toUpperCase();
+    }
+    return 'BZ';
+  };
+
+  const displayName =
+    user?.full_name ||
+    (user?.first_name ? `${user.first_name} ${user.last_name || ''}`.trim() : '') ||
+    user?.username ||
+    (user?.email ? user.email.split('@')[0] : '') ||
+    'Billza User';
+
+  const accountSubtitle =
+    user?.email ||
+    (wallet?.addressShort ? `Wallet ${wallet.addressShort}` : 'Personal account');
 
   const renderSidebarContent = (isMobile = false) => {
     const isCollapsed = !isMobile && collapsed;
@@ -200,10 +232,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <button
                 type="button"
                 onClick={onOpenWalletModal}
-                title="Amara Okafor · Wallet Connected"
-                className="w-[44px] h-[44px] rounded-full bg-[#E6ECFB] border-2 border-[#4164D9] flex items-center justify-center text-[#2F4FBF] font-bold text-[14px] hover:opacity-90 transition-opacity"
+                title={`${displayName} · ${wallet.connected ? 'Wallet Connected' : 'Billza'}`}
+                className="w-[44px] h-[44px] rounded-full bg-[#E6ECFB] border-2 border-[#4164D9] flex items-center justify-center text-[#2F4FBF] font-bold text-[14px] hover:opacity-90 transition-opacity overflow-hidden"
               >
-                AO
+                {user?.avatar ? (
+                  <img src={user.avatar} alt={displayName} className="w-full h-full object-cover" />
+                ) : (
+                  getInitials()
+                )}
               </button>
             ) : (
               <div className="w-full bg-[#1A2A55] border border-white/[0.06] rounded-[12px] px-[13px] py-[15px] flex flex-col gap-[12px]">
@@ -213,17 +249,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   onClick={() => handleNavClick('settings')}
                   className="flex items-center gap-[10px] w-full text-left group focus:outline-none"
                 >
-                  <div className="w-[40px] h-[40px] rounded-[20px] bg-[#E6ECFB] border-2 border-[#4164D9] flex items-center justify-center shrink-0">
-                    <span className="text-[#2F4FBF] font-bold text-[14px] leading-[20px]">
-                      AO
-                    </span>
+                  <div className="w-[40px] h-[40px] rounded-[20px] bg-[#E6ECFB] border-2 border-[#4164D9] flex items-center justify-center shrink-0 overflow-hidden">
+                    {user?.avatar ? (
+                      <img src={user.avatar} alt={displayName} className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="text-[#2F4FBF] font-bold text-[14px] leading-[20px]">
+                        {getInitials()}
+                      </span>
+                    )}
                   </div>
                   <div className="flex flex-col min-w-0">
                     <span className="text-white font-bold text-[14px] leading-[20px] truncate group-hover:underline">
-                      Amara Okafor
+                      {displayName}
                     </span>
                     <span className="text-[#A9B4CC] font-medium text-[12px] leading-[16px] truncate">
-                      Personal account
+                      {accountSubtitle}
                     </span>
                   </div>
                 </button>

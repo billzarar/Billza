@@ -23,6 +23,7 @@ export interface AuthUser {
   first_name?: string;
   last_name?: string;
   full_name?: string;
+  avatar?: string;
   wallet_address?: string;
   preferred_currency?: Currency;
   is_verified?: boolean;

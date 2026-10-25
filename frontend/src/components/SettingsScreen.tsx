@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   User,
   Mail,
@@ -78,7 +78,61 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
       .toUpperCase()
       .slice(0, 2) || 'BZ'
   );
-  const [customPhoto, setCustomPhoto] = useState<string | null>(null);
+function resizeImageToDataUrl(file: File, maxSize = 256): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const result = e.target?.result as string;
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+        if (width > height) {
+          if (width > maxSize) {
+            height = Math.round((height * maxSize) / width);
+            width = maxSize;
+          }
+        } else {
+          if (height > maxSize) {
+            width = Math.round((width * maxSize) / height);
+            height = maxSize;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL('image/jpeg', 0.85));
+        } else {
+          resolve(result);
+        }
+      };
+      img.onerror = () => resolve(result);
+      img.src = result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+  const [customPhoto, setCustomPhoto] = useState<string | null>(() => {
+    return (
+      currentUser?.avatar ||
+      (typeof window !== 'undefined' ? localStorage.getItem('billza_user_avatar') : null) ||
+      null
+    );
+  });
+
+  useEffect(() => {
+    if (currentUser?.avatar) {
+      setCustomPhoto(currentUser.avatar);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('billza_user_avatar', currentUser.avatar);
+      }
+    }
+  }, [currentUser?.avatar]);
 
   // Email state
   const [email, setEmail] = useState(currentUser?.email || 'user@billza.app');
@@ -136,6 +190,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
       const updated = await updateUserProfile({
         full_name: fullName,
         preferred_currency: currency,
+        avatar: customPhoto || '',
       });
       if (onUpdateUser) {
         onUpdateUser(updated);
@@ -147,21 +202,52 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
     }
   };
 
-  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = (uploadEvent) => {
-        setCustomPhoto(uploadEvent.target?.result as string);
-        onTriggerToast('Uploaded profile photo');
-      };
-      reader.readAsDataURL(file);
+      try {
+        onTriggerToast('Optimizing and saving profile photo...');
+        const dataUrl = await resizeImageToDataUrl(file, 256);
+        setCustomPhoto(dataUrl);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('billza_user_avatar', dataUrl);
+        }
+
+        // Persist directly to backend database
+        const updated = await updateUserProfile({
+          full_name: fullName,
+          avatar: dataUrl,
+          preferred_currency: currency,
+        });
+
+        if (onUpdateUser) {
+          onUpdateUser(updated);
+        }
+        onTriggerToast('Profile picture saved successfully!');
+      } catch (err: any) {
+        console.error('Photo upload error:', err);
+        onTriggerToast('Failed to save profile picture');
+      }
     }
   };
 
-  const handleRemovePhoto = () => {
+  const handleRemovePhoto = async () => {
     setCustomPhoto(null);
-    onTriggerToast('Removed profile photo (using AO initials)');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('billza_user_avatar');
+    }
+    try {
+      const updated = await updateUserProfile({
+        avatar: '',
+      });
+      if (onUpdateUser) {
+        onUpdateUser(updated);
+      }
+      onTriggerToast('Profile photo removed');
+    } catch (err: any) {
+      console.warn('Remove photo note:', err);
+      onTriggerToast('Profile photo removed');
+    }
   };
 
   const handleSignOutOtherSessions = () => {
