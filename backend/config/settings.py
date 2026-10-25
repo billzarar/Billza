@@ -229,6 +229,8 @@ SPECTACULAR_SETTINGS = {
         'Stellar Testnet XLM and USDC verified payments, and on-chain Soroban contract settlement.'
     ),
     'VERSION': '1.0.0',
+    # Pin to a stable version without the import.meta bundle bug:
+    'REDOC_DIST': 'https://cdn.jsdelivr.net/npm/redoc@2.1.5',
     'SERVE_INCLUDE_SCHEMA': False,
     'COMPONENT_SPLIT_REQUEST': True,
     'TAGS': [
