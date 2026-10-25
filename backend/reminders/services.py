@@ -59,7 +59,7 @@ def process_scheduled_reminders() -> dict:
             )
 
             # In-App Reminder
-            if prefs.in_app_enabled:
+            if prefs.in_app_enabled and getattr(occ.bill, 'remind_in_app', True):
                 in_app_rem, created = Reminder.objects.get_or_create(
                     occurrence=occ,
                     reminder_type=r_type,
@@ -79,7 +79,12 @@ def process_scheduled_reminders() -> dict:
                     stats['dispatched'] += 1
 
             # Email Reminder
-            if prefs.email_enabled and user.email and not user.email.endswith('@stellar.billza.local'):
+            if (
+                prefs.email_enabled
+                and getattr(occ.bill, 'remind_email', True)
+                and user.email
+                and not user.email.endswith('@stellar.billza.local')
+            ):
                 email_rem, created = Reminder.objects.get_or_create(
                     occurrence=occ,
                     reminder_type=r_type,

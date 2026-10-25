@@ -2,7 +2,7 @@ export type Currency = 'USDC' | 'XLM' | 'EUR';
 
 export type BillStatus = 'overdue' | 'soon' | 'pending' | 'upcoming' | 'paid' | 'manual';
 
-export type BillIconType = 'wifi' | 'bolt' | 'monitor' | 'shield' | 'house' | 'drop' | 'grad' | 'building';
+export type BillIconType = 'wifi' | 'bolt' | 'monitor' | 'shield' | 'house' | 'drop' | 'grad' | 'building' | 'receipt';
 
 export interface BillHistoryRecord {
   id: string;
@@ -59,6 +59,7 @@ export interface PaymentHistoryItem {
   billId: string;
   name: string;
   dateLabel: string;
+  date?: string;
   amount: number;
   currency: Currency;
   status: 'pending' | 'failed' | 'paid' | 'manual';

@@ -56,6 +56,8 @@ class PaymentPrepareResponseSerializer(serializers.Serializer):
     estimated_network_fee = serializers.CharField()
     contract_id = serializers.CharField()
     network_passphrase = serializers.CharField()
+    usdc_issuer = serializers.CharField(required=False, default='')
+    horizon_url = serializers.CharField(required=False, default='')
 
 class PaymentVerifyRequestSerializer(serializers.Serializer):
     occurrence_id = serializers.IntegerField(required=True)

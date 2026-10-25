@@ -8,4 +8,5 @@ urlpatterns = [
     path('history/export-csv/', views.payment_history_export_csv, name='payment-history-export-csv'),
     path('wallet/balances/', views.stellar_wallet_balances, name='wallet-balances'),
     path('wallet/faucet/', views.fund_wallet_faucet, name='wallet-faucet'),
+    path('testnet-execute/', views.payment_testnet_execute, name='payment-testnet-execute'),
 ]

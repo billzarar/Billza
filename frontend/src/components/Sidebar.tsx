@@ -253,8 +253,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
                 {/* Balances Row */}
                 <div className="flex items-center justify-between px-[4px] w-full text-[12px] leading-[16px] font-bold text-white tabular-nums">
-                  <span>{wallet.balances.USDC.toFixed(2)} USDC</span>
-                  <span>{wallet.balances.XLM.toFixed(2)} XLM</span>
+                  <span>{((wallet?.balances?.USDC) ?? 0).toFixed(2)} USDC</span>
+                  <span>{((wallet?.balances?.XLM) ?? 0).toFixed(2)} XLM</span>
                 </div>
               </div>
             )}

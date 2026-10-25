@@ -18,6 +18,9 @@ class UserLoginSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True, required=True)
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)
+    first_name = serializers.CharField(source='user.first_name', read_only=True)
+    last_name = serializers.CharField(source='user.last_name', read_only=True)
     email = serializers.EmailField(source='user.email', read_only=True)
     full_name = serializers.SerializerMethodField()
     date_joined = serializers.DateTimeField(source='user.date_joined', read_only=True)
@@ -26,6 +29,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = [
             'id',
+            'username',
+            'first_name',
+            'last_name',
             'email',
             'full_name',
             'wallet_address',
@@ -36,7 +42,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at',
         ]
-        read_only_fields = ['id', 'email', 'date_joined', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'username', 'first_name', 'last_name', 'email', 'date_joined', 'created_at', 'updated_at']
 
     @extend_schema_field(serializers.CharField())
     def get_full_name(self, obj):

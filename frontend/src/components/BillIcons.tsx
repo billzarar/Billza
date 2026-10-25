@@ -8,6 +8,7 @@ import {
   Droplet,
   GraduationCap,
   Building2,
+  Receipt,
 } from 'lucide-react';
 import { BillIconType } from '../data/initialData';
 
@@ -35,6 +36,8 @@ export const BillIcon: React.FC<BillIconProps> = ({ type, className = '', size =
       return <GraduationCap size={size} strokeWidth={1.8} className={className} />;
     case 'building':
       return <Building2 size={size} strokeWidth={1.8} className={className} />;
+    case 'receipt':
+      return <Receipt size={size} strokeWidth={1.8} className={className} />;
     default:
       return <Home size={size} strokeWidth={1.8} className={className} />;
   }

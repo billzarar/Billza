@@ -21,18 +21,19 @@ def add_months(sourcedate: date, months: int) -> date:
     day = min(sourcedate.day, calendar.monthrange(year, month)[1])
     return date(year, month, day)
 
-def calculate_next_due_date(current_due_date: date, frequency: str) -> Optional[date]:
+def calculate_next_due_date(current_due_date: date, frequency: str, repeat_every: int = 1) -> Optional[date]:
     """
-    Calculate the next occurrence due date based on frequency.
+    Calculate the next occurrence due date based on frequency and repeat_every interval multiplier.
     """
+    step = max(1, repeat_every)
     if frequency == BillFrequency.WEEKLY:
-        return current_due_date + timedelta(days=7)
+        return current_due_date + timedelta(days=7 * step)
     elif frequency == BillFrequency.MONTHLY:
-        return add_months(current_due_date, 1)
+        return add_months(current_due_date, 1 * step)
     elif frequency == BillFrequency.QUARTERLY:
-        return add_months(current_due_date, 3)
+        return add_months(current_due_date, 3 * step)
     elif frequency == BillFrequency.YEARLY:
-        year = current_due_date.year + 1
+        year = current_due_date.year + step
         month = current_due_date.month
         day = min(current_due_date.day, calendar.monthrange(year, month)[1])
         return date(year, month, day)
@@ -62,12 +63,20 @@ def advance_recurring_bill(bill: Bill, completed_occurrence: BillOccurrence) -> 
     1. Bill is active.
     2. Bill frequency is recurring (not ONE_OFF).
     3. Next due date is <= bill.end_date (if end_date exists).
-    4. Next occurrence does not already exist.
+    4. Occurrence count does not exceed bill.end_occurrences (if ends_type == count).
+    5. Next occurrence does not already exist.
     """
     if not bill.is_active or not bill.is_recurring:
         return None
 
-    next_due_date = calculate_next_due_date(completed_occurrence.due_date, bill.frequency)
+    if getattr(bill, 'ends_type', 'never') == 'count' and bill.end_occurrences:
+        if completed_occurrence.occurrence_number >= bill.end_occurrences:
+            bill.is_active = False
+            bill.save(update_fields=['is_active', 'updated_at'])
+            return None
+
+    repeat_step = getattr(bill, 'repeat_every', 1) or 1
+    next_due_date = calculate_next_due_date(completed_occurrence.due_date, bill.frequency, repeat_step)
     if not next_due_date:
         return None
 

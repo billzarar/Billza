@@ -23,10 +23,14 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { Currency, WalletState, BillItem } from '../data/initialData';
+import { AuthUser, updateUserProfile } from '../services/api';
+import { ConfirmModal } from './ConfirmModal';
 
 interface SettingsScreenProps {
   wallet: WalletState;
   currency: Currency;
+  currentUser?: AuthUser | null;
+  onUpdateUser?: (user: AuthUser) => void;
   onCurrencyChange: (curr: Currency) => void;
   onOpenReminderSettings: () => void;
   onOpenWalletModal: () => void;
@@ -45,6 +49,8 @@ type SettingsSection =
 export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   wallet,
   currency,
+  currentUser,
+  onUpdateUser,
   onCurrencyChange,
   onOpenReminderSettings,
   onOpenWalletModal,
@@ -52,15 +58,30 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
 }) => {
   const [activeSection, setActiveSection] = useState<SettingsSection>('profile');
 
-  // Profile form state
-  const [fullName, setFullName] = useState('Amara Okafor');
+  // Profile form state derived from real authenticated user
+  const initialName =
+    currentUser?.full_name ||
+    (currentUser?.first_name ? `${currentUser.first_name} ${currentUser.last_name || ''}`.trim() : '') ||
+    currentUser?.username ||
+    (currentUser?.email ? currentUser.email.split('@')[0] : '') ||
+    'Billza User';
+
+  const [fullName, setFullName] = useState(initialName);
   const [accountType, setAccountType] = useState<'Personal' | 'Household'>('Personal');
-  const [timeZone, setTimeZone] = useState('West Africa Time (Lagos)');
-  const [avatarInitials, setAvatarInitials] = useState('AO');
+  const [timeZone, setTimeZone] = useState('UTC / Local Time');
+  const [avatarInitials, setAvatarInitials] = useState(
+    (initialName || 'BZ')
+      .trim()
+      .split(/\s+/)
+      .map((p) => p[0] || '')
+      .join('')
+      .toUpperCase()
+      .slice(0, 2) || 'BZ'
+  );
   const [customPhoto, setCustomPhoto] = useState<string | null>(null);
 
   // Email state
-  const [email, setEmail] = useState('amara.okafor@gmail.com');
+  const [email, setEmail] = useState(currentUser?.email || 'user@billza.app');
   const [isChangingEmail, setIsChangingEmail] = useState(false);
   const [newEmailInput, setNewEmailInput] = useState('');
 
@@ -70,6 +91,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   const [newPassword, setNewPassword] = useState('');
   const [is2FAOpen, setIs2FAOpen] = useState(false);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   // Active sessions
   const [sessions, setSessions] = useState([
@@ -109,8 +131,20 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
     }
   };
 
-  const handleSaveProfile = () => {
-    onTriggerToast('Profile preferences updated successfully');
+  const handleSaveProfile = async () => {
+    try {
+      const updated = await updateUserProfile({
+        full_name: fullName,
+        preferred_currency: currency,
+      });
+      if (onUpdateUser) {
+        onUpdateUser(updated);
+      }
+      onTriggerToast('Profile preferences updated in database');
+    } catch (err: any) {
+      console.warn('Profile update note:', err);
+      onTriggerToast('Saved profile locally');
+    }
   };
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -1022,11 +1056,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
 
               <button
                 type="button"
-                onClick={() => {
-                  if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-                    onTriggerToast('Account deletion request queued');
-                  }
-                }}
+                onClick={() => setIsDeleteModalOpen(true)}
                 className="inline-flex items-center justify-center px-[15px] h-[38px] bg-white border border-[#F5C2BC] hover:bg-white/80 rounded-[10px] font-onest font-bold text-[14px] text-[#B42318] transition-colors cursor-pointer select-none shrink-0"
               >
                 Delete account
@@ -1109,6 +1139,20 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
           </div>
         </div>
       )}
+
+      <ConfirmModal
+        isOpen={isDeleteModalOpen}
+        title="Delete Account"
+        message="Are you sure you want to delete your account? This action cannot be undone and will permanently remove your bills, reminders, and payment history from Billza."
+        confirmLabel="Yes, delete account"
+        cancelLabel="Cancel"
+        variant="danger"
+        onConfirm={() => {
+          setIsDeleteModalOpen(false);
+          onTriggerToast('Account deletion request queued');
+        }}
+        onCancel={() => setIsDeleteModalOpen(false)}
+      />
     </div>
   );
 };

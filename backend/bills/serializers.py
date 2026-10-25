@@ -5,6 +5,9 @@ from .models import Bill, BillOccurrence, BillCategory, BillFrequency, AssetType
 class BillOccurrenceSerializer(serializers.ModelSerializer):
     bill_name = serializers.CharField(source='bill.name', read_only=True)
     bill_category = serializers.CharField(source='bill.category', read_only=True)
+    custom_category = serializers.CharField(source='bill.custom_category', read_only=True)
+    payment_method = serializers.CharField(source='bill.payment_method', read_only=True)
+    account_reference = serializers.CharField(source='bill.account_reference', read_only=True)
     recipient_stellar_address = serializers.CharField(source='bill.recipient_stellar_address', read_only=True)
     recipient_name = serializers.CharField(source='bill.recipient_name', read_only=True)
 
@@ -15,6 +18,9 @@ class BillOccurrenceSerializer(serializers.ModelSerializer):
             'bill',
             'bill_name',
             'bill_category',
+            'custom_category',
+            'payment_method',
+            'account_reference',
             'occurrence_number',
             'due_date',
             'amount',
@@ -54,13 +60,19 @@ class BillSerializer(serializers.ModelSerializer):
             'name',
             'category',
             'category_display',
+            'custom_category',
             'description',
             'amount',
             'currency',
             'recipient_name',
             'recipient_stellar_address',
+            'payment_method',
+            'account_reference',
             'frequency',
             'frequency_display',
+            'repeat_every',
+            'ends_type',
+            'end_occurrences',
             'start_date',
             'due_date',
             'end_date',
@@ -70,6 +82,8 @@ class BillSerializer(serializers.ModelSerializer):
             'remind_1_day',
             'remind_on_due',
             'remind_overdue',
+            'remind_in_app',
+            'remind_email',
             'current_occurrence',
             'occurrences',
             'created_at',
@@ -85,17 +99,39 @@ class BillSerializer(serializers.ModelSerializer):
         return BillOccurrenceSerializer(occ).data if occ else None
 
 class BillCreateUpdateSerializer(serializers.ModelSerializer):
+    recipient_stellar_address = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True, default=''
+    )
+    recipient_name = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True, default=''
+    )
+    custom_category = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True, default=''
+    )
+    account_reference = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True, default=''
+    )
+    description = serializers.CharField(
+        required=False, allow_blank=True, allow_null=True, default=''
+    )
+
     class Meta:
         model = Bill
         fields = [
             'name',
             'category',
+            'custom_category',
             'description',
             'amount',
             'currency',
             'recipient_name',
             'recipient_stellar_address',
+            'payment_method',
+            'account_reference',
             'frequency',
+            'repeat_every',
+            'ends_type',
+            'end_occurrences',
             'start_date',
             'due_date',
             'end_date',
@@ -104,6 +140,8 @@ class BillCreateUpdateSerializer(serializers.ModelSerializer):
             'remind_1_day',
             'remind_on_due',
             'remind_overdue',
+            'remind_in_app',
+            'remind_email',
         ]
 
     def validate_amount(self, value):
@@ -112,13 +150,17 @@ class BillCreateUpdateSerializer(serializers.ModelSerializer):
         return value
 
     def validate_recipient_stellar_address(self, value):
-        if value:
-            from stellar_sdk import Keypair
-            try:
-                Keypair.from_public_key(value)
-            except Exception:
-                raise serializers.ValidationError("Recipient address must be a valid Stellar public key (starting with G).")
-        return value
+        if not value:
+            return ''
+        cleaned = str(value).strip()
+        if not cleaned:
+            return ''
+        from stellar_sdk import Keypair
+        try:
+            Keypair.from_public_key(cleaned)
+        except Exception:
+            raise serializers.ValidationError("Recipient address must be a valid Stellar public key (starting with G).")
+        return cleaned
 
 class OccurrenceMarkManualPaidSerializer(serializers.Serializer):
     notes = serializers.CharField(required=False, allow_blank=True, default='')

@@ -47,10 +47,16 @@ class Bill(models.Model):
     # Recipient payment details
     recipient_name = models.CharField(max_length=200, blank=True, default='')
     recipient_stellar_address = models.CharField(max_length=56, blank=True, default='', db_index=True)
+    custom_category = models.CharField(max_length=100, blank=True, default='')
+    payment_method = models.CharField(max_length=20, default='myself', help_text="'myself' or 'stellar'")
+    account_reference = models.CharField(max_length=100, blank=True, default='', help_text="Optional account or reference number")
 
     # Recurrence configuration
     frequency = models.CharField(max_length=20, choices=BillFrequency.choices, default=BillFrequency.MONTHLY)
-    start_date = models.DateField(default=timezone.now)
+    repeat_every = models.PositiveIntegerField(default=1, help_text="Multiplier for frequency interval")
+    ends_type = models.CharField(max_length=20, default='never', help_text="'never', 'date', or 'count'")
+    end_occurrences = models.PositiveIntegerField(null=True, blank=True, help_text="Number of payments if ends_type is count")
+    start_date = models.DateField(default=timezone.localdate)
     due_date = models.DateField(db_index=True)
     end_date = models.DateField(null=True, blank=True)
     is_active = models.BooleanField(default=True, db_index=True)
@@ -61,6 +67,8 @@ class Bill(models.Model):
     remind_1_day = models.BooleanField(default=True)
     remind_on_due = models.BooleanField(default=True)
     remind_overdue = models.BooleanField(default=True)
+    remind_in_app = models.BooleanField(default=True)
+    remind_email = models.BooleanField(default=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

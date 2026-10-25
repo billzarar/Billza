@@ -99,6 +99,8 @@ def payment_prepare(request):
         'estimated_network_fee': '0.0000100 XLM',
         'contract_id': settings.BILLZA_CONTRACT_ID,
         'network_passphrase': settings.STELLAR_NETWORK_PASSPHRASE,
+        'usdc_issuer': settings.STELLAR_USDC_ISSUER,
+        'horizon_url': settings.STELLAR_HORIZON_URL,
     }
     return Response(data, status=status.HTTP_200_OK)
 
@@ -357,3 +359,126 @@ def fund_wallet_faucet(request):
 
     result = stellar_service.fund_testnet_account(address)
     return Response(result, status=status.HTTP_200_OK)
+
+@extend_schema(
+    tags=['Payments'],
+    summary='Directly execute Stellar Testnet payment',
+    description='Executes on-chain payment on Stellar Testnet for an occurrence, submits transaction to Horizon, and confirms payment.',
+    request=PaymentPrepareRequestSerializer,
+    responses={200: PaymentRecordSerializer}
+)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def payment_testnet_execute(request):
+    occurrence_id = request.data.get('occurrence_id')
+    if not occurrence_id:
+        return Response({'error': "'occurrence_id' parameter is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+    raw_payer = request.data.get('payer_address')
+    if not raw_payer and hasattr(request.user, 'profile'):
+        raw_payer = request.user.profile.wallet_address
+    payer_address = raw_payer or ''
+
+    occ = get_object_or_404(BillOccurrence.objects.select_related('bill'), pk=occurrence_id, bill__user=request.user)
+    if occ.status == OccurrenceStatus.PAID:
+        return Response({'error': 'This occurrence is already marked as paid.'}, status=status.HTTP_400_BAD_REQUEST)
+    if occ.status == OccurrenceStatus.CANCELLED:
+        return Response({'error': 'This occurrence is cancelled.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    recipient_address = occ.bill.recipient_stellar_address or settings.BILLZA_PLATFORM_FEE_RECIPIENT or 'GA4KDGQIIXA7SQZB43AIK254XTSGYV3HBX4GAPKU3N2ECP76IX4U557Q'
+    asset_name = occ.currency if occ.currency in ('XLM', 'USDC') else 'XLM'
+    amount_str = f"{occ.amount:.7f}"
+    memo_val = (occ.payment_reference or f"BILLZA-{occ.id}")[:28]
+
+    try:
+        from stellar_sdk import Server, Keypair, TransactionBuilder, Asset
+        server = Server(settings.STELLAR_HORIZON_URL)
+
+        # Create temporary funded payer keypair on testnet
+        kp = Keypair.random()
+        stellar_service.fund_testnet_account(kp.public_key)
+        payer_acc = server.load_account(kp.public_key)
+
+        # Check if recipient exists
+        recipient_exists = True
+        try:
+            server.load_account(recipient_address)
+        except Exception:
+            recipient_exists = False
+
+        tx_builder = TransactionBuilder(payer_acc, network_passphrase=settings.STELLAR_NETWORK_PASSPHRASE, base_fee=100)
+
+        if asset_name == 'XLM':
+            if not recipient_exists:
+                tx_builder.append_create_account_op(destination=recipient_address, starting_balance=amount_str)
+            else:
+                tx_builder.append_payment_op(destination=recipient_address, amount=amount_str, asset=Asset.native())
+        else:
+            # USDC
+            if not recipient_exists:
+                stellar_service.fund_testnet_account(recipient_address)
+            tx_builder.append_payment_op(destination=recipient_address, amount=amount_str, asset=Asset('USDC', settings.STELLAR_USDC_ISSUER))
+
+        tx_builder.add_text_memo(memo_val)
+        tx_builder.set_timeout(180)
+        tx = tx_builder.build()
+        tx.sign(kp)
+
+        res = server.submit_transaction(tx)
+        tx_hash = res.get('hash', '')
+
+        if not tx_hash:
+            return Response({'error': 'Horizon submission did not return a transaction hash.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        # Verify and complete payment record
+        with transaction.atomic():
+            payment_record, _ = PaymentRecord.objects.get_or_create(
+                occurrence=occ,
+                defaults={
+                    'user': request.user,
+                    'bill': occ.bill,
+                    'amount': occ.amount,
+                    'asset': asset_name,
+                    'payment_method': PaymentMethod.STELLAR_TESTNET,
+                    'recipient_address': recipient_address,
+                    'payer_address': payer_address or kp.public_key,
+                    'payment_reference': occ.payment_reference,
+                }
+            )
+            payment_record.transaction_hash = tx_hash
+            payment_record.verification_status = VerificationStatus.CONFIRMED
+            payment_record.error_message = ''
+            payment_record.ledger_sequence = res.get('ledger')
+            now = timezone.now()
+            payment_record.ledger_timestamp = now
+            payment_record.save()
+
+            occ.status = OccurrenceStatus.PAID
+            occ.is_manual_paid = False
+            occ.paid_at = now
+            occ.transaction_hash = tx_hash
+            occ.save()
+
+            next_occ = advance_recurring_bill(occ.bill, occ)
+
+            AuditLog.objects.create(
+                user=request.user,
+                action='PAYMENT_CONFIRMED',
+                details={
+                    'occurrence_id': occ.id,
+                    'bill_name': occ.bill.name,
+                    'amount': str(payment_record.amount),
+                    'asset': payment_record.asset,
+                    'tx_hash': tx_hash,
+                    'method': 'STELLAR_TESTNET',
+                    'next_occurrence_id': next_occ.id if next_occ else None,
+                },
+                ip_address=request.META.get('REMOTE_ADDR'),
+            )
+
+        return Response(PaymentRecordSerializer(payment_record).data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        logger.error(f"Error executing testnet payment for occ {occ.id}: {e}")
+        return Response({'error': f"Testnet payment execution failed: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+

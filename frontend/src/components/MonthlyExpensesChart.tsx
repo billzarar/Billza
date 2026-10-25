@@ -1,51 +1,93 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { ChevronDown, BarChart2, TrendingUp } from 'lucide-react';
 import {
   Currency,
-  MONTHLY_EXPENSES_6M,
-  MONTHLY_EXPENSES_12M,
+  PaymentHistoryItem,
   MonthlyExpensePoint,
 } from '../data/initialData';
 
 interface MonthlyExpensesChartProps {
   currency: Currency;
   octoberPaidAmount: number;
+  payments?: PaymentHistoryItem[];
 }
 
 export const MonthlyExpensesChart: React.FC<MonthlyExpensesChartProps> = ({
   currency,
   octoberPaidAmount,
+  payments = [],
 }) => {
   const [range, setRange] = useState<'6m' | '12m'>('6m');
-  const [selectedMonthIndex, setSelectedMonthIndex] = useState<number>(4); // Default to Sep (index 4 in 6m)
 
-  const rawPoints = range === '6m' ? MONTHLY_EXPENSES_6M : MONTHLY_EXPENSES_12M;
+  const monthCount = range === '6m' ? 6 : 12;
 
-  const dataPoints: MonthlyExpensePoint[] = rawPoints.map((pt) =>
-    pt.isCurrentSoFar && currency === 'USDC'
-      ? { ...pt, USDC: octoberPaidAmount }
-      : pt
-  );
+  // Dynamically compute monthly expenses from live payment history
+  const dataPoints: MonthlyExpensePoint[] = useMemo(() => {
+    const now = new Date();
+    const pts: MonthlyExpensePoint[] = [];
+
+    for (let i = monthCount - 1; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const monthName = d.toLocaleString('en-US', { month: 'short' });
+      const year = d.getFullYear();
+      const monthNum = d.getMonth();
+      const isCurrent = i === 0;
+
+      const monthPayments = payments.filter((p) => {
+        if (!p.date) return false;
+        const pDate = new Date(p.date);
+        return pDate.getFullYear() === year && pDate.getMonth() === monthNum;
+      });
+
+      const usdc = monthPayments
+        .filter((p) => p.currency === 'USDC' && (p.status === 'paid' || p.status === 'manual'))
+        .reduce((s, p) => s + p.amount, 0);
+      const xlm = monthPayments
+        .filter((p) => p.currency === 'XLM' && (p.status === 'paid' || p.status === 'manual'))
+        .reduce((s, p) => s + p.amount, 0);
+      const eur = monthPayments
+        .filter((p) => p.currency === 'EUR' && (p.status === 'paid' || p.status === 'manual'))
+        .reduce((s, p) => s + p.amount, 0);
+
+      pts.push({
+        month: monthName,
+        fullMonth: d.toLocaleString('en-US', { month: 'long', year: 'numeric' }),
+        USDC: isCurrent && octoberPaidAmount > 0 ? octoberPaidAmount : usdc,
+        XLM: xlm,
+        EUR: eur,
+        isCurrentSoFar: isCurrent,
+      });
+    }
+
+    return pts;
+  }, [monthCount, payments, octoberPaidAmount]);
+
+  const [selectedMonthIndex, setSelectedMonthIndex] = useState<number>(monthCount - 2);
 
   // Ensure selectedMonthIndex is valid when switching 6m / 12m
   const activeIdx = Math.min(selectedMonthIndex, dataPoints.length - 1);
-  const activePoint = dataPoints[activeIdx];
+  const activePoint = dataPoints[activeIdx] || dataPoints[0];
 
-  // Historical points (excluding Oct so far)
+  // Safe currency extractor function preventing undefined lookup
+  const getPtVal = (pt: any): number => {
+    if (!pt) return 0;
+    const val = pt[currency] ?? pt.USDC ?? pt.XLM ?? pt.EUR ?? 0;
+    return typeof val === 'number' && !isNaN(val) ? val : 0;
+  };
+
+  // Historical points (excluding current month so far)
   const historicalPoints = dataPoints.filter((d) => !d.isCurrentSoFar);
-  const values = historicalPoints.map((d) => d[currency]);
+  const values = historicalPoints.map((d) => getPtVal(d));
   const avgValue =
-    currency === 'USDC' && range === '6m'
-      ? 493.4
-      : values.reduce((acc, v) => acc + v, 0) / (values.length || 1);
+    values.length > 0 ? values.reduce((acc, v) => acc + v, 0) / values.length : 0;
 
-  let highestPoint = historicalPoints[0];
+  let highestPoint = historicalPoints[0] || dataPoints[0];
   for (const pt of historicalPoints) {
-    if (pt[currency] >= highestPoint[currency]) {
+    if (pt && highestPoint && getPtVal(pt) >= getPtVal(highestPoint)) {
       highestPoint = pt;
     }
   }
-  const highestValue = highestPoint ? highestPoint[currency] : 0;
+  const highestValue = highestPoint ? getPtVal(highestPoint) : 0;
   const pctOverAvg = avgValue > 0 ? ((highestValue - avgValue) / avgValue) * 100 : 0;
 
   // Y-axis max scale per currency
@@ -70,7 +112,7 @@ export const MonthlyExpensesChart: React.FC<MonthlyExpensesChartProps> = ({
     return { x, y };
   };
 
-  const coords = dataPoints.map((pt, idx) => getCoordinates(idx, pt[currency]));
+  const coords = dataPoints.map((pt, idx) => getCoordinates(idx, getPtVal(pt)));
 
   // Solid line up to second-to-last point (September)
   const solidCoords = coords.slice(0, coords.length - 1);
@@ -96,7 +138,7 @@ export const MonthlyExpensesChart: React.FC<MonthlyExpensesChartProps> = ({
 
   const solidLinePath = buildSmoothPath(solidCoords);
   const solidAreaPath =
-    solidCoords.length > 1
+    solidCoords.length > 1 && lastHistoricalCoord && solidCoords[0]
       ? `${solidLinePath} L ${lastHistoricalCoord.x.toFixed(2)} ${bottomLineY} L ${solidCoords[0].x.toFixed(2)} ${bottomLineY} Z`
       : '';
 
@@ -163,7 +205,7 @@ export const MonthlyExpensesChart: React.FC<MonthlyExpensesChartProps> = ({
               </span>
               <div className="flex items-baseline gap-[3.5px] tabular-nums">
                 <span className="font-extrabold text-[18px] leading-[24px] tracking-[-0.2px] text-[#0B1530]">
-                  {avgValue.toFixed(2)}
+                  {(avgValue || 0).toFixed(2)}
                 </span>
                 <span className="font-extrabold text-[12px] leading-[24px] tracking-[0.24px] text-[#0B1530]">
                   {currency}
@@ -189,7 +231,7 @@ export const MonthlyExpensesChart: React.FC<MonthlyExpensesChartProps> = ({
               </span>
               <div className="flex items-baseline gap-[3.5px] tabular-nums">
                 <span className="font-extrabold text-[18px] leading-[24px] tracking-[-0.2px] text-[#0B1530]">
-                  {highestValue.toFixed(2)}
+                  {(highestValue || 0).toFixed(2)}
                 </span>
                 <span className="font-extrabold text-[12px] leading-[24px] tracking-[0.24px] text-[#0B1530]">
                   {currency}
@@ -199,7 +241,7 @@ export const MonthlyExpensesChart: React.FC<MonthlyExpensesChartProps> = ({
           </div>
 
           <span className="inline-flex items-center h-[26px] px-[9px] bg-[#E6ECFB] rounded-[6px] font-bold text-[12px] leading-[16px] text-[#2F4FBF] whitespace-nowrap shrink-0 tabular-nums">
-            +{pctOverAvg.toFixed(1)}% over avg
+            +{(pctOverAvg || 0).toFixed(1)}% over avg
           </span>
         </div>
       </div>
@@ -317,7 +359,7 @@ export const MonthlyExpensesChart: React.FC<MonthlyExpensesChartProps> = ({
                 onMouseEnter={() => setSelectedMonthIndex(idx)}
                 style={{ left: `${leftPct}%`, top: `${topPct}%` }}
                 className="absolute -translate-x-1/2 -translate-y-1/2 w-[28px] h-[28px] flex items-center justify-center rounded-full focus:outline-none group z-10"
-                aria-label={`${ptData.fullMonth}: ${ptData[currency].toFixed(2)} ${currency}`}
+                aria-label={`${ptData?.fullMonth || ''}: ${(getPtVal(ptData) || 0).toFixed(2)} ${currency}`}
               >
                 <span
                   className={`rounded-full transition-transform duration-150 ${
@@ -344,7 +386,7 @@ export const MonthlyExpensesChart: React.FC<MonthlyExpensesChartProps> = ({
               </span>
               <div className="flex items-baseline gap-[3.5px] mt-[2px] tabular-nums">
                 <span className="font-extrabold text-[18px] leading-[24px] tracking-[-0.2px] text-white">
-                  {activePoint[currency].toFixed(2)}
+                  {(getPtVal(activePoint) || 0).toFixed(2)}
                 </span>
                 <span className="font-extrabold text-[12px] leading-[24px] tracking-[0.24px] text-white">
                   {currency}

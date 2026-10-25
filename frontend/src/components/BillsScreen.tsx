@@ -66,17 +66,30 @@ export const BillsScreen: React.FC<BillsScreenProps> = ({
   const [expandedDetailBillId, setExpandedDetailBillId] = useState<string | null>(null);
 
   const totalBillsCount = bills.length;
-  const monthlyCount = bills.filter((b) => b.frequency === 'monthly').length;
-  const quarterlyCount = bills.filter((b) => b.frequency === 'quarterly').length;
+  const monthlyBills = bills.filter((b) => b.frequency === 'monthly');
+  const monthlyCount = monthlyBills.length;
+  const monthlyUsdc = monthlyBills
+    .filter((b) => b.currency === 'USDC')
+    .reduce((s, b) => s + b.amount, 0);
+  const monthlyXlm = monthlyBills
+    .filter((b) => b.currency === 'XLM')
+    .reduce((s, b) => s + b.amount, 0);
+  const monthlyEur = monthlyBills
+    .filter((b) => b.currency === 'EUR')
+    .reduce((s, b) => s + b.amount, 0);
 
-  const overdueCount = bills.filter((b) => b.status === 'overdue').length;
+  const quarterlyBills = bills.filter((b) => b.frequency === 'quarterly');
+  const quarterlyCount = quarterlyBills.length;
+  const quarterlyUsdc = quarterlyBills
+    .filter((b) => b.currency === 'USDC')
+    .reduce((s, b) => s + b.amount, 0);
+
+  const overdueBills = bills.filter((b) => b.status === 'overdue');
+  const overdueCount = overdueBills.length;
   const dueSoonCount = bills.filter((b) => b.status === 'soon').length;
   const upcomingCount = bills.filter((b) => b.status === 'upcoming').length;
-  // In the Bills screen Figma spec, Paid tab shows 2 (or paid + verifying/completed)
-  const paidTabCount = Math.max(
-    2,
-    bills.filter((b) => b.status === 'paid').length
-  );
+  const paidTabCount = bills.filter((b) => b.status === 'paid').length;
+  const nextDueBill = bills.find((b) => b.status === 'soon') || bills.find((b) => b.status !== 'paid');
 
   const handlePrevMonth = () => {
     setPeriod('month');
@@ -386,14 +399,19 @@ export const BillsScreen: React.FC<BillsScreenProps> = ({
           <div className="flex-1 px-[20px] pt-[16px] pb-[20px] flex flex-col gap-[4px] justify-between">
             <div className="flex items-start gap-[5px] tabular-nums">
               <span className="font-extrabold text-[28px] leading-[36px] tracking-[-0.5px] text-[#0B1530]">
-                531.50
+                {monthlyUsdc.toFixed(2)}
               </span>
               <span className="pt-[15px] font-bold text-[12px] leading-[16px] text-[#0B1530]">
                 USDC
               </span>
             </div>
             <span className="font-medium text-[12px] leading-[16px] text-[#4A5675] truncate">
-              Plus 140.00 XLM and 45.00 EUR
+              {(() => {
+                const parts = [];
+                if (monthlyXlm > 0) parts.push(`${monthlyXlm.toFixed(2)} XLM`);
+                if (monthlyEur > 0) parts.push(`${monthlyEur.toFixed(2)} EUR`);
+                return parts.length > 0 ? `Plus ${parts.join(' and ')}` : `${monthlyBills.length} monthly bills`;
+              })()}
             </span>
           </div>
         </div>
@@ -409,14 +427,14 @@ export const BillsScreen: React.FC<BillsScreenProps> = ({
           <div className="flex-1 px-[20px] pt-[16px] pb-[20px] flex flex-col gap-[4px] justify-between">
             <div className="flex items-start gap-[5px] tabular-nums">
               <span className="font-extrabold text-[28px] leading-[36px] tracking-[-0.5px] text-[#0B1530]">
-                330.00
+                {quarterlyUsdc.toFixed(2)}
               </span>
               <span className="pt-[15px] font-bold text-[12px] leading-[16px] text-[#0B1530]">
                 USDC
               </span>
             </div>
             <span className="font-medium text-[12px] leading-[16px] text-[#4A5675] truncate">
-              School fees and office internet
+              {quarterlyBills.length > 0 ? quarterlyBills.map((b) => b.name).join(' and ') : 'No quarterly bills'}
             </span>
           </div>
         </div>
@@ -435,10 +453,10 @@ export const BillsScreen: React.FC<BillsScreenProps> = ({
           </div>
           <div className="flex-1 px-[20px] pt-[16px] pb-[20px] flex flex-col gap-[4px] justify-between">
             <span className="font-extrabold text-[28px] leading-[36px] tracking-[-0.5px] text-[#0B1530]">
-              Fri 23 Oct
+              {nextDueBill ? nextDueBill.dueDateLabel : 'None'}
             </span>
             <span className="font-medium text-[12px] leading-[16px] text-[#4A5675] truncate">
-              Home electricity, 38.50 USDC
+              {nextDueBill ? `${nextDueBill.name}, ${nextDueBill.amount.toFixed(2)} ${nextDueBill.currency}` : 'All caught up'}
             </span>
           </div>
         </button>
@@ -465,7 +483,7 @@ export const BillsScreen: React.FC<BillsScreenProps> = ({
               </span>
             </div>
             <span className="font-medium text-[12px] leading-[16px] text-[#4A5675] truncate">
-              {overdueCount > 0 ? 'Fibre internet, 2 days late' : 'No overdue bills'}
+              {overdueBills.length > 0 ? `${overdueBills[0].name}, ${overdueBills[0].dueInLabel}` : 'No overdue bills'}
             </span>
           </div>
         </button>

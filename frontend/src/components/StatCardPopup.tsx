@@ -82,67 +82,20 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
   );
 
   if (kind === 'total') {
-    const monthlyBills = [
-      {
-        id: 'total-rent',
-        name: 'Flat rent',
-        sub: 'Rent · due on the 1st',
-        amount: 450.0,
-        currency: 'USDC',
-      },
-      {
-        id: 'total-ins',
-        name: 'Health insurance',
-        sub: 'Insurance · due on the 30th',
-        amount: 140.0,
-        currency: 'XLM',
-      },
-      {
-        id: 'total-elec',
-        name: 'Home electricity',
-        sub: 'Electricity · due on the 23rd',
-        amount: 38.5,
-        currency: 'USDC',
-      },
-      {
-        id: 'total-fibre',
-        name: 'Fibre internet',
-        sub: 'Internet · due on the 18th',
-        amount: 25.0,
-        currency: 'USDC',
-      },
-      {
-        id: 'total-design',
-        name: 'Design software',
-        sub: 'Subscriptions · due on the 26th',
-        amount: 18.0,
-        currency: 'USDC',
-      },
-      {
-        id: 'total-water',
-        name: 'Water',
-        sub: 'Water · due on the 3rd',
-        amount: 45.0,
-        currency: 'EUR',
-      },
-    ];
-
-    const quarterlyBills = [
-      {
-        id: 'total-school',
-        name: 'School fees',
-        sub: 'Education · next Thu 5 Nov',
-        amount: 300.0,
-        currency: 'USDC',
-      },
-      {
-        id: 'total-office',
-        name: 'Office internet',
-        sub: 'Business utilities · next Tue 12 Jan',
-        amount: 30.0,
-        currency: 'USDC',
-      },
-    ];
+    const monthlyBills = bills.filter((b) => b.frequency === 'monthly');
+    const quarterlyBills = bills.filter((b) => b.frequency === 'quarterly');
+    const monthlyUsdc = monthlyBills
+      .filter((b) => b.currency === 'USDC')
+      .reduce((s, b) => s + b.amount, 0);
+    const monthlyXlm = monthlyBills
+      .filter((b) => b.currency === 'XLM')
+      .reduce((s, b) => s + b.amount, 0);
+    const monthlyEur = monthlyBills
+      .filter((b) => b.currency === 'EUR')
+      .reduce((s, b) => s + b.amount, 0);
+    const secondaryParts: string[] = [];
+    if (monthlyXlm > 0) secondaryParts.push(`${monthlyXlm.toFixed(2)} XLM`);
+    if (monthlyEur > 0) secondaryParts.push(`${monthlyEur.toFixed(2)} EUR`);
 
     return (
       <div
@@ -186,39 +139,49 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
 
         {/* Lists Container */}
         <div className="flex flex-col items-start gap-[14px] w-full">
-          {/* Monthly · 6 */}
+          {/* Monthly */}
           <div className="flex flex-col items-start gap-[2px] w-full">
             <span className="font-semibold text-[12px] leading-[16px] tracking-[0.6px] text-white/[0.74]">
               Monthly · {monthlyBills.length}
             </span>
             <div className="flex flex-col w-full">
-              {monthlyBills.map((item, idx) =>
-                renderRowItem(
-                  item.id,
-                  item.name,
-                  item.sub,
-                  item.amount,
-                  item.currency,
-                  idx === 0
+              {monthlyBills.length === 0 ? (
+                <span className="text-[12px] text-white/60 py-2">No monthly bills</span>
+              ) : (
+                monthlyBills.map((item, idx) =>
+                  renderRowItem(
+                    item.id,
+                    item.name,
+                    `${item.category} · ${item.dueDateLabel}`,
+                    item.amount,
+                    item.currency,
+                    idx === 0,
+                    onSelectBill ? () => onSelectBill(item) : undefined
+                  )
                 )
               )}
             </div>
           </div>
 
-          {/* Quarterly · 2 */}
+          {/* Quarterly */}
           <div className="flex flex-col items-start gap-[2px] w-full">
             <span className="font-semibold text-[12px] leading-[16px] tracking-[0.6px] text-white/[0.74]">
               Quarterly · {quarterlyBills.length}
             </span>
             <div className="flex flex-col w-full">
-              {quarterlyBills.map((item, idx) =>
-                renderRowItem(
-                  item.id,
-                  item.name,
-                  item.sub,
-                  item.amount,
-                  item.currency,
-                  idx === 0
+              {quarterlyBills.length === 0 ? (
+                <span className="text-[12px] text-white/60 py-2">No quarterly bills</span>
+              ) : (
+                quarterlyBills.map((item, idx) =>
+                  renderRowItem(
+                    item.id,
+                    item.name,
+                    `${item.category} · ${item.dueDateLabel}`,
+                    item.amount,
+                    item.currency,
+                    idx === 0,
+                    onSelectBill ? () => onSelectBill(item) : undefined
+                  )
                 )
               )}
             </div>
@@ -233,15 +196,17 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
             </span>
             <div className="flex items-baseline gap-[3.75px]">
               <span className="font-extrabold text-[18px] leading-[24px] tracking-[-0.2px] text-white">
-                531.50
+                {monthlyUsdc.toFixed(2)}
               </span>
               <span className="font-extrabold text-[12px] leading-[24px] tracking-[0.24px] text-white">
                 USDC
               </span>
             </div>
-            <span className="font-medium text-[12px] leading-[16px] text-white/[0.74]">
-              + 140.00 XLM · 45.00 EUR
-            </span>
+            {secondaryParts.length > 0 && (
+              <span className="font-medium text-[12px] leading-[16px] text-white/[0.74]">
+                + {secondaryParts.join(' · ')}
+              </span>
+            )}
           </div>
 
           <button
@@ -258,43 +223,21 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
   }
 
   if (kind === 'next14') {
-    const thisWeekBills = [
-      {
-        id: 'n14-elec',
-        name: 'Home electricity',
-        sub: 'Electricity · Fri 23 Oct (in 3 days)',
-        amount: 38.5,
-        currency: 'USDC',
-        billRef: bills.find((b) => b.id === 'bill-electricity'),
-      },
-      {
-        id: 'n14-design',
-        name: 'Design software',
-        sub: 'Subscriptions · Mon 26 Oct (verifying)',
-        amount: 18.0,
-        currency: 'USDC',
-        billRef: bills.find((b) => b.id === 'bill-design'),
-      },
-    ];
-
-    const nextWeekBills = [
-      {
-        id: 'n14-ins',
-        name: 'Health insurance',
-        sub: 'Insurance · Fri 30 Oct (in 10 days)',
-        amount: 140.0,
-        currency: 'XLM',
-        billRef: bills.find((b) => b.id === 'bill-insurance'),
-      },
-      {
-        id: 'n14-rent',
-        name: 'Flat rent',
-        sub: 'Rent · Sun 1 Nov (in 12 days)',
-        amount: 450.0,
-        currency: 'USDC',
-        billRef: bills.find((b) => b.id === 'bill-rent-nov'),
-      },
-    ];
+    const next14Bills = bills.filter((b) => b.inNext14Days && b.status !== 'paid');
+    const thisWeekBills = next14Bills.filter((b) => b.inNext7Days);
+    const nextWeekBills = next14Bills.filter((b) => !b.inNext7Days);
+    const next14Usdc = next14Bills
+      .filter((b) => b.currency === 'USDC')
+      .reduce((s, b) => s + b.amount, 0);
+    const next14Xlm = next14Bills
+      .filter((b) => b.currency === 'XLM')
+      .reduce((s, b) => s + b.amount, 0);
+    const next14Eur = next14Bills
+      .filter((b) => b.currency === 'EUR')
+      .reduce((s, b) => s + b.amount, 0);
+    const secondaryN14: string[] = [];
+    if (next14Xlm > 0) secondaryN14.push(`${next14Xlm.toFixed(2)} XLM`);
+    if (next14Eur > 0) secondaryN14.push(`${next14Eur.toFixed(2)} EUR`);
 
     return (
       <div
@@ -313,10 +256,10 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
               </div>
               <div className="flex items-start gap-[8px] h-[44px] tabular-nums">
                 <span className="font-extrabold text-[40px] leading-[44px] tracking-[-1px] text-white">
-                  4
+                  {next14Bills.length}
                 </span>
                 <span className="pt-[18px] font-extrabold text-[18px] leading-[22px] text-white">
-                  bills
+                  {next14Bills.length === 1 ? 'bill' : 'bills'}
                 </span>
               </div>
             </div>
@@ -332,7 +275,7 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
           </div>
 
           <p className="font-medium text-[12px] leading-[16px] text-white/[0.74] w-full">
-            Scheduled bills due between 20 Oct and 3 Nov, ordered by due date.
+            Scheduled bills due in the upcoming 14 days, ordered by due date.
           </p>
         </div>
 
@@ -340,18 +283,22 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
         <div className="flex flex-col items-start gap-[14px] w-full">
           <div className="flex flex-col items-start gap-[2px] w-full">
             <span className="font-semibold text-[12px] leading-[16px] tracking-[0.6px] text-white/[0.74]">
-              Due this week · 2
+              Due this week · {thisWeekBills.length}
             </span>
             <div className="flex flex-col w-full">
-              {thisWeekBills.map((item, idx) =>
-                renderRowItem(
-                  item.id,
-                  item.name,
-                  item.sub,
-                  item.amount,
-                  item.currency,
-                  idx === 0,
-                  item.billRef && onSelectBill ? () => onSelectBill(item.billRef!) : undefined
+              {thisWeekBills.length === 0 ? (
+                <span className="text-[12px] text-white/60 py-2">No bills due this week</span>
+              ) : (
+                thisWeekBills.map((item, idx) =>
+                  renderRowItem(
+                    item.id,
+                    item.name,
+                    `${item.category} · ${item.dueDateLabel}`,
+                    item.amount,
+                    item.currency,
+                    idx === 0,
+                    onSelectBill ? () => onSelectBill(item) : undefined
+                  )
                 )
               )}
             </div>
@@ -359,18 +306,22 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
 
           <div className="flex flex-col items-start gap-[2px] w-full">
             <span className="font-semibold text-[12px] leading-[16px] tracking-[0.6px] text-white/[0.74]">
-              Due next week · 2
+              Due next week · {nextWeekBills.length}
             </span>
             <div className="flex flex-col w-full">
-              {nextWeekBills.map((item, idx) =>
-                renderRowItem(
-                  item.id,
-                  item.name,
-                  item.sub,
-                  item.amount,
-                  item.currency,
-                  idx === 0,
-                  item.billRef && onSelectBill ? () => onSelectBill(item.billRef!) : undefined
+              {nextWeekBills.length === 0 ? (
+                <span className="text-[12px] text-white/60 py-2">No bills due next week</span>
+              ) : (
+                nextWeekBills.map((item, idx) =>
+                  renderRowItem(
+                    item.id,
+                    item.name,
+                    `${item.category} · ${item.dueDateLabel}`,
+                    item.amount,
+                    item.currency,
+                    idx === 0,
+                    onSelectBill ? () => onSelectBill(item) : undefined
+                  )
                 )
               )}
             </div>
@@ -385,15 +336,17 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
             </span>
             <div className="flex items-baseline gap-[3.75px]">
               <span className="font-extrabold text-[18px] leading-[24px] tracking-[-0.2px] text-white">
-                506.50
+                {next14Usdc.toFixed(2)}
               </span>
               <span className="font-extrabold text-[12px] leading-[24px] tracking-[0.24px] text-white">
                 USDC
               </span>
             </div>
-            <span className="font-medium text-[12px] leading-[16px] text-white/[0.74]">
-              + 140.00 XLM · 45.00 EUR
-            </span>
+            {secondaryN14.length > 0 && (
+              <span className="font-medium text-[12px] leading-[16px] text-white/[0.74]">
+                + {secondaryN14.join(' · ')}
+              </span>
+            )}
           </div>
 
           <button
@@ -483,10 +436,10 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
           {overdueList.length > 0 && (
             <div className="w-full rounded-[8px] bg-white/[0.14] border border-white/[0.22] px-3 py-2.5 flex flex-col gap-1">
               <span className="font-bold text-[12px] leading-[16px] text-white">
-                Why it failed on Mon 19 Oct
+                Payment Status
               </span>
               <span className="font-medium text-[12px] leading-[16px] text-white/[0.86]">
-                Wallet was short at the time of attempt. Your wallet now has 312.50 USDC available.
+                {overdueList[0].name} was due on {overdueList[0].dueDateLabel}. Action required to settle payment.
               </span>
             </div>
           )}
@@ -507,7 +460,7 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
               </span>
             </div>
             <span className="font-medium text-[12px] leading-[16px] text-white/[0.78]">
-              2 days late · Retry ready
+              {overdueList.length > 0 ? `${overdueList[0].dueInLabel} · Retry ready` : 'All caught up'}
             </span>
           </div>
 
@@ -528,6 +481,22 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
   const stellarPaid = payments.filter((p) => p.status === 'paid');
   const manualPaid = payments.filter((p) => p.status === 'manual');
   const totalPaidCount = stellarPaid.length + manualPaid.length;
+  const paidUsdc = payments
+    .filter((p) => p.currency === 'USDC' && (p.status === 'paid' || p.status === 'manual'))
+    .reduce((s, p) => s + p.amount, 0);
+  const paidXlm = payments
+    .filter((p) => p.currency === 'XLM' && (p.status === 'paid' || p.status === 'manual'))
+    .reduce((s, p) => s + p.amount, 0);
+  const paidEur = payments
+    .filter((p) => p.currency === 'EUR' && (p.status === 'paid' || p.status === 'manual'))
+    .reduce((s, p) => s + p.amount, 0);
+  const verifyingUsdc = payments
+    .filter((p) => p.currency === 'USDC' && p.status === 'pending')
+    .reduce((s, p) => s + p.amount, 0);
+  const paidSecondaryParts: string[] = [];
+  if (paidEur > 0) paidSecondaryParts.push(`${paidEur.toFixed(2)} EUR`);
+  if (paidXlm > 0) paidSecondaryParts.push(`${paidXlm.toFixed(2)} XLM`);
+  if (verifyingUsdc > 0) paidSecondaryParts.push(`${verifyingUsdc.toFixed(2)} USDC verifying`);
 
   return (
     <div
@@ -576,14 +545,18 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
             Verified on Stellar · {stellarPaid.length}
           </span>
           <div className="flex flex-col w-full">
-            {stellarPaid.map((p, idx) =>
-              renderRowItem(
-                p.id,
-                p.name,
-                `Paid on Stellar · ${p.dateLabel}`,
-                p.amount,
-                p.currency,
-                idx === 0
+            {stellarPaid.length === 0 ? (
+              <span className="text-[12px] text-white/60 py-2">No Stellar payments yet</span>
+            ) : (
+              stellarPaid.map((p, idx) =>
+                renderRowItem(
+                  p.id,
+                  p.name,
+                  `Paid on Stellar · ${p.dateLabel}`,
+                  p.amount,
+                  p.currency,
+                  idx === 0
+                )
               )
             )}
           </div>
@@ -594,14 +567,18 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
             Marked paid by you · {manualPaid.length}
           </span>
           <div className="flex flex-col w-full">
-            {manualPaid.map((p, idx) =>
-              renderRowItem(
-                p.id,
-                p.name,
-                `Direct payment · ${p.dateLabel}`,
-                p.amount,
-                p.currency,
-                idx === 0
+            {manualPaid.length === 0 ? (
+              <span className="text-[12px] text-white/60 py-2">No direct payments marked</span>
+            ) : (
+              manualPaid.map((p, idx) =>
+                renderRowItem(
+                  p.id,
+                  p.name,
+                  `Direct payment · ${p.dateLabel}`,
+                  p.amount,
+                  p.currency,
+                  idx === 0
+                )
               )
             )}
           </div>
@@ -616,15 +593,17 @@ export const StatCardPopup: React.FC<StatCardPopupProps> = ({
           </span>
           <div className="flex items-baseline gap-[3.75px]">
             <span className="font-extrabold text-[18px] leading-[24px] tracking-[-0.2px] text-white">
-              480.00
+              {paidUsdc.toFixed(2)}
             </span>
             <span className="font-extrabold text-[12px] leading-[24px] tracking-[0.24px] text-white">
               USDC
             </span>
           </div>
-          <span className="font-medium text-[12px] leading-[16px] text-white/[0.74]">
-            + 45.00 EUR · 18.00 USDC verifying
-          </span>
+          {paidSecondaryParts.length > 0 && (
+            <span className="font-medium text-[12px] leading-[16px] text-white/[0.74]">
+              + {paidSecondaryParts.join(' · ')}
+            </span>
+          )}
         </div>
 
         <button

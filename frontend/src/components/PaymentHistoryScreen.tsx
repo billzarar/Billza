@@ -23,27 +23,38 @@ import { BillIcon } from './BillIcons';
 import {
   DetailedPaymentRecord,
   PaymentVerificationStatus,
-  INITIAL_DETAILED_PAYMENTS,
 } from '../data/paymentHistoryData';
 import { Currency, BillItem } from '../data/initialData';
 import { TransactionReceiptModal } from './TransactionReceiptModal';
+import { downloadPaymentHistoryCsv } from '../services/api';
 
 interface PaymentHistoryScreenProps {
   bills: BillItem[];
+  detailedPayments?: DetailedPaymentRecord[];
   onSelectBill: (bill: BillItem) => void;
   onPayBill?: (bill: BillItem) => void;
   onTriggerToast: (msg: string) => void;
+  onRefreshPayments?: () => Promise<void>;
 }
 
 type PeriodFilter = 'this-month' | 'last-3-months' | 'this-year' | 'all-time';
 
 export const PaymentHistoryScreen: React.FC<PaymentHistoryScreenProps> = ({
   bills,
+  detailedPayments,
   onSelectBill,
   onPayBill,
   onTriggerToast,
+  onRefreshPayments,
 }) => {
-  const [payments, setPayments] = useState<DetailedPaymentRecord[]>(INITIAL_DETAILED_PAYMENTS);
+  const [payments, setPayments] = useState<DetailedPaymentRecord[]>(detailedPayments || []);
+
+  React.useEffect(() => {
+    if (detailedPayments) {
+      setPayments(detailedPayments);
+    }
+  }, [detailedPayments]);
+
   const [period, setPeriod] = useState<PeriodFilter>('last-3-months');
   const [statusTab, setStatusTab] = useState<'all' | PaymentVerificationStatus>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -73,6 +84,77 @@ export const PaymentHistoryScreen: React.FC<PaymentHistoryScreenProps> = ({
       failed: payments.filter((p) => p.status === 'failed').length,
     };
   }, [payments]);
+
+  // Dynamically computed metrics for the 4 TotalCards
+  const totals = useMemo(() => {
+    // 1. Each month: recurring monthly bills
+    const monthlyBills = bills.filter(
+      (b) => !b.frequency || b.frequency.toLowerCase().includes('month')
+    );
+    const monthlyUSDC = monthlyBills
+      .filter((b) => b.currency === 'USDC')
+      .reduce((s, b) => s + b.amount, 0);
+    const monthlyXLM = monthlyBills
+      .filter((b) => b.currency === 'XLM')
+      .reduce((s, b) => s + b.amount, 0);
+    const monthlyEUR = monthlyBills
+      .filter((b) => b.currency === 'EUR')
+      .reduce((s, b) => s + b.amount, 0);
+
+    const extraCurrencies: string[] = [];
+    if (monthlyXLM > 0) extraCurrencies.push(`${monthlyXLM.toFixed(2)} XLM`);
+    if (monthlyEUR > 0) extraCurrencies.push(`${monthlyEUR.toFixed(2)} EUR`);
+    const monthlySubtext =
+      extraCurrencies.length > 0
+        ? `Plus ${extraCurrencies.join(' and ')}`
+        : monthlyBills.length > 0
+        ? `${monthlyBills.length} recurring monthly ${monthlyBills.length === 1 ? 'bill' : 'bills'}`
+        : 'No monthly recurring bills';
+
+    // 2. Each quarter: recurring quarterly bills
+    const quarterlyBills = bills.filter(
+      (b) => b.frequency && b.frequency.toLowerCase().includes('quarter')
+    );
+    const quarterlyUSDC = quarterlyBills
+      .filter((b) => b.currency === 'USDC')
+      .reduce((s, b) => s + b.amount, 0);
+    const quarterlyNames = quarterlyBills.map((b) => b.name).slice(0, 2).join(' and ');
+    const quarterlySubtext =
+      quarterlyBills.length > 0
+        ? quarterlyNames
+        : 'No quarterly bills scheduled';
+
+    // 3. Past 3 months: actual completed payments
+    const past3mPayments = payments.filter((p) => p.status === 'verified' || p.status === 'manual');
+    const past3mUSDC = past3mPayments
+      .filter((p) => p.currency === 'USDC')
+      .reduce((s, p) => s + p.amount, 0);
+    const uniqueProviders = new Set(past3mPayments.map((p) => p.billName)).size;
+    const past3mSubtext =
+      past3mPayments.length > 0
+        ? `${past3mPayments.length} payments across ${uniqueProviders} ${
+            uniqueProviders === 1 ? 'provider' : 'providers'
+          }`
+        : 'No completed payments in period';
+
+    // 4. Overdue bills
+    const overdueBills = bills.filter((b) => b.status === 'overdue');
+    const overdueSubtext =
+      overdueBills.length > 0
+        ? `${overdueBills[0].name}, ${overdueBills[0].dueInLabel}`
+        : 'All bills up to date';
+
+    return {
+      monthlyUSDC,
+      monthlySubtext,
+      quarterlyUSDC,
+      quarterlySubtext,
+      past3mUSDC,
+      past3mSubtext,
+      overdueCount: overdueBills.length,
+      overdueSubtext,
+    };
+  }, [bills, payments]);
 
   // Filtered payments
   const filteredPayments = useMemo(() => {
@@ -142,48 +224,54 @@ export const PaymentHistoryScreen: React.FC<PaymentHistoryScreenProps> = ({
     onTriggerToast(`Copied ${label}`);
   };
 
-  // Export CSV
-  const handleExportCSV = () => {
-    const headers = [
-      'Bill Name',
-      'Billing Cycle',
-      'Paid Date',
-      'Paid Time',
-      'Month',
-      'Payment Method',
-      'Amount',
-      'Currency',
-      'Status',
-      'Transaction Hash / Note',
-      'Recipient Address',
-      'Memo',
-    ];
+  // Export CSV via Backend API
+  const handleExportCSV = async () => {
+    try {
+      await downloadPaymentHistoryCsv();
+      onTriggerToast('Exported official payment history CSV from backend');
+    } catch {
+      // Client-side export fallback
+      const headers = [
+        'Bill Name',
+        'Billing Cycle',
+        'Paid Date',
+        'Paid Time',
+        'Month',
+        'Payment Method',
+        'Amount',
+        'Currency',
+        'Status',
+        'Transaction Hash / Note',
+        'Recipient Address',
+        'Memo',
+      ];
 
-    const rows = filteredPayments.map((p) => [
-      `"${p.billName}"`,
-      `"${p.billCycleLabel}"`,
-      `"${p.paidDateLabel}"`,
-      `"${p.paidTimeLabel}"`,
-      `"${p.monthYear}"`,
-      `"${p.paymentMethodLabel}"`,
-      p.amount.toFixed(2),
-      p.currency,
-      `"${p.statusBadgeText}"`,
-      `"${p.fullTxHash || p.txHashOrNote}"`,
-      `"${p.recipientAddress || ''}"`,
-      `"${p.memo || ''}"`,
-    ]);
+      const rows = filteredPayments.map((p) => [
+        `"${p.billName}"`,
+        `"${p.billCycleLabel}"`,
+        `"${p.paidDateLabel}"`,
+        `"${p.paidTimeLabel}"`,
+        `"${p.monthYear}"`,
+        `"${p.paymentMethodLabel}"`,
+        p.amount.toFixed(2),
+        p.currency,
+        `"${p.statusBadgeText}"`,
+        `"${p.fullTxHash || p.txHashOrNote}"`,
+        `"${p.recipientAddress || ''}"`,
+        `"${p.memo || ''}"`,
+      ]);
 
-    const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', `billza_payment_history_${period}_2026.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    onTriggerToast(`Exported ${filteredPayments.length} payment records to CSV`);
+      const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `billza_payment_history_${period}_2026.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      onTriggerToast(`Exported ${filteredPayments.length} payment records to CSV`);
+    }
   };
 
   // Re-verify action
@@ -368,14 +456,14 @@ export const PaymentHistoryScreen: React.FC<PaymentHistoryScreenProps> = ({
           <div className="p-[20px] pt-[16px] flex flex-col gap-[4px]">
             <div className="flex items-baseline gap-[5px]">
               <span className="font-onest font-extrabold text-[28px] leading-[36px] tracking-[-0.5px] text-[#0B1530]">
-                531.50
+                {totals.monthlyUSDC.toFixed(2)}
               </span>
               <span className="font-onest font-bold text-[12px] leading-[16px] text-[#0B1530]">
                 USDC
               </span>
             </div>
             <p className="font-onest font-medium text-[12px] leading-[16px] text-[#4A5675]">
-              Plus 140.00 XLM and 45.00 EUR
+              {totals.monthlySubtext}
             </p>
           </div>
         </div>
@@ -391,14 +479,14 @@ export const PaymentHistoryScreen: React.FC<PaymentHistoryScreenProps> = ({
           <div className="p-[20px] pt-[16px] flex flex-col gap-[4px]">
             <div className="flex items-baseline gap-[5px]">
               <span className="font-onest font-extrabold text-[28px] leading-[36px] tracking-[-0.5px] text-[#0B1530]">
-                330.00
+                {totals.quarterlyUSDC.toFixed(2)}
               </span>
               <span className="font-onest font-bold text-[12px] leading-[16px] text-[#0B1530]">
                 USDC
               </span>
             </div>
             <p className="font-onest font-medium text-[12px] leading-[16px] text-[#4A5675]">
-              School fees and office internet
+              {totals.quarterlySubtext}
             </p>
           </div>
         </div>
@@ -414,14 +502,14 @@ export const PaymentHistoryScreen: React.FC<PaymentHistoryScreenProps> = ({
           <div className="p-[20px] pt-[16px] flex flex-col gap-[4px]">
             <div className="flex items-baseline gap-[5px]">
               <span className="font-onest font-extrabold text-[28px] leading-[36px] tracking-[-0.5px] text-[#0B1530]">
-                512.00
+                {totals.past3mUSDC.toFixed(2)}
               </span>
               <span className="font-onest font-bold text-[12px] leading-[16px] text-[#0B1530]">
                 USDC
               </span>
             </div>
             <p className="font-onest font-medium text-[12px] leading-[16px] text-[#4A5675]">
-              18 payments across 8 providers
+              {totals.past3mSubtext}
             </p>
           </div>
         </div>
@@ -437,14 +525,14 @@ export const PaymentHistoryScreen: React.FC<PaymentHistoryScreenProps> = ({
           <div className="p-[20px] pt-[16px] flex flex-col gap-[4px]">
             <div className="flex items-baseline gap-[5px]">
               <span className="font-onest font-extrabold text-[28px] leading-[36px] tracking-[-0.5px] text-[#B42318]">
-                1
+                {totals.overdueCount}
               </span>
               <span className="font-onest font-bold text-[12px] leading-[16px] text-[#B42318]">
-                bill
+                {totals.overdueCount === 1 ? 'bill' : 'bills'}
               </span>
             </div>
             <p className="font-onest font-medium text-[12px] leading-[16px] text-[#4A5675]">
-              Fibre internet, 2 days late
+              {totals.overdueSubtext}
             </p>
           </div>
         </div>

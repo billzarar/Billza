@@ -24,7 +24,9 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+    command: gunicorn --bind 0.0.0.0:8000 --workers 3 --timeout 120 --reload config.wsgi:application
     volumes:
+      - ./backend:/app
       - billza_static:/app/staticfiles
       - billza_media:/app/media
 
@@ -92,6 +94,8 @@ services:
       - DATABASE_URL=postgresql://billza_user:billza_secure_password_2026@db:5432/billza_db
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    volumes:
+      - ./backend:/app
     depends_on:
       db:
         condition: service_healthy
@@ -116,6 +120,8 @@ services:
       - DATABASE_URL=postgresql://billza_user:billza_secure_password_2026@db:5432/billza_db
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    volumes:
+      - ./backend:/app
     depends_on:
       db:
         condition: service_healthy

@@ -221,7 +221,7 @@ interface PayBillModalProps {
   bill: BillItem | null;
   onClose: () => void;
   walletBalances: { USDC: number; XLM: number; EUR: number };
-  onConfirmPayment: (bill: BillItem) => void;
+  onConfirmPayment: (bill: BillItem, onStatusUpdate?: (status: string) => void) => Promise<void> | void;
   onTopUpTestnet: (currency: Currency, amount: number) => void;
 }
 
@@ -234,13 +234,33 @@ export const PayBillModal: React.FC<PayBillModalProps> = ({
 }) => {
   if (!bill) return null;
 
-  const currentBalance = walletBalances[bill.currency];
-  const shortfall = Math.max(0, bill.amount - currentBalance);
-  const isShort = shortfall > 0;
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const isEur = bill.currency === 'EUR';
+  const currentBalance = walletBalances[bill.currency] || 0;
+  const shortfall = isEur ? 0 : Math.max(0, bill.amount - currentBalance);
+  const isShort = !isEur && shortfall > 0;
+
+  const handlePayClick = async () => {
+    try {
+      setIsProcessing(true);
+      setErrorMessage('');
+      setStatusMessage(isEur ? 'Confirming manual payment...' : 'Connecting to Stellar Wallets Kit...');
+      await onConfirmPayment(bill, (msg) => setStatusMessage(msg));
+    } catch (err: any) {
+      console.error('Payment modal error:', err);
+      setErrorMessage(err?.message || 'Payment execution failed');
+    } finally {
+      setIsProcessing(false);
+      setStatusMessage('');
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B1530]/60 backdrop-blur-xs">
-      <div className="w-full max-w-[460px] bg-white border border-[#DDE2EC] rounded-[12px] shadow-2xl overflow-hidden">
+      <div className="w-full max-w-[480px] bg-white border border-[#DDE2EC] rounded-[14px] shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
         <div className="flex items-center justify-between px-6 py-5 border-b border-[#EEF1F6]">
           <div className="flex items-center gap-3">
             <div
@@ -261,8 +281,9 @@ export const PayBillModal: React.FC<PayBillModalProps> = ({
           </div>
           <button
             type="button"
+            disabled={isProcessing}
             onClick={onClose}
-            className="w-[34px] h-[34px] rounded-[8px] flex items-center justify-center text-[#4A5675] hover:bg-[#F3F5F9]"
+            className="w-[34px] h-[34px] rounded-[8px] flex items-center justify-center text-[#4A5675] hover:bg-[#F3F5F9] disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <X size={18} />
           </button>
@@ -288,31 +309,44 @@ export const PayBillModal: React.FC<PayBillModalProps> = ({
           {/* Recipient & Wallet Info */}
           <div className="flex flex-col gap-3 text-[13px]">
             <div className="flex items-center justify-between py-1.5 border-b border-[#EEF1F6]">
-              <span className="text-[#4A5675] font-medium">Network</span>
-              <span className="font-bold text-[#0B1530]">Stellar Testnet</span>
-            </div>
-            <div className="flex items-center justify-between py-1.5 border-b border-[#EEF1F6]">
-              <span className="text-[#4A5675] font-medium">Recipient address</span>
-              <span className="font-mono-redhat text-[12px] text-[#0B1530]">
-                {bill.recipientAddress.slice(0, 6)}…{bill.recipientAddress.slice(-6)}
+              <span className="text-[#4A5675] font-medium">Payment rail</span>
+              <span className="font-bold text-[#0B1530]">
+                {isEur ? 'Direct Bank Transfer' : 'Stellar Testnet'}
               </span>
             </div>
             <div className="flex items-center justify-between py-1.5 border-b border-[#EEF1F6]">
-              <span className="text-[#4A5675] font-medium">Available in wallet</span>
-              <span
-                className={`font-bold tabular-nums ${
-                  isShort ? 'text-[#B42318]' : 'text-[#1B7A4B]'
-                }`}
-              >
-                {currentBalance.toFixed(2)} {bill.currency}
-              </span>
+              <span className="text-[#4A5675] font-medium">Recipient</span>
+              {isEur ? (
+                <span className="font-medium text-[#0B1530]">{bill.recipientName || 'External Vendor'}</span>
+              ) : (
+                <span className="font-mono-redhat text-[12px] text-[#0B1530]">
+                  {bill.recipientAddress
+                    ? `${bill.recipientAddress.slice(0, 7)}…${bill.recipientAddress.slice(-7)}`
+                    : 'Stellar Vault'}
+                </span>
+              )}
             </div>
-            <div className="flex items-center justify-between py-1">
-              <span className="text-[#4A5675] font-medium">Network fee</span>
-              <span className="font-mono-redhat text-[12px] text-[#4A5675]">0.00001 XLM</span>
-            </div>
+            {!isEur && (
+              <>
+                <div className="flex items-center justify-between py-1.5 border-b border-[#EEF1F6]">
+                  <span className="text-[#4A5675] font-medium">Available in wallet</span>
+                  <span
+                    className={`font-bold tabular-nums ${
+                      isShort ? 'text-[#B42318]' : 'text-[#1B7A4B]'
+                    }`}
+                  >
+                    {currentBalance.toFixed(2)} {bill.currency}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between py-1">
+                  <span className="text-[#4A5675] font-medium">Network fee</span>
+                  <span className="font-mono-redhat text-[12px] text-[#4A5675]">0.00001 XLM</span>
+                </div>
+              </>
+            )}
           </div>
 
+          {/* Shortfall Alert */}
           {isShort && (
             <div className="bg-[#FDF1DD] border border-[#B8740A] rounded-[10px] p-3.5 flex items-center justify-between gap-3">
               <div className="flex items-center gap-2.5 text-[#8A5300]">
@@ -331,28 +365,63 @@ export const PayBillModal: React.FC<PayBillModalProps> = ({
             </div>
           )}
 
+          {/* Progress Banner */}
+          {isProcessing && (
+            <div className="bg-[#EEF4FF] border border-[#C7D7FE] rounded-[10px] p-3.5 flex items-center gap-3 text-[#1E40AF]">
+              <div className="w-4 h-4 border-2 border-[#1E40AF] border-t-transparent rounded-full animate-spin shrink-0" />
+              <div className="flex flex-col">
+                <span className="text-[13px] font-bold leading-[17px]">
+                  {statusMessage || 'Processing transaction...'}
+                </span>
+                <span className="text-[11px] text-[#3B82F6] mt-0.5">
+                  Confirm the prompt in your wallet if requested.
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Error Banner */}
+          {errorMessage && (
+            <div className="bg-[#FDE8E6] border border-[#F8A59E] rounded-[10px] p-3 flex items-start gap-2.5 text-[#B42318]">
+              <AlertTriangle size={17} className="shrink-0 mt-0.5" />
+              <span className="text-[12px] font-semibold leading-[16px]">{errorMessage}</span>
+            </div>
+          )}
+
           <div className="flex items-center justify-end gap-3 pt-2">
             <button
               type="button"
+              disabled={isProcessing}
               onClick={onClose}
-              className="h-[44px] px-4 rounded-[10px] border border-[#DDE2EC] font-bold text-[14px] text-[#4A5675] hover:text-[#0B1530]"
+              className="h-[44px] px-4 rounded-[10px] border border-[#DDE2EC] font-bold text-[14px] text-[#4A5675] hover:text-[#0B1530] disabled:opacity-50"
             >
               Cancel
             </button>
             <button
               type="button"
-              disabled={isShort}
-              onClick={() => onConfirmPayment(bill)}
+              disabled={isShort || isProcessing}
+              onClick={handlePayClick}
               className={`h-[44px] px-6 rounded-[10px] font-bold text-[15px] flex items-center gap-2 transition-colors ${
-                isShort
+                isShort || isProcessing
                   ? 'bg-[#DDE2EC] text-[#77839F] cursor-not-allowed'
                   : 'bg-[#0B1530] hover:bg-[#4164D9] text-white'
               }`}
             >
-              <ShieldCheck size={18} />
-              <span>
-                Sign & Pay {bill.amount.toFixed(2)} {bill.currency}
-              </span>
+              {isProcessing ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin shrink-0" />
+                  <span>Processing…</span>
+                </>
+              ) : (
+                <>
+                  <ShieldCheck size={18} />
+                  <span>
+                    {isEur
+                      ? 'Confirm & Mark Paid'
+                      : `Sign & Pay ${bill.amount.toFixed(2)} ${bill.currency}`}
+                  </span>
+                </>
+              )}
             </button>
           </div>
         </div>
@@ -530,7 +599,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({
             <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-[5px] bg-[#5FD39A]/15 border border-[#5FD39A]/40 text-[#5FD39A] text-[11px] font-bold">
               <Check size={11} /> Connected · {wallet.network}
             </span>
-            <h3 className="font-extrabold text-[20px] mt-1.5">Amara&apos;s Stellar Wallet</h3>
+            <h3 className="font-extrabold text-[20px] mt-1.5">Connected Stellar Wallet</h3>
           </div>
           <button
             type="button"

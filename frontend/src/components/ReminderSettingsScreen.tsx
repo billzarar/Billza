@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ChevronLeft,
   ChevronDown,
@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { BillItem } from '../data/initialData';
 import { BillIcon } from './BillIcons';
+import { fetchReminderPreferencesApi, updateReminderPreferencesApi } from '../services/api';
 
 interface ReminderSettingsScreenProps {
   bills: BillItem[];
@@ -37,15 +38,12 @@ export const ReminderSettingsScreen: React.FC<ReminderSettingsScreenProps> = ({
 
   // Section 3: Reminders for each bill
   const [showAllBills, setShowAllBills] = useState(false);
-  const [customBillTimings, setCustomBillTimings] = useState<Record<string, string>>({
-    'bill-software': '7 days before, on due date',
-    'bill-fibre': '3 days before, on due date',
-    'bill-electricity': '3 days before, on due date',
-    'bill-health': '3 days before, on due date',
-    'bill-rent': '3 days before, on due date',
-    'bill-water': '3 days before, on due date',
-    'bill-school': '3 days before, on due date',
-    'bill-rates': '3 days before, on due date',
+  const [customBillTimings, setCustomBillTimings] = useState<Record<string, string>>(() => {
+    const initial: Record<string, string> = {};
+    bills.forEach((b) => {
+      initial[b.id] = b.reminderWhen || '3 days before, on due date';
+    });
+    return initial;
   });
   const [editingBillId, setEditingBillId] = useState<string | null>(null);
   const [editTimingInput, setEditTimingInput] = useState('');
@@ -57,8 +55,29 @@ export const ReminderSettingsScreen: React.FC<ReminderSettingsScreenProps> = ({
   // Section 5: Wallet alerts
   const [walletAlertToggle, setWalletAlertToggle] = useState(true);
 
-  // Unsaved changes tracking
+  // Unsaved changes tracking & saving status
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+    fetchReminderPreferencesApi()
+      .then((prefs) => {
+        if (!mounted || !prefs) return;
+        if (prefs.email_enabled !== undefined) setEmailToggle(prefs.email_enabled);
+        if (prefs.in_app_enabled !== undefined) setAppToggle(prefs.in_app_enabled);
+        if (prefs.remind_7_days !== undefined) setRemind7Days(prefs.remind_7_days);
+        if (prefs.remind_3_days !== undefined) setRemind3Days(prefs.remind_3_days);
+        if (prefs.remind_1_day !== undefined) setRemind1Day(prefs.remind_1_day);
+        if (prefs.remind_on_due !== undefined) setRemindDueDate(prefs.remind_on_due);
+        if (prefs.remind_overdue !== undefined) setOverdueToggle(prefs.remind_overdue);
+        setHasUnsavedChanges(false);
+      })
+      .catch((err) => console.warn('Could not load reminder preferences:', err));
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const handleToggle = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
     setter((prev) => !prev);
@@ -88,9 +107,25 @@ export const ReminderSettingsScreen: React.FC<ReminderSettingsScreenProps> = ({
     onTriggerToast('Settings reset to saved values');
   };
 
-  const handleSave = () => {
-    setHasUnsavedChanges(false);
-    onTriggerToast('Reminder settings saved successfully');
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      await updateReminderPreferencesApi({
+        email_enabled: emailToggle,
+        in_app_enabled: appToggle,
+        remind_7_days: remind7Days,
+        remind_3_days: remind3Days,
+        remind_1_day: remind1Day,
+        remind_on_due: remindDueDate,
+        remind_overdue: overdueToggle,
+      });
+      setHasUnsavedChanges(false);
+      onTriggerToast('Reminder settings saved successfully');
+    } catch (err: any) {
+      onTriggerToast(err.message || 'Failed to save reminder settings');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleStartEditBill = (billId: string) => {
@@ -350,14 +385,14 @@ export const ReminderSettingsScreen: React.FC<ReminderSettingsScreenProps> = ({
                 Reminders for each bill
               </h2>
               <p className="font-['Onest'] font-normal text-[15px] sm:text-[16px] leading-[24px] text-[#4A5675]">
-                Every bill keeps its own timing. 7 use the default, 1 has custom.
+                {bills.length} bills configured with notification rules.
               </p>
             </div>
 
             <div className="px-5 sm:px-[24px] pt-1 pb-4 flex flex-col gap-1">
               <div className="divide-y divide-[#EEF1F6]">
                 {displayedBills.map((bill) => {
-                  const isCustom = bill.name === 'Design software' || customBillTimings[bill.id]?.includes('7 days');
+                  const isCustom = customBillTimings[bill.id]?.includes('7 days');
                   const timingText = customBillTimings[bill.id] || '3 days before, on due date';
 
                   return (

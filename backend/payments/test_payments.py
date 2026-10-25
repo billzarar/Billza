@@ -97,3 +97,23 @@ class PaymentsTests(TestCase):
         self.assertEqual(csv_resp.status_code, status.HTTP_200_OK)
         self.assertEqual(csv_resp['Content-Type'], 'text/csv')
         self.assertIn('Payment ID,Bill Name', csv_resp.content.decode('utf-8'))
+
+    def test_payment_prepare_response_fields(self):
+        resp = self.client.post('/api/payments/prepare/', {'occurrence_id': self.occ.id}, format='json')
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        self.assertIn('usdc_issuer', resp.data)
+        self.assertIn('horizon_url', resp.data)
+
+    def test_invalid_hash_format_rejected(self):
+        # A hash that is not 64-char lowercase hex (like the previous fake tx_billza-...)
+        fake_hash = 'tx_billza-b33e034de3a9_1a172e4240e'
+        from stellar.client import stellar_service
+        verified, msg, details = stellar_service.verify_payment_transaction(
+            tx_hash=fake_hash,
+            expected_recipient=self.bill.recipient_stellar_address,
+            expected_amount=Decimal('75.5000000'),
+            expected_asset='USDC',
+        )
+        self.assertFalse(verified)
+        self.assertIn('64-character', msg)
+

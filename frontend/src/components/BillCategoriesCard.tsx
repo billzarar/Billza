@@ -1,34 +1,67 @@
-import React from 'react';
 import {
   Currency,
-  USDC_CATEGORIES,
-  XLM_CATEGORIES,
-  EUR_CATEGORIES,
   CategoryBreakdownItem,
+  BillItem,
 } from '../data/initialData';
 
 interface BillCategoriesCardProps {
   currency: Currency;
+  bills?: BillItem[];
   selectedCategory: string | null;
   onSelectCategory: (cat: string | null) => void;
   onSelectCurrency: (curr: Currency) => void;
 }
 
+const CATEGORY_COLORS: Record<string, string> = {
+  Internet: 'bg-[#77839F]',
+  Electricity: 'bg-[#18264e]',
+  Subscriptions: 'bg-[#0B1530]',
+  Insurance: 'bg-[#2F4FBF]',
+  Rent: 'bg-[#4164D9]',
+  Water: 'bg-[#2B9460]',
+  Education: 'bg-[#B8740A]',
+  'Business utilities': 'bg-[#3E517A]',
+  'Business Utilities': 'bg-[#3E517A]',
+  BUSINESS_UTILITIES: 'bg-[#3E517A]',
+  ELECTRICITY: 'bg-[#18264e]',
+  INTERNET: 'bg-[#77839F]',
+  WATER: 'bg-[#2B9460]',
+  RENT: 'bg-[#4164D9]',
+  SUBSCRIPTIONS: 'bg-[#0B1530]',
+  Other: 'bg-[#94A3B8]',
+  OTHER: 'bg-[#94A3B8]',
+};
+
 export const BillCategoriesCard: React.FC<BillCategoriesCardProps> = ({
   currency,
+  bills = [],
   selectedCategory,
   onSelectCategory,
   onSelectCurrency,
 }) => {
-  const categories: CategoryBreakdownItem[] =
-    currency === 'USDC'
-      ? USDC_CATEGORIES
-      : currency === 'XLM'
-      ? XLM_CATEGORIES
-      : EUR_CATEGORIES;
+  // Compute category breakdown from real live bills
+  const currencyBills = bills.filter((b) => b.currency === currency);
+  const totalAmount = currencyBills.reduce((sum, b) => sum + b.amount, 0);
+  const totalBillsCount = currencyBills.length;
 
-  const totalAmount = categories.reduce((sum, item) => sum + item.amount, 0);
-  const totalBillsCount = categories.reduce((sum, item) => sum + item.billsCount, 0);
+  const categoryGroups = currencyBills.reduce((acc, b) => {
+    const cat = b.category || 'Other';
+    if (!acc[cat]) {
+      acc[cat] = { count: 0, amount: 0 };
+    }
+    acc[cat].count += 1;
+    acc[cat].amount += b.amount;
+    return acc;
+  }, {} as Record<string, { count: number; amount: number }>);
+
+  const categories: CategoryBreakdownItem[] = Object.entries(categoryGroups).map(([cat, data]) => ({
+    category: cat,
+    billsCount: data.count,
+    amount: data.amount,
+    percentage: totalAmount > 0 ? (data.amount / totalAmount) * 100 : 0,
+    color: CATEGORY_COLORS[cat] || 'bg-[#4164D9]',
+    currency,
+  }));
 
   return (
     <section className="w-full bg-white border border-[#DDE2EC] rounded-[12px] p-5 sm:px-[29px] sm:pt-[31px] sm:pb-[27px] flex flex-col justify-between gap-[18px]">
@@ -39,7 +72,7 @@ export const BillCategoriesCard: React.FC<BillCategoriesCardProps> = ({
             Bill categories
           </h2>
           <p className="font-normal text-[14px] sm:text-[16px] leading-[22px] sm:leading-[24px] text-[#4A5675] tabular-nums">
-            October, {totalAmount.toFixed(2)} {currency} across {totalBillsCount}{' '}
+            October, {(totalAmount || 0).toFixed(2)} {currency} across {totalBillsCount}{' '}
             {totalBillsCount === 1 ? 'bill' : 'bills'}
           </p>
         </div>
@@ -57,7 +90,7 @@ export const BillCategoriesCard: React.FC<BillCategoriesCardProps> = ({
               onClick={() =>
                 onSelectCategory(selectedCategory === cat.category ? null : cat.category)
               }
-              title={`${cat.category}: ${cat.amount.toFixed(2)} ${currency} (${cat.percentage.toFixed(1)}%)`}
+              title={`${cat.category}: ${(cat.amount || 0).toFixed(2)} ${currency} (${(cat.percentage || 0).toFixed(1)}%)`}
               style={{
                 backgroundColor: cat.color,
                 borderColor: cat.borderColor || 'transparent',
@@ -108,10 +141,10 @@ export const BillCategoriesCard: React.FC<BillCategoriesCardProps> = ({
                 {/* Right: Amount + Percentage */}
                 <div className="flex items-center shrink-0 tabular-nums">
                   <span className="font-bold text-[14px] leading-[20px] text-[#0B1530]">
-                    {cat.amount.toFixed(2)}
+                    {(cat.amount || 0).toFixed(2)}
                   </span>
                   <span className="w-[56px] text-right font-medium text-[12px] leading-[16px] text-[#4A5675]">
-                    {cat.percentage.toFixed(1)}%
+                    {(cat.percentage || 0).toFixed(1)}%
                   </span>
                 </div>
               </button>
