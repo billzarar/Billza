@@ -16,6 +16,9 @@ import {
   ChevronRight,
   FileCheck,
   Zap,
+  Plus,
+  AlertTriangle,
+  Wifi,
 } from 'lucide-react';
 import { BillzaLogo } from './BillIcons';
 import { NavTab } from './Sidebar';
@@ -56,10 +59,475 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   return (
     <div className="min-h-screen bg-white text-[#0B1530] font-onest selection:bg-[#4164D9] selection:text-white overflow-x-hidden">
       {/* =========================================================================
-          SECTION 0: HERO (Navy Background with Multi-Radial Glows)
+          SECTION 0: HERO - MOBILE VIEW (Figma 390x1080px Exact Spec)
       ========================================================================= */}
       <section
-        className="relative w-full bg-[#0B1530] text-white overflow-hidden"
+        className="md:hidden relative w-full overflow-hidden text-white"
+        style={{
+          height: '1080px',
+          isolation: 'isolate',
+          background: `
+            radial-gradient(76.92% 33.33% at 50% 66%, rgba(122, 214, 160, 0.6) 0%, rgba(43, 148, 96, 0.26) 45%, rgba(43, 148, 96, 0) 75%),
+            radial-gradient(82.05% 25.93% at 0% 100%, rgba(43, 148, 96, 0.4) 0%, rgba(43, 148, 96, 0) 70%),
+            radial-gradient(92.31% 29.63% at 0% 10%, rgba(65, 100, 217, 0.32) 0%, rgba(65, 100, 217, 0) 70%),
+            linear-gradient(180deg, #0F1D40 0%, #0B1530 100%),
+            #0B1530
+          `,
+        }}
+      >
+        {/* Centered 390px Mobile Canvas Stage */}
+        <div className="relative w-[390px] h-[1080px] mx-auto left-1/2 -translate-x-1/2 shrink-0">
+          {/* Guide Lines */}
+          <div className="absolute inset-0 pointer-events-none z-0">
+            <div className="absolute inset-0 border border-white/[0.05]" />
+            <div className="absolute top-0 bottom-0 left-[16px] w-[1px] bg-white/[0.07]" />
+            <div className="absolute top-0 bottom-0 left-[373px] w-[1px] bg-white/[0.07]" />
+            <div className="absolute left-0 right-0 top-[536px] h-[1px] bg-white/[0.07]" />
+          </div>
+
+          {/* Main (Mobile Header: 72px) */}
+          <header className="relative z-40 flex items-center justify-between w-[390px] h-[72px] pl-[24px] pr-[10px]">
+            <button
+              type="button"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="flex items-center shrink-0 cursor-pointer focus:outline-none"
+              aria-label="Billza Home"
+            >
+              <BillzaLogo variant="dark" />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="flex items-center justify-center w-[44px] h-[44px] rounded-[10px] bg-[#0B1530]/40 border border-white/[0.22] text-white hover:bg-white/10 transition-colors cursor-pointer focus:outline-none"
+              aria-label="Open menu"
+            >
+              {mobileMenuOpen ? <X size={20} strokeWidth={1.67} /> : <Menu size={20} strokeWidth={1.67} />}
+            </button>
+          </header>
+
+          {/* Mobile Navigation Dropdown Overlay */}
+          {mobileMenuOpen && (
+            <div className="absolute top-[72px] left-[16px] right-[17px] z-50 p-4 rounded-2xl bg-[#0F1D40]/95 backdrop-blur-2xl border border-white/15 space-y-2 shadow-2xl animate-fadeIn">
+              <button
+                type="button"
+                onClick={() => scrollToSection('how-it-works')}
+                className="flex items-center justify-between w-full text-left py-2.5 px-3 rounded-xl text-[15px] font-medium text-[#C3CBDD] hover:text-white hover:bg-white/5 transition-all cursor-pointer"
+              >
+                <span>How it works</span>
+                <ChevronRight size={16} className="text-white/40" />
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollToSection('features')}
+                className="flex items-center justify-between w-full text-left py-2.5 px-3 rounded-xl text-[15px] font-medium text-[#C3CBDD] hover:text-white hover:bg-white/5 transition-all cursor-pointer"
+              >
+                <span>Features</span>
+                <ChevronRight size={16} className="text-white/40" />
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollToSection('dashboard-preview')}
+                className="flex items-center justify-between w-full text-left py-2.5 px-3 rounded-xl text-[15px] font-medium text-[#C3CBDD] hover:text-white hover:bg-white/5 transition-all cursor-pointer"
+              >
+                <span>Dashboard</span>
+                <ChevronRight size={16} className="text-white/40" />
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollToSection('stellar-payments')}
+                className="flex items-center justify-between w-full text-left py-2.5 px-3 rounded-xl text-[15px] font-medium text-[#C3CBDD] hover:text-white hover:bg-white/5 transition-all cursor-pointer"
+              >
+                <span>Stellar payments</span>
+                <ChevronRight size={16} className="text-white/40" />
+              </button>
+              <div className="pt-3 border-t border-white/10 grid grid-cols-2 gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onLogin();
+                  }}
+                  className="w-full py-2.5 text-center text-[14px] font-semibold text-white bg-white/10 hover:bg-white/15 rounded-xl border border-white/15 transition-all cursor-pointer"
+                >
+                  Log in
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onGetStarted();
+                  }}
+                  className="w-full py-2.5 text-center text-[14px] font-semibold text-white bg-[#4164D9] hover:bg-[#3453c0] rounded-xl shadow-md shadow-[#4164D9]/25 transition-all flex items-center justify-center gap-1 cursor-pointer"
+                >
+                  Get started
+                  <ArrowRight size={14} />
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Hero Content Frame (310px) */}
+          <div className="relative z-10 flex flex-col items-start w-[390px] h-[310px] pt-[36px] px-[24px] pb-0 gap-[20.5px]">
+            <div className="flex flex-col items-start w-[342px] gap-[19.5px]">
+              <h1
+                className="font-onest font-medium text-white"
+                style={{
+                  width: '342px',
+                  height: '108px',
+                  fontSize: '50px',
+                  lineHeight: '54px',
+                  letterSpacing: '-1.8px',
+                }}
+              >
+                Stay ahead of every bill.
+              </h1>
+              <p
+                className="font-onest font-normal text-[#C3CBDD]"
+                style={{
+                  width: '342px',
+                  height: '72px',
+                  fontSize: '16px',
+                  lineHeight: '24px',
+                }}
+              >
+                From rent to your phone plan, Billza reminds, tracks, and lets you pay on Stellar in seconds.
+              </p>
+            </div>
+
+            {/* CTAs */}
+            <div className="flex flex-row items-center w-[342px] h-[54px] pt-[4px] gap-[20px]">
+              <button
+                type="button"
+                onClick={onGetStarted}
+                className="flex flex-row items-center justify-center px-[20px] gap-[10px] bg-[#4164D9] hover:bg-[#3453c0] rounded-[10px] transition-all cursor-pointer shadow-lg shadow-[#4164D9]/25 select-none"
+                style={{ width: '148px', height: '50px' }}
+              >
+                <span className="font-onest font-semibold text-[15px] leading-[20px] text-white">
+                  Get started
+                </span>
+                <ArrowRight size={16} strokeWidth={1.5} className="text-white" />
+              </button>
+
+              <button
+                type="button"
+                onClick={onViewDemo}
+                className="flex flex-row items-center p-0 gap-[8px] text-white hover:text-[#5FD39A] transition-colors cursor-pointer select-none"
+                style={{ width: '106px', height: '20px' }}
+              >
+                <div className="w-[18px] h-[18px] rounded-full border-[1.35px] border-white flex items-center justify-center shrink-0">
+                  <Play size={8} fill="white" className="ml-[1.5px] text-white" />
+                </div>
+                <span className="font-onest font-semibold text-[15px] leading-[20px] text-white">
+                  View demo
+                </span>
+              </button>
+            </div>
+          </div>
+
+          {/* Tilted Phone Mockup Frame (-9deg) */}
+          <div
+            className="absolute z-10 box-border p-[11px] bg-[#0A0F1E] border-[2px] border-[#8A93AB] rounded-[42px] shadow-[0px_50px_90px_rgba(0,0,0,0.5),10px_8px_0px_-3px_#2A3552]"
+            style={{
+              width: '250px',
+              height: '540px',
+              left: '29.25px',
+              top: '543.89px',
+              transform: 'rotate(-9deg)',
+              transformOrigin: 'center center',
+            }}
+          >
+            {/* Phone Top Notch */}
+            <div
+              className="absolute z-30 bg-[#0A0F1E] rounded-[10px]"
+              style={{
+                width: '70px',
+                height: '18px',
+                left: 'calc(50% - 35px)',
+                top: '8px',
+              }}
+            />
+
+            {/* Inner Phone Screen Frame */}
+            <div
+              className="w-[224px] h-[518px] bg-white rounded-[34px] overflow-hidden relative flex flex-col"
+              style={{ isolation: 'isolate' }}
+            >
+              {/* Micro Header */}
+              <div className="flex flex-row justify-between items-center bg-white px-[8px] pt-[12px] pb-[6px] border-b border-[#EEF1F6] shrink-0">
+                <div className="flex flex-row items-center gap-[4px]">
+                  <div className="relative flex items-center justify-center w-[16px] h-[16px] rounded-[3px] text-[#0B1530]">
+                    <Menu size={12} strokeWidth={2} />
+                    <div className="absolute -top-[1px] -right-[1px] w-[5px] h-[5px] bg-[#4164D9] border border-white rounded-full" />
+                  </div>
+                  <div className="flex items-baseline gap-[1px]">
+                    <span className="font-archivo font-extrabold text-[12.8px] leading-[13px] tracking-[-0.26px] text-[#0B1530]">
+                      bill
+                    </span>
+                    <div className="flex items-center justify-center bg-[#4164D9] rounded-r-[1.5px] px-[2.5px] h-[13px]">
+                      <span className="font-archivo font-extrabold text-[12.8px] leading-[13px] tracking-[-0.26px] text-white">
+                        za
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-row items-center gap-[4px]">
+                  <span className="px-[4.5px] py-[1px] bg-white border border-[#77839F] rounded-[3.5px] font-onest font-bold text-[7px] leading-[9px] text-[#4A5675]">
+                    Stellar Testnet
+                  </span>
+                  <div className="relative flex items-center justify-center w-[14px] h-[14px] text-[#0B1530]">
+                    <Bell size={11} strokeWidth={2} />
+                    <div className="absolute top-0 right-0 w-[4.5px] h-[4.5px] bg-[#D2453A] border border-white rounded-full" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Dashboard Content inside Mockup Screen */}
+              <div className="flex-1 bg-[#F3F5F9] p-[8px] space-y-[8px] overflow-y-auto no-scrollbar font-onest text-left">
+                {/* Dashboard Overview */}
+                <div className="space-y-[2px]">
+                  <h3 className="font-onest font-extrabold text-[15px] leading-[18px] tracking-[-0.3px] text-[#0B1530]">
+                    Dashboard overview
+                  </h3>
+                  <p className="font-onest font-normal text-[9px] leading-[12px] text-[#4A5675]">
+                    Tuesday 20 October. 1 bill is overdue and 2 due soon
+                  </p>
+                </div>
+
+                {/* Scheduled for October Card */}
+                <div className="bg-white rounded-[7px] p-[8px] space-y-[7px] shadow-xs">
+                  <div className="flex flex-row justify-between items-center">
+                    <span className="font-onest font-semibold text-[8px] text-[#4A5675]">
+                      Scheduled for October
+                    </span>
+                    <div className="flex items-center bg-[#EEF1F6] p-[1.5px] rounded-[5px] gap-[1px]">
+                      <span className="px-[5px] py-[2px] bg-[#0B1530] text-white rounded-[4px] font-bold text-[7.5px] leading-none">
+                        USDC
+                      </span>
+                      <span className="px-[5px] py-[2px] text-[#4A5675] font-bold text-[7.5px] leading-none">
+                        XLM
+                      </span>
+                      <span className="px-[5px] py-[2px] text-[#4A5675] font-bold text-[7.5px] leading-none">
+                        EUR
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-baseline gap-[3px]">
+                    <span className="font-onest font-extrabold text-[22px] leading-none tracking-[-0.6px] text-[#0B1530] tabular-nums">
+                      561.50
+                    </span>
+                    <span className="font-onest font-extrabold text-[9px] text-[#0B1530]">
+                      USDC
+                    </span>
+                  </div>
+
+                  {/* Progress bar */}
+                  <div className="flex items-center gap-[1.5px] h-[5px] w-full">
+                    <div className="h-full bg-[#0B1530] rounded-[1.5px] w-[75%]" />
+                    <div className="h-full bg-[#4164D9] rounded-[1.5px] w-[6%]" />
+                    <div className="h-full border border-dashed border-[#B7C2D9] rounded-[1.5px] flex-1" />
+                  </div>
+
+                  {/* Breakdown */}
+                  <div className="flex flex-wrap items-center gap-x-[8px] gap-y-[2px] text-[7.5px] text-[#4A5675] font-semibold">
+                    <div className="flex items-center gap-[3px]">
+                      <div className="w-[5px] h-[5px] bg-[#0B1530] rounded-[1px]" />
+                      <span>Paid 480.00</span>
+                    </div>
+                    <div className="flex items-center gap-[3px]">
+                      <div className="w-[5px] h-[5px] bg-[#4164D9] rounded-[1px]" />
+                      <span>Verifying 18.00</span>
+                    </div>
+                    <div className="flex items-center gap-[3px]">
+                      <div className="w-[5px] h-[5px] border border-dashed border-[#77839F] rounded-[1px]" />
+                      <span>Still to pay 63.50</span>
+                    </div>
+                  </div>
+
+                  <p className="font-onest font-medium text-[6.8px] text-[#4A5675]">
+                    Also in October: 140.00 XLM · 45.00 EUR
+                  </p>
+
+                  <div className="space-y-[4px] pt-[2px]">
+                    <button
+                      type="button"
+                      className="w-full h-[24px] bg-[#0B1530] rounded-[5px] text-white font-bold text-[9px] flex items-center justify-center gap-[3px]"
+                    >
+                      <Plus size={10} strokeWidth={2.5} /> Add new bill
+                    </button>
+                    <button
+                      type="button"
+                      className="w-full h-[24px] bg-white border border-[#D2453A] rounded-[5px] text-[#B42318] font-bold text-[9px] flex items-center justify-center gap-[3px]"
+                    >
+                      <AlertTriangle size={10} strokeWidth={2.2} /> Pay overdue 25.00 USDC
+                    </button>
+                  </div>
+                </div>
+
+                {/* 2x2 Stat Cards */}
+                <div className="grid grid-cols-2 gap-[7px]">
+                  {/* Total bills */}
+                  <div className="relative bg-[#0B1530] rounded-[7px] p-[7px] text-white flex flex-col justify-between h-[76px] overflow-hidden">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-[7.5px]">Total bills</span>
+                      <div className="w-[12px] h-[12px] rounded-full bg-white/20 flex items-center justify-center text-[7px]">
+                        <FileCheck size={8} />
+                      </div>
+                    </div>
+                    <div>
+                      <p className="font-extrabold text-[15px] leading-tight">8 <span className="text-[8px] font-semibold">bills</span></p>
+                      <p className="font-medium text-[6.5px] text-[#A9B4CC]">6 monthly · 2 quarterly</p>
+                    </div>
+                    <div className="absolute -bottom-2 -right-2 text-[26px] font-archivo font-extrabold text-[#4164D9]/30 select-none">
+                      za
+                    </div>
+                  </div>
+
+                  {/* Next 14 days */}
+                  <div className="bg-white border border-[#DDE2EC] rounded-[7px] p-[7px] flex flex-col justify-between h-[76px]">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-[7.5px] text-[#0B1530]">Next 14 days</span>
+                      <div className="w-[12px] h-[12px] rounded-full border border-[#77839F] flex items-center justify-center text-[7px] text-[#0B1530]">
+                        <Clock size={8} />
+                      </div>
+                    </div>
+                    <div>
+                      <p className="font-extrabold text-[15px] leading-tight text-[#0B1530]">4 <span className="text-[8px] font-semibold text-[#4A5675]">bills</span></p>
+                      <p className="font-medium text-[6.5px] text-[#4A5675]">Electricity first · Fri 23</p>
+                    </div>
+                  </div>
+
+                  {/* Overdue */}
+                  <div className="bg-white border border-[#DDE2EC] rounded-[7px] p-[7px] flex flex-col justify-between h-[76px]">
+                    <div className="flex items-center gap-[3px]">
+                      <div className="w-[4px] h-[4px] rounded-full bg-[#D2453A]" />
+                      <span className="font-semibold text-[7.5px] text-[#B42318]">Overdue</span>
+                    </div>
+                    <div>
+                      <p className="font-extrabold text-[15px] leading-tight text-[#B42318]">1 <span className="text-[8px] font-semibold text-[#B42318]">bill</span></p>
+                      <p className="font-medium text-[6.5px] text-[#4A5675]">Fibre · 2 days late</p>
+                    </div>
+                  </div>
+
+                  {/* Paid in Oct */}
+                  <div className="bg-white border border-[#DDE2EC] rounded-[7px] p-[7px] flex flex-col justify-between h-[76px]">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-[7.5px] text-[#0B1530]">Paid in Oct</span>
+                      <div className="w-[12px] h-[12px] rounded-full bg-[#E3F4EA] flex items-center justify-center text-[7px] text-[#1B7A4B]">
+                        <Check size={8} strokeWidth={2.5} />
+                      </div>
+                    </div>
+                    <div>
+                      <p className="font-extrabold text-[15px] leading-tight text-[#0B1530]">3 <span className="text-[8px] font-semibold text-[#4A5675]">paid</span></p>
+                      <p className="font-medium text-[6.5px] text-[#4A5675]">2 on Stellar · 1 manual</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Upcoming Payments preview */}
+                <div className="bg-white rounded-[7px] p-[7px] space-y-[5px]">
+                  <div className="flex items-center justify-between">
+                    <span className="font-extrabold text-[9px] text-[#0B1530]">Upcoming payments</span>
+                    <span className="font-bold text-[7px] text-[#2F4FBF]">All bills</span>
+                  </div>
+
+                  {/* Overdue Fibre */}
+                  <div className="bg-[#FFF8F7] p-[5px] rounded-[5px] border border-[#FDE8E6] flex items-center justify-between">
+                    <div className="flex items-center gap-[5px]">
+                      <div className="w-[16px] h-[16px] rounded-full bg-[#FDE8E6] flex items-center justify-center text-[#B42318]">
+                        <Wifi size={9} />
+                      </div>
+                      <div>
+                        <p className="font-bold text-[7.5px] text-[#0B1530]">Fibre internet</p>
+                        <span className="px-[3px] py-[0.5px] bg-[#FDE8E6] border border-[#D2453A] rounded-[2px] font-bold text-[6.5px] text-[#B42318]">
+                          2 days overdue
+                        </span>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold text-[7.5px] text-[#0B1530]">25.00 USDC</p>
+                      <p className="text-[6.5px] text-[#B42318]">Sun 18 Oct</p>
+                    </div>
+                  </div>
+
+                  {/* Due soon Home electricity */}
+                  <div className="p-[5px] rounded-[5px] border border-[#EEF1F6] flex items-center justify-between">
+                    <div className="flex items-center gap-[5px]">
+                      <div className="w-[16px] h-[16px] rounded-full bg-[#EEF1F6] flex items-center justify-center text-[#0B1530]">
+                        <Zap size={9} />
+                      </div>
+                      <div>
+                        <p className="font-bold text-[7.5px] text-[#0B1530]">Home electricity</p>
+                        <span className="px-[3px] py-[0.5px] bg-[#FDF1DD] border border-[#B8740A] rounded-[2px] font-bold text-[6.5px] text-[#94560A]">
+                          Due in 3 days
+                        </span>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold text-[7.5px] text-[#0B1530]">38.50 USDC</p>
+                      <p className="text-[6.5px] text-[#4A5675]">Fri 23 Oct</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Floating Badge 1: Settlement Speed */}
+          <div
+            className="absolute z-20 flex items-center gap-[8px] px-[15px] py-[1px] bg-[#0B1530] border border-white/45 shadow-[0px_12px_28px_rgba(0,0,0,0.35)]"
+            style={{
+              width: '150px',
+              height: '64px',
+              left: '20px',
+              top: '610px',
+            }}
+          >
+            <div className="absolute -top-[3px] -left-[3px] w-[6px] h-[6px] bg-white pointer-events-none" />
+            <div className="absolute -top-[3px] -right-[3px] w-[6px] h-[6px] bg-white pointer-events-none" />
+            <div className="absolute -bottom-[3px] -left-[3px] w-[6px] h-[6px] bg-white pointer-events-none" />
+            <div className="absolute -bottom-[3px] -right-[3px] w-[6px] h-[6px] bg-white pointer-events-none" />
+
+            <span className="font-onest font-normal text-[30px] leading-[34px] tracking-[-0.8px] text-[#5FD39A] tabular-nums select-none">
+              ≈5s
+            </span>
+            <span className="font-onest font-medium text-[12px] leading-[15px] text-[#C3CBDD] select-none">
+              to settle
+            </span>
+          </div>
+
+          {/* Floating Badge 2: Fee */}
+          <div
+            className="absolute z-20 flex items-center justify-between px-[15px] py-[1px] bg-[#0B1530] border border-white/45 shadow-[0px_12px_28px_rgba(0,0,0,0.35)]"
+            style={{
+              width: '132px',
+              height: '64px',
+              left: '238px',
+              top: '800px',
+            }}
+          >
+            <div className="absolute -top-[3px] -left-[3px] w-[6px] h-[6px] bg-white pointer-events-none" />
+            <div className="absolute -top-[3px] -right-[3px] w-[6px] h-[6px] bg-white pointer-events-none" />
+            <div className="absolute -bottom-[3px] -left-[3px] w-[6px] h-[6px] bg-white pointer-events-none" />
+            <div className="absolute -bottom-[3px] -right-[3px] w-[6px] h-[6px] bg-white pointer-events-none" />
+
+            <span className="font-onest font-medium text-[12px] leading-[16px] text-[#C3CBDD] select-none">
+              Fee
+            </span>
+            <span className="font-onest font-normal text-[30px] leading-[34px] tracking-[-0.8px] text-[#5FD39A] tabular-nums select-none">
+              &lt;1¢
+            </span>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 0: HERO - DESKTOP VIEW
+      ========================================================================= */}
+      <section
+        className="hidden md:block relative w-full bg-[#0B1530] text-white overflow-hidden"
         style={{
           background: `
             radial-gradient(35% 60% at 50% 30%, rgba(122, 214, 160, 0.45) 0%, rgba(43, 148, 96, 0.22) 45%, rgba(43, 148, 96, 0) 75%),
