@@ -28,9 +28,27 @@ except ImportError:
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'billza-insecure-secret-key-change-in-production-64char')
 DEBUG = os.getenv('DJANGO_DEBUG', 'True').lower() in ('true', '1', 't')
 
-ALLOWED_HOSTS = [host.strip() for host in os.getenv('DJANGO_ALLOWED_HOSTS', 'api.billza.xyz,billza.xyz,www.billza.xyz,localhost,127.0.0.1,0.0.0.0,web,testserver').split(',') if host.strip()]
-if 'testserver' not in ALLOWED_HOSTS:
-    ALLOWED_HOSTS.append('testserver')
+# Allowed Hosts: allow environment configuration and always ensure billza domains and local hosts are included
+raw_hosts = os.getenv('DJANGO_ALLOWED_HOSTS', '')
+if raw_hosts:
+    ALLOWED_HOSTS = [h.strip() for h in raw_hosts.split(',') if h.strip()]
+else:
+    ALLOWED_HOSTS = []
+
+standard_hosts = [
+    'api.billza.xyz',
+    'billza.xyz',
+    'www.billza.xyz',
+    '.billza.xyz',
+    'localhost',
+    '127.0.0.1',
+    '0.0.0.0',
+    'web',
+    'testserver',
+]
+for host in standard_hosts:
+    if host not in ALLOWED_HOSTS and '*' not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(host)
 
 # Application definition
 INSTALLED_APPS = [
@@ -151,27 +169,41 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Reverse proxy SSL header configuration (Traefik / Dokploy)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
 
 # CORS and CSRF
 CORS_ALLOW_ALL_ORIGINS = os.getenv('CORS_ALLOW_ALL_ORIGINS', 'False').lower() in ('true', '1', 't')
-cors_origins_env = os.getenv('CORS_ALLOWED_ORIGINS', '')
-if cors_origins_env:
-    CORS_ALLOWED_ORIGINS = [o.strip() for o in cors_origins_env.split(',') if o.strip()]
-else:
-    CORS_ALLOWED_ORIGINS = [
-        'https://billza.xyz',
-        'https://www.billza.xyz',
-        'http://localhost:3000',
-        'http://127.0.0.1:3000',
-    ]
-
-CSRF_TRUSTED_ORIGINS = [
-    origin.strip()
-    for origin in os.getenv(
-        'CSRF_TRUSTED_ORIGINS',
-        'https://billza.xyz,https://www.billza.xyz,https://api.billza.xyz,http://localhost:3000,http://127.0.0.1:3000,http://localhost:8000,http://127.0.0.1:8000'
-    ).split(',') if origin.strip()
+raw_cors = os.getenv('CORS_ALLOWED_ORIGINS', '')
+CORS_ALLOWED_ORIGINS = [o.strip() for o in raw_cors.split(',') if o.strip()] if raw_cors else []
+default_cors = [
+    'https://billza.xyz',
+    'https://www.billza.xyz',
+    'https://api.billza.xyz',
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
 ]
+for origin in default_cors:
+    if origin not in CORS_ALLOWED_ORIGINS:
+        CORS_ALLOWED_ORIGINS.append(origin)
+
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://([a-zA-Z0-9-]+\.)*billza\.xyz$",
+]
+
+raw_csrf = os.getenv('CSRF_TRUSTED_ORIGINS', '')
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in raw_csrf.split(',') if o.strip()] if raw_csrf else []
+default_csrf = [
+    'https://billza.xyz',
+    'https://www.billza.xyz',
+    'https://api.billza.xyz',
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
+for origin in default_csrf:
+    if origin not in CSRF_TRUSTED_ORIGINS:
+        CSRF_TRUSTED_ORIGINS.append(origin)
 
 # Django REST Framework Settings
 REST_FRAMEWORK = {
