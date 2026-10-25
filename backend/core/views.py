@@ -310,6 +310,13 @@ def auth_wallet_verify(request):
         ip_address=request.META.get('REMOTE_ADDR'),
     )
 
+    if user.bills.count() == 0:
+        try:
+            from bills.seeder import seed_bills_for_user
+            seed_bills_for_user(target_email=user.email, target_wallet=wallet_address)
+        except Exception:
+            pass
+
     tokens = generate_jwt_tokens(user)
     tokens['user'] = UserProfileSerializer(user.profile).data
     return Response(tokens, status=status.HTTP_200_OK)
@@ -394,3 +401,30 @@ def health_check(request):
         'timestamp': datetime.now(timezone.utc),
     }
     return Response(data, status=status.HTTP_200_OK)
+
+@extend_schema(
+    tags=['System'],
+    summary='Populate bills and payment history for a user',
+    description='Populates realistic bills, occurrences, payment history records, and reminders for the specified email or authenticated user.',
+    responses={200: OpenApiResponse(description='Data populated successfully')}
+)
+@api_view(['POST', 'GET'])
+@permission_classes([AllowAny])
+def populate_user_bills_view(request):
+    email = request.data.get('email') if request.method == 'POST' else request.query_params.get('email')
+    if not email:
+        if request.user and request.user.is_authenticated:
+            email = request.user.email
+        else:
+            email = 'GBDF5GHLWU@stellar.billza.local'
+
+    wallet = request.data.get('wallet') if request.method == 'POST' else request.query_params.get('wallet')
+
+    from bills.seeder import seed_bills_for_user
+    result = seed_bills_for_user(target_email=email, target_wallet=wallet)
+    return Response({
+        'status': 'success',
+        'message': f"Populated bills and payment history for {email}",
+        'details': result
+    }, status=status.HTTP_200_OK)
+

@@ -3,6 +3,8 @@ from .models import Reminder, NotificationPreference
 
 class ReminderSerializer(serializers.ModelSerializer):
     bill_name = serializers.CharField(source='bill.name', read_only=True)
+    bill_category = serializers.CharField(source='bill.category', read_only=True)
+    bill_frequency = serializers.CharField(source='bill.frequency', read_only=True)
     bill_amount = serializers.DecimalField(source='occurrence.amount', max_digits=18, decimal_places=7, read_only=True)
     bill_currency = serializers.CharField(source='occurrence.currency', read_only=True)
     occurrence_due_date = serializers.DateField(source='occurrence.due_date', read_only=True)
@@ -13,6 +15,8 @@ class ReminderSerializer(serializers.ModelSerializer):
             'id',
             'bill',
             'bill_name',
+            'bill_category',
+            'bill_frequency',
             'bill_amount',
             'bill_currency',
             'occurrence',

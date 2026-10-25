@@ -985,6 +985,7 @@ export default function App() {
             <RemindersScreen
               reminders={reminders}
               bills={bills}
+              userEmail={currentUser?.email}
               onSelectBill={handleSelectBill}
               onMarkAsRead={handleMarkReminderAsRead}
               onMarkAllAsRead={handleMarkAllRemindersAsRead}

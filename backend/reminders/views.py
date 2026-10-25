@@ -32,6 +32,9 @@ from .services import process_scheduled_reminders
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def reminder_list(request):
+    # Dynamically evaluate and ensure live reminders exist for user's active occurrences
+    process_scheduled_reminders(user=request.user)
+
     queryset = Reminder.objects.filter(user=request.user).select_related('bill', 'occurrence')
 
     unread_only = request.query_params.get('unread_only')

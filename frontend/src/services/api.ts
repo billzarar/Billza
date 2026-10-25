@@ -753,29 +753,81 @@ export function transformBackendReminder(rem: any): ReminderItem {
   const amt = rem.bill_amount ? parseFloat(rem.bill_amount) : 0;
   const isOverdue = rem.reminder_type === 'OVERDUE';
   const isRead = !!rem.read_at || rem.status === 'READ';
+  const isScheduled = rem.status === 'SCHEDULED';
+  const isFailed = rem.status === 'FAILED';
   const created = new Date(rem.scheduled_for || rem.created_at || Date.now());
 
   let via: ReminderItem['via'] = 'app';
   if (rem.channel === 'EMAIL') via = 'email';
   if (rem.channel === 'BOTH') via = 'both';
 
+  const category = rem.bill_category || '';
+
+  let statusBadge = 'Scheduled';
+  let statusBadgeKind: ReminderItem['statusBadgeKind'] = 'upcoming';
+
+  if (isOverdue) {
+    statusBadge = 'Overdue';
+    statusBadgeKind = 'overdue';
+  } else if (isFailed) {
+    statusBadge = 'Failed';
+    statusBadgeKind = 'overdue';
+  } else if (isScheduled) {
+    statusBadge = 'Scheduled';
+    statusBadgeKind = 'upcoming';
+  } else if (rem.status === 'SENT') {
+    statusBadge = 'Sent';
+    statusBadgeKind = 'testnet';
+  }
+
+  // Format due date label (e.g. "Fri 23 Oct")
+  let dueDateLabel = 'Due Soon';
+  if (rem.occurrence_due_date) {
+    try {
+      const parts = String(rem.occurrence_due_date).split('-');
+      if (parts.length === 3) {
+        const d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+        dueDateLabel = d.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short' });
+      } else {
+        dueDateLabel = rem.occurrence_due_date;
+      }
+    } catch {
+      dueDateLabel = rem.occurrence_due_date;
+    }
+  }
+
+  // Format time label
+  let timeLabel = '';
+  try {
+    const timeStr = created.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const dateStr = created.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    if (isScheduled) {
+      timeLabel = `Scheduled for ${dateStr}`;
+    } else {
+      timeLabel = `${dateStr}, ${timeStr}`;
+    }
+  } catch {
+    timeLabel = 'Today';
+  }
+
   return {
     id: String(rem.id),
     billId: String(rem.bill || rem.occurrence || rem.id),
     billName: rem.bill_name || 'Payment Alert',
-    icon: getCategoryIcon(''),
+    icon: getCategoryIcon(category),
     tone: isOverdue ? 'overdue' : 'normal',
-    isUnread: !isRead,
-    status: isRead ? 'read' : rem.status === 'SENT' ? 'sent' : rem.status === 'FAILED' ? 'failed' : 'scheduled',
-    statusBadge: isOverdue ? 'Overdue' : 'Scheduled',
-    statusBadgeKind: isOverdue ? 'overdue' : 'upcoming',
+    isUnread: !isRead && !isScheduled,
+    status: isRead ? 'read' : isFailed ? 'failed' : rem.status === 'SENT' ? 'sent' : 'scheduled',
+    statusBadge,
+    statusBadgeKind,
     subtitle: rem.title || rem.message?.slice(0, 60) || 'Upcoming payment alert',
-    timeLabel: created.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    errorDetail: rem.error_message || undefined,
+    timeLabel,
     via,
-    dueDateLabel: rem.occurrence_due_date || 'Due Soon',
+    dueDateLabel,
     amount: amt,
     currency: (rem.bill_currency || 'USDC') as Currency,
-    actionText: isRead ? undefined : 'Mark as read',
+    actionText: isFailed ? 'Retry now' : (!isRead && !isScheduled ? 'Mark as read' : undefined),
     isOverdueSection: isOverdue,
   };
 }

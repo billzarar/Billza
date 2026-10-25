@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Settings, RefreshCw, Bell, Mail, Smartphone, AlertTriangle, Check } from 'lucide-react';
 import { BillItem } from '../data/initialData';
 import { ReminderItem } from '../data/remindersData';
 import { BillIcon } from './BillIcons';
+import { fetchReminderPreferencesApi, updateReminderPreferencesApi } from '../services/api';
 
 interface RemindersScreenProps {
   reminders: ReminderItem[];
   bills: BillItem[];
+  userEmail?: string;
   onSelectBill: (bill: BillItem) => void;
   onMarkAsRead: (reminderId: string) => void;
   onMarkAllAsRead: () => void;
@@ -20,6 +22,7 @@ type TabKey = 'all' | 'unread' | 'scheduled' | 'read' | 'failed';
 export const RemindersScreen: React.FC<RemindersScreenProps> = ({
   reminders,
   bills,
+  userEmail,
   onSelectBill,
   onMarkAsRead,
   onMarkAllAsRead,
@@ -38,6 +41,42 @@ export const RemindersScreen: React.FC<RemindersScreenProps> = ({
   const [timingDueDay, setTimingDueDay] = useState(true);
   const [overdueCadence, setOverdueCadence] = useState('every_2_days');
 
+  // Load preferences from API when modal opens
+  useEffect(() => {
+    if (showSettingsModal) {
+      fetchReminderPreferencesApi()
+        .then((prefs) => {
+          if (!prefs) return;
+          if (prefs.email_enabled !== undefined) setEmailEnabled(prefs.email_enabled);
+          if (prefs.in_app_enabled !== undefined) setAppEnabled(prefs.in_app_enabled);
+          if (prefs.remind_3_days !== undefined) setTiming3Days(prefs.remind_3_days);
+          if (prefs.remind_1_day !== undefined) setTiming1Day(prefs.remind_1_day);
+          if (prefs.remind_on_due !== undefined) setTimingDueDay(prefs.remind_on_due);
+          if (prefs.remind_overdue !== undefined) setOverdueCadence(prefs.remind_overdue ? 'every_2_days' : 'none');
+        })
+        .catch((err) => console.warn('Could not load reminder preferences:', err));
+    }
+  }, [showSettingsModal]);
+
+  const handleSaveModalPreferences = async () => {
+    try {
+      await updateReminderPreferencesApi({
+        email_enabled: emailEnabled,
+        in_app_enabled: appEnabled,
+        remind_3_days: timing3Days,
+        remind_1_day: timing1Day,
+        remind_on_due: timingDueDay,
+        remind_overdue: overdueCadence !== 'none',
+      });
+      setShowSettingsModal(false);
+      onTriggerToast('Saved reminder notification preferences to API');
+    } catch (err: any) {
+      console.warn('Could not save reminder preferences:', err);
+      setShowSettingsModal(false);
+      onTriggerToast('Saved reminder notification preferences');
+    }
+  };
+
   const unreadCount = reminders.filter((r) => r.isUnread).length;
   const scheduledCount = reminders.filter((r) => r.status === 'scheduled').length;
   const readCount = reminders.filter((r) => r.status === 'read' || (!r.isUnread && r.status === 'sent')).length;
@@ -53,6 +92,94 @@ export const RemindersScreen: React.FC<RemindersScreenProps> = ({
 
   const overdueReminders = filteredReminders.filter((r) => r.isOverdueSection);
   const upcomingReminders = filteredReminders.filter((r) => !r.isOverdueSection);
+
+  // Dynamic calculations for the 4 TotalCards from live API bills & reminders
+  const summaryData = useMemo(() => {
+    // Card 1: Each month
+    const monthlyBills = bills.filter((b) => b.frequency === 'monthly');
+    const mUSDC = monthlyBills.filter((b) => b.currency === 'USDC').reduce((sum, b) => sum + b.amount, 0);
+    const mXLM = monthlyBills.filter((b) => b.currency === 'XLM').reduce((sum, b) => sum + b.amount, 0);
+    const mEUR = monthlyBills.filter((b) => b.currency === 'EUR').reduce((sum, b) => sum + b.amount, 0);
+
+    let monthlyPrimary = '0.00';
+    let monthlyCurr = 'USDC';
+    const otherMonthly: string[] = [];
+
+    if (mUSDC > 0) {
+      monthlyPrimary = mUSDC.toFixed(2);
+      monthlyCurr = 'USDC';
+      if (mXLM > 0) otherMonthly.push(`${mXLM.toFixed(2)} XLM`);
+      if (mEUR > 0) otherMonthly.push(`${mEUR.toFixed(2)} EUR`);
+    } else if (mXLM > 0) {
+      monthlyPrimary = mXLM.toFixed(2);
+      monthlyCurr = 'XLM';
+      if (mEUR > 0) otherMonthly.push(`${mEUR.toFixed(2)} EUR`);
+    } else if (mEUR > 0) {
+      monthlyPrimary = mEUR.toFixed(2);
+      monthlyCurr = 'EUR';
+    }
+
+    const monthlySub = otherMonthly.length > 0
+      ? `Plus ${otherMonthly.join(' and ')}`
+      : `${monthlyBills.length} monthly ${monthlyBills.length === 1 ? 'bill' : 'bills'}`;
+
+    // Card 2: Each quarter
+    const quarterlyBills = bills.filter((b) => b.frequency === 'quarterly');
+    const qUSDC = quarterlyBills.filter((b) => b.currency === 'USDC').reduce((sum, b) => sum + b.amount, 0);
+    const qXLM = quarterlyBills.filter((b) => b.currency === 'XLM').reduce((sum, b) => sum + b.amount, 0);
+    const qEUR = quarterlyBills.filter((b) => b.currency === 'EUR').reduce((sum, b) => sum + b.amount, 0);
+
+    let quarterlyPrimary = '0.00';
+    let quarterlyCurr = 'USDC';
+    if (qUSDC > 0) {
+      quarterlyPrimary = qUSDC.toFixed(2);
+      quarterlyCurr = 'USDC';
+    } else if (qXLM > 0) {
+      quarterlyPrimary = qXLM.toFixed(2);
+      quarterlyCurr = 'XLM';
+    } else if (qEUR > 0) {
+      quarterlyPrimary = qEUR.toFixed(2);
+      quarterlyCurr = 'EUR';
+    }
+
+    const quarterlySub = quarterlyBills.map((b) => b.name).join(' and ') || 'No quarterly bills';
+
+    // Card 3: Next due
+    const unpaid = bills.filter((b) => b.status !== 'paid');
+    const nextDue = unpaid.find((b) => b.status !== 'overdue') || unpaid[0];
+    const nextDueLabel = nextDue?.dueDateLabel || (unpaid.length === 0 ? 'All caught up' : 'Upcoming');
+    const nextDueSub = nextDue ? `${nextDue.name}, ${nextDue.amount.toFixed(2)} ${nextDue.currency}` : 'No bills due';
+
+    // Card 4: Overdue
+    const overdue = bills.filter((b) => b.status === 'overdue');
+    const overdueSub = overdue.length > 0
+      ? `${overdue[0].name}${overdue[0].dueInLabel ? `, ${overdue[0].dueInLabel}` : ''}`
+      : 'No overdue bills';
+
+    // Banner summary of upcoming reminders
+    const upUSDC = upcomingReminders.filter((r) => r.currency === 'USDC').reduce((sum, r) => sum + r.amount, 0);
+    const upXLM = upcomingReminders.filter((r) => r.currency === 'XLM').reduce((sum, r) => sum + r.amount, 0);
+    const upEUR = upcomingReminders.filter((r) => r.currency === 'EUR').reduce((sum, r) => sum + r.amount, 0);
+    const upParts: string[] = [];
+    if (upUSDC > 0) upParts.push(`${upUSDC.toFixed(2)} USDC`);
+    if (upXLM > 0) upParts.push(`${upXLM.toFixed(2)} XLM`);
+    if (upEUR > 0) upParts.push(`${upEUR.toFixed(2)} EUR`);
+    const upBanner = upParts.length > 0 ? ` · ${upParts.join(', ')}` : '';
+
+    return {
+      monthlyPrimary,
+      monthlyCurr,
+      monthlySub,
+      quarterlyPrimary,
+      quarterlyCurr,
+      quarterlySub,
+      nextDueLabel,
+      nextDueSub,
+      overdueCount: overdue.length,
+      overdueSub,
+      upBanner,
+    };
+  }, [bills, upcomingReminders]);
 
   const handleViewBillByReminder = (rem: ReminderItem) => {
     const matched = bills.find((b) => b.id === rem.billId || b.name === rem.billName);
@@ -399,14 +526,14 @@ export const RemindersScreen: React.FC<RemindersScreenProps> = ({
           <div className="flex-1 px-3 sm:px-[20px] py-2.5 sm:pt-[16px] sm:pb-[20px] flex flex-col gap-1 sm:gap-[4px] justify-between">
             <div className="flex items-baseline gap-1 sm:gap-[5px] tabular-nums">
               <span className="font-['Onest'] font-extrabold text-[19px] xs:text-[22px] sm:text-[28px] leading-[26px] sm:leading-[36px] tracking-[-0.5px] text-[#0B1530]">
-                531.50
+                {summaryData.monthlyPrimary}
               </span>
               <span className="font-['Onest'] font-bold text-[11px] sm:text-[12px] leading-[16px] text-[#0B1530]">
-                USDC
+                {summaryData.monthlyCurr}
               </span>
             </div>
             <span className="font-['Onest'] font-medium text-[11px] sm:text-[12px] leading-[15px] sm:leading-[16px] text-[#4A5675] truncate">
-              Plus 140.00 XLM and 45.00 EUR
+              {summaryData.monthlySub}
             </span>
           </div>
         </div>
@@ -422,14 +549,14 @@ export const RemindersScreen: React.FC<RemindersScreenProps> = ({
           <div className="flex-1 px-3 sm:px-[20px] py-2.5 sm:pt-[16px] sm:pb-[20px] flex flex-col gap-1 sm:gap-[4px] justify-between">
             <div className="flex items-baseline gap-1 sm:gap-[5px] tabular-nums">
               <span className="font-['Onest'] font-extrabold text-[19px] xs:text-[22px] sm:text-[28px] leading-[26px] sm:leading-[36px] tracking-[-0.5px] text-[#0B1530]">
-                330.00
+                {summaryData.quarterlyPrimary}
               </span>
               <span className="font-['Onest'] font-bold text-[11px] sm:text-[12px] leading-[16px] text-[#0B1530]">
-                USDC
+                {summaryData.quarterlyCurr}
               </span>
             </div>
             <span className="font-['Onest'] font-medium text-[11px] sm:text-[12px] leading-[15px] sm:leading-[16px] text-[#4A5675] truncate">
-              School fees and office internet
+              {summaryData.quarterlySub}
             </span>
           </div>
         </div>
@@ -444,10 +571,10 @@ export const RemindersScreen: React.FC<RemindersScreenProps> = ({
           </div>
           <div className="flex-1 px-3 sm:px-[20px] py-2.5 sm:pt-[16px] sm:pb-[20px] flex flex-col gap-1 sm:gap-[4px] justify-between">
             <span className="font-['Onest'] font-extrabold text-[18px] xs:text-[20px] sm:text-[28px] leading-[26px] sm:leading-[36px] tracking-[-0.5px] text-[#0B1530] truncate">
-              Fri 23 Oct
+              {summaryData.nextDueLabel}
             </span>
             <span className="font-['Onest'] font-medium text-[11px] sm:text-[12px] leading-[15px] sm:leading-[16px] text-[#4A5675] truncate">
-              Home electricity, 38.50 USDC
+              {summaryData.nextDueSub}
             </span>
           </div>
         </div>
@@ -463,14 +590,14 @@ export const RemindersScreen: React.FC<RemindersScreenProps> = ({
           <div className="flex-1 px-3 sm:px-[20px] py-2.5 sm:pt-[16px] sm:pb-[20px] flex flex-col gap-1 sm:gap-[4px] justify-between">
             <div className="flex items-baseline gap-1 sm:gap-[5px] tabular-nums">
               <span className="font-['Onest'] font-extrabold text-[19px] xs:text-[22px] sm:text-[28px] leading-[26px] sm:leading-[36px] tracking-[-0.5px] text-[#B42318]">
-                1
+                {summaryData.overdueCount}
               </span>
               <span className="font-['Onest'] font-bold text-[11px] sm:text-[12px] leading-[16px] text-[#B42318]">
-                bill
+                {summaryData.overdueCount === 1 ? 'bill' : 'bills'}
               </span>
             </div>
             <span className="font-['Onest'] font-medium text-[11px] sm:text-[12px] leading-[15px] sm:leading-[16px] text-[#4A5675] truncate">
-              Fibre internet, 2 days late
+              {summaryData.overdueSub}
             </span>
           </div>
         </div>
@@ -563,7 +690,7 @@ export const RemindersScreen: React.FC<RemindersScreenProps> = ({
                 <>
                   <div className="px-5 sm:px-[24px] py-[8.5px] bg-[#F8F9FC] border-t border-[#EEF1F6]">
                     <span className="font-['Onest'] font-medium text-[12px] leading-[16px] text-[#4A5675]">
-                      Upcoming bills · 488.50 USDC, 140.00 XLM
+                      Upcoming bills ({upcomingReminders.length}){summaryData.upBanner}
                     </span>
                   </div>
                   {upcomingReminders.map(renderReminderRow)}
@@ -619,7 +746,7 @@ export const RemindersScreen: React.FC<RemindersScreenProps> = ({
                     onChange={(e) => setEmailEnabled(e.target.checked)}
                     className="w-4 h-4 rounded text-[#4164D9] cursor-pointer"
                   />
-                  <span>Email notifications (to amara@billza.stellar)</span>
+                  <span>Email notifications ({userEmail ? `to ${userEmail}` : 'via email'})</span>
                 </label>
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
@@ -689,10 +816,7 @@ export const RemindersScreen: React.FC<RemindersScreenProps> = ({
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  setShowSettingsModal(false);
-                  onTriggerToast('Saved reminder notification preferences');
-                }}
+                onClick={handleSaveModalPreferences}
                 className="h-[40px] px-5 rounded-[10px] bg-[#0B1530] hover:bg-[#192852] font-bold text-[14px] text-white cursor-pointer"
               >
                 Save preferences
